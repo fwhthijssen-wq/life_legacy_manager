@@ -1,0 +1,89 @@
+{
+  "@@locale": "nl",
+  
+  "appTitle": "Life & Legacy Manager",
+  "@appTitle": {
+    "description": "De titel van de applicatie"
+  },
+
+  "appSubtitle": "Uw persoonlijke levenscompas",
+  "@appSubtitle": {
+    "description": "Ondertitel van de app"
+  },
+
+  "welcome": "Welkom",
+  "accountCreate": "Account Aanmaken",
+  "login": "Inloggen",
+  "logout": "Uitloggen",
+  "cancel": "Annuleren",
+  "save": "Opslaan",
+  "delete": "Verwijderen",
+  "edit": "Bewerken",
+  "back": "Terug",
+  "next": "Volgende",
+  "skip": "Overslaan",
+  "done": "Klaar",
+  "close": "Sluiten",
+
+  "email": "E-mailadres",
+  "password": "Wachtwoord",
+  "confirmPassword": "Herhaal wachtwoord",
+  "firstName": "Voornaam",
+  "lastName": "Achternaam",
+  "birthDate": "Geboortedatum",
+  "gender": "Geslacht",
+  "phone": "Telefoonnummer",
+  "address": "Adres",
+  "postalCode": "Postcode",
+  "city": "Plaats",
+
+  "genderMale": "Man",
+  "genderFemale": "Vrouw",
+  "genderOther": "Anders",
+  "genderUnknown": "Onbekend",
+
+  "welcomeIntroTitle": "Welkom",
+  "welcomeIntroText": "In het leven verzamelen we belangrijke documenten, contracten, en informatie. Van bankrekeningen tot verzekeringen, van energiecontracten tot persoonlijke wensen. Maar waar bewaar je dit allemaal? En wat als je nabestaanden deze informatie nodig hebben?",
+  "welcomeIntroText2": "Life & Legacy Manager is uw persoonlijke levenscompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.",
+
+  "featurePrivacyTitle": "Volledig Privé",
+  "featurePrivacyDesc": "Al uw gegevens blijven lokaal op uw apparaat opgeslagen",
+  "featureOverviewTitle": "Overzichtelijk",
+  "featureOverviewDesc": "Gestructureerd per thema: geldzaken, huis, juridisch, en meer",
+  "featureFamilyTitle": "Voor Nabestaanden",
+  "featureFamilyDesc": "Alles wat ze moeten weten, op één plek toegankelijk",
+  "featureDocumentsTitle": "Documentbeheer",
+  "featureDocumentsDesc": "Voeg documenten toe of noteer waar ze bewaard zijn",
+  "featureProgressTitle": "Voortgang Bijhouden",
+  "featureProgressDesc": "Zie in één oogopslag welke onderdelen compleet zijn",
+  "featureSecurityTitle": "Veilig Bewaard",
+  "featureSecurityDesc": "Beveiligd met wachtwoord, pincode of biometrie",
+
+  "pinSetupTitle": "Snel Inloggen",
+  "pinSetupSubtitle": "Stel een pincode in om voortaan snel en gemakkelijk in te loggen zonder uw volledige wachtwoord te typen.",
+  "pinChooseTitle": "Kies uw pincode",
+  "pinChooseSubtitle": "4 tot 8 cijfers",
+  "pinNew": "Nieuwe PIN",
+  "pinConfirm": "Herhaal PIN",
+  "pinSetup": "PIN Instellen",
+  "pinSkipLater": "Nu niet, later instellen",
+  "pinSkipTitle": "PIN overslaan",
+  "pinSkipMessage": "Weet u zeker dat u geen PIN wilt instellen? U kunt dit later alsnog doen via instellingen.\n\nZonder PIN moet u steeds uw volledige wachtwoord invoeren.",
+
+  "unlockTitle": "Welkom terug",
+  "unlockSubtitle": "Voer uw pincode in om door te gaan",
+  "unlockButton": "Ontgrendelen",
+  "unlockBiometric": "Biometrisch Ontgrendelen",
+  "unlockWithPassword": "Inloggen met wachtwoord",
+  "unlockError": "Onjuiste PIN. Probeer opnieuw.",
+
+  "loading": "Even geduld...",
+  "error": "Er ging iets mis",
+  "success": "Gelukt!",
+
+  "validationRequired": "Dit veld is verplicht",
+  "validationEmail": "Ongeldig e-mailadres",
+  "validationPasswordLength": "Wachtwoord moet minimaal 6 tekens zijn",
+  "validationPasswordMatch": "Wachtwoorden komen niet overeen",
+  "validationPinLength": "PIN moet minimaal 4 cijfers zijn"
+}
