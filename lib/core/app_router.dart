@@ -42,10 +42,10 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const UnlockScreen());
 
       case AppRoutes.setupPin:
-       final userId = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => SetupPinScreen(userId: userId),
-  );
-
+        final userId = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => SetupPinScreen(userId: userId),
+        );
 
       // Home
       case AppRoutes.home:

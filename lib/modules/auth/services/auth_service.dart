@@ -30,6 +30,14 @@ class AuthService {
     return notifier.unlockWithPin(pin);
   }
 
+  Future<void> enableBiometrics(String userId) async {
+    await repo.enableBiometrics(userId);
+  }
+
+  Future<void> disableBiometrics(String userId) async {
+    await repo.disableBiometrics(userId);
+  }
+
   void logout() {
     notifier.logout();
   }

@@ -1,3 +1,5 @@
+// lib/modules/auth/repository/auth_repository.dart
+
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +16,7 @@ class AuthUser {
   final String lastName;
   final String passwordHash;
   final String? pinHash;
+  final bool isBiometricEnabled;
 
   AuthUser({
     required this.id,
@@ -22,6 +25,7 @@ class AuthUser {
     required this.lastName,
     required this.passwordHash,
     this.pinHash,
+    this.isBiometricEnabled = false,
   });
 
   factory AuthUser.fromMap(Map<String, dynamic> m) {
@@ -32,6 +36,7 @@ class AuthUser {
       lastName: m['last_name'],
       passwordHash: m['password_hash'],
       pinHash: m['pin_hash'],
+      isBiometricEnabled: (m['is_biometric_enabled'] ?? 0) == 1,
     );
   }
 }
@@ -68,33 +73,56 @@ class AuthRepository {
     required DateTime birthDate,
     required String gender,
   }) async {
-    final db = await AppDatabase.instance.database;
-    final userId = const Uuid().v4();
-    final hash = sha256.convert(utf8.encode(password)).toString();
+    try {
+      print('🔵 Register START');
+      
+      final db = await AppDatabase.instance.database;
+      print('🔵 Database OK');
+      
+      final userId = const Uuid().v4();
+      print('🔵 UserID: $userId');
+      
+      final hash = sha256.convert(utf8.encode(password)).toString();
+      print('🔵 Password hashed');
 
-    await db.insert('users', {
-      'id': userId,
-      'first_name': firstName,
-      'last_name': lastName,
-      'gender': gender,
-      'birth_date': birthDate.millisecondsSinceEpoch,
-      'email': email.toLowerCase(),
-      'password_hash': hash,
-      'created_at': DateTime.now().millisecondsSinceEpoch,
-    });
+      await db.insert('users', {
+        'id': userId,
+        'first_name': firstName,
+        'last_name': lastName,
+        'gender': gender,
+        'birth_date': birthDate.millisecondsSinceEpoch,
+        'email': email.toLowerCase(),
+        'password_hash': hash,
+        'created_at': DateTime.now().millisecondsSinceEpoch,
+      });
+      print('🔵 User inserted in database');
 
-    // user ook opslaan als persoon:
-    await PersonRepository.addPerson(
-      PersonModel(
-        id: userId,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        birthDate: birthDate.toIso8601String(),
-      ),
-    );
+      // Capitalize gender voor PersonModel (Man, Vrouw, Anders)
+      final capitalizedGender = gender.isNotEmpty
+          ? gender[0].toUpperCase() + gender.substring(1).toLowerCase()
+          : null;
 
-    return userId;
+      // User ook opslaan als persoon
+      await PersonRepository.addPerson(
+        PersonModel(
+          id: userId,
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          birthDate: birthDate.toIso8601String(),
+          gender: capitalizedGender,
+        ),
+      );
+      print('🔵 Person inserted in database');
+
+      print('✅ Register SUCCESS - UserID: $userId');
+      return userId;
+      
+    } catch (e, stackTrace) {
+      print('❌ Register ERROR: $e');
+      print('❌ StackTrace: $stackTrace');
+      return null;
+    }
   }
 
   Future<void> setPin(String userId, String pinHash) async {
@@ -102,6 +130,26 @@ class AuthRepository {
     await db.update(
       'users',
       {'pin_hash': pinHash, 'is_pin_enabled': 1},
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
+  }
+
+  Future<void> enableBiometrics(String userId) async {
+    final db = await AppDatabase.instance.database;
+    await db.update(
+      'users',
+      {'is_biometric_enabled': 1},
+      where: 'id = ?',
+      whereArgs: [userId],
+    );
+  }
+
+  Future<void> disableBiometrics(String userId) async {
+    final db = await AppDatabase.instance.database;
+    await db.update(
+      'users',
+      {'is_biometric_enabled': 0},
       where: 'id = ?',
       whereArgs: [userId],
     );
