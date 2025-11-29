@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 import '../../../core/app_database.dart';
 import '../../../core/person_repository.dart';
 import '../../person/person_model.dart';
+import '../../dossier/dossier_repository.dart';
 
 class AuthUser {
   final String id;
@@ -67,6 +68,7 @@ class AuthRepository {
 
   Future<String?> register({
     required String firstName,
+    String? namePrefix,  // ← NIEUW: optioneel tussenvoegsel
     required String lastName,
     required String email,
     required String password,
@@ -97,23 +99,36 @@ class AuthRepository {
       });
       print('🔵 User inserted in database');
 
-      // Capitalize gender voor PersonModel (Man, Vrouw, Anders)
+      // Maak standaard dossier
+      final dossier = await DossierRepository.createDossier(
+        userId: userId,
+        name: 'Mijn Dossier',
+        description: 'Standaard dossier',
+        icon: 'folder',
+        color: 'teal',
+      );
+      print('🔵 Standaard dossier aangemaakt: ${dossier.id}');
+
+      // Capitalize gender voor PersonModel
       final capitalizedGender = gender.isNotEmpty
           ? gender[0].toUpperCase() + gender.substring(1).toLowerCase()
           : null;
 
-      // User ook opslaan als persoon
+      // User ook opslaan als persoon IN HET DOSSIER (met namePrefix!)
       await PersonRepository.addPerson(
         PersonModel(
           id: userId,
+          dossierId: dossier.id,
           firstName: firstName,
+          namePrefix: namePrefix,  // ← NIEUW: tussenvoegsel meegeven
           lastName: lastName,
           email: email,
           birthDate: birthDate.toIso8601String(),
           gender: capitalizedGender,
+          relation: 'Ikzelf',
         ),
       );
-      print('🔵 Person inserted in database');
+      print('🔵 Person inserted in dossier (met namePrefix: $namePrefix)');
 
       print('✅ Register SUCCESS - UserID: $userId');
       return userId;

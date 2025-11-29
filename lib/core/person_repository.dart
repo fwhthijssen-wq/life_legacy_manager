@@ -9,6 +9,7 @@ class PersonRepository {
     return await AppDatabase.instance.database;
   }
 
+  // ← AANGEPAST: Vraag nu dossierId
   static Future<void> addPerson(PersonModel person) async {
     final db = await _getDb();
     await db.insert(
@@ -18,6 +19,18 @@ class PersonRepository {
     );
   }
 
+  // ← NIEUW: Haal alle personen op voor een specifiek dossier
+  static Future<List<PersonModel>> getPersonsForDossier(String dossierId) async {
+    final db = await _getDb();
+    final maps = await db.query(
+      'persons',
+      where: 'dossier_id = ?',
+      whereArgs: [dossierId],
+    );
+    return maps.map((m) => PersonModel.fromMap(m)).toList();
+  }
+
+  // ← BEHOUDEN voor backwards compatibility (maar deprecated)
   static Future<List<PersonModel>> getAllPersons() async {
     final db = await _getDb();
     final maps = await db.query('persons');

@@ -54,6 +54,30 @@ class AppLocalizationsNl extends AppLocalizations {
   String get close => 'Sluiten';
 
   @override
+  String get confirm => 'Bevestigen';
+
+  @override
+  String get create => 'Aanmaken';
+
+  @override
+  String get update => 'Bijwerken';
+
+  @override
+  String get add => 'Toevoegen';
+
+  @override
+  String get remove => 'Verwijderen';
+
+  @override
+  String get continueButton => 'Doorgaan';
+
+  @override
+  String get yes => 'Ja';
+
+  @override
+  String get no => 'Nee';
+
+  @override
   String get email => 'E-mailadres';
 
   @override
@@ -67,6 +91,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get lastName => 'Achternaam';
+
+  @override
+  String get namePrefix => 'Tussenvoegsel';
 
   @override
   String get birthDate => 'Geboortedatum';
@@ -85,6 +112,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get city => 'Plaats';
+
+  @override
+  String get description => 'Omschrijving';
+
+  @override
+  String get name => 'Naam';
 
   @override
   String get genderMale => 'Man';
@@ -314,6 +347,175 @@ class AppLocalizationsNl extends AppLocalizations {
       'Uw gegevens zijn veilig opgeslagen op dit apparaat';
 
   @override
+  String get recoveryPhraseTitle => 'Herstelzinnen Bewaren';
+
+  @override
+  String get recoveryPhraseSubtitle =>
+      'Schrijf deze 12 woorden op en bewaar ze op een veilige plek';
+
+  @override
+  String get recoveryPhraseWarning =>
+      'BELANGRIJK: Als u uw wachtwoord vergeet, zijn deze woorden de ENIGE manier om toegang te herstellen.';
+
+  @override
+  String get recoveryPhraseInstructions =>
+      '1. Schrijf alle 12 woorden op in de juiste volgorde\n2. Bewaar ze op een veilige plek (niet digitaal!)\n3. Vertel niemand deze woorden\n4. U hebt ze nodig om uw wachtwoord te herstellen';
+
+  @override
+  String get recoveryPhraseCopyWarning =>
+      'Kopieer deze woorden NIET naar uw klembord of een digitaal document';
+
+  @override
+  String get recoveryPhraseConfirmTitle => 'Bevestig Herstelzinnen';
+
+  @override
+  String get recoveryPhraseConfirmSubtitle =>
+      'Voer de woorden in om te bevestigen dat u ze hebt opgeschreven';
+
+  @override
+  String recoveryPhraseConfirmInstructions(Object number) {
+    return 'Voer woord $number in:';
+  }
+
+  @override
+  String get recoveryPhraseConfirmError =>
+      'Onjuist woord. Controleer uw notities en probeer opnieuw.';
+
+  @override
+  String get recoveryPhraseConfirmed =>
+      'Herstelzinnen bevestigd! Uw account is nu beveiligd.';
+
+  @override
+  String get recoveryPhraseIWroteItDown => 'Ik heb de woorden opgeschreven';
+
+  @override
+  String get recoveryPhraseShowAgain => 'Toon opnieuw';
+
+  @override
+  String recoveryPhraseWord(Object number) {
+    return 'Woord $number';
+  }
+
+  @override
+  String get passwordRecoveryTitle => 'Wachtwoord Herstellen';
+
+  @override
+  String get passwordRecoverySubtitle => 'Voer uw 12-woorden herstelzinnen in';
+
+  @override
+  String get passwordRecoveryInstructions =>
+      'Voer alle 12 woorden in de juiste volgorde in om uw wachtwoord te herstellen.';
+
+  @override
+  String get passwordRecoveryEnterWords => 'Voer herstelzinnen in';
+
+  @override
+  String get passwordRecoveryWordsHint => 'woord1 woord2 woord3 ...';
+
+  @override
+  String get passwordRecoveryNewPassword => 'Nieuw wachtwoord';
+
+  @override
+  String get passwordRecoveryConfirmPassword => 'Bevestig nieuw wachtwoord';
+
+  @override
+  String get passwordRecoveryRecover => 'Herstel Wachtwoord';
+
+  @override
+  String get passwordRecoverySuccess => 'Wachtwoord succesvol hersteld!';
+
+  @override
+  String get passwordRecoveryFailed =>
+      'Herstelzinnen onjuist. Probeer opnieuw.';
+
+  @override
+  String get passwordRecoveryNoPhrase => 'Geen herstelzinnen ingesteld';
+
+  @override
+  String get passwordRecoveryNoAccess =>
+      'Zonder herstelzinnen kunt u uw wachtwoord niet herstellen. Neem contact op met support.';
+
+  @override
+  String get dossierTitle => 'Dossiers';
+
+  @override
+  String get dossierSelect => 'Selecteer Dossier';
+
+  @override
+  String get dossierSelectSubtitle => 'Kies welk dossier u wilt beheren';
+
+  @override
+  String get dossierCreate => 'Nieuw Dossier';
+
+  @override
+  String get dossierCreateTitle => 'Dossier Aanmaken';
+
+  @override
+  String get dossierEditTitle => 'Dossier Bewerken';
+
+  @override
+  String get dossierName => 'Dossiernaam';
+
+  @override
+  String get dossierNameHint => 'bijv. Mijn Gezin, Ouders, etc.';
+
+  @override
+  String get dossierDescription => 'Omschrijving (optioneel)';
+
+  @override
+  String get dossierDescriptionHint => 'Waar gaat dit dossier over?';
+
+  @override
+  String get dossierIcon => 'Icoon';
+
+  @override
+  String get dossierColor => 'Kleur';
+
+  @override
+  String dossierPersonCount(Object count) {
+    return '$count personen';
+  }
+
+  @override
+  String dossierCreatedAt(Object date) {
+    return 'Aangemaakt op $date';
+  }
+
+  @override
+  String get dossierDeleteTitle => 'Dossier Verwijderen?';
+
+  @override
+  String get dossierDeleteMessage =>
+      'Weet u zeker dat u dit dossier wilt verwijderen?\n\nAlle personen en gegevens in dit dossier worden permanent verwijderd.';
+
+  @override
+  String get dossierDeleteConfirm => 'Ja, Verwijderen';
+
+  @override
+  String get dossierDeleteCancel => 'Annuleren';
+
+  @override
+  String get dossierDeleted => 'Dossier verwijderd';
+
+  @override
+  String get dossierSaved => 'Dossier opgeslagen';
+
+  @override
+  String get dossierNoDossiers => 'Nog geen dossiers';
+
+  @override
+  String get dossierCreateFirst => 'Maak uw eerste dossier aan om te beginnen';
+
+  @override
+  String get dossierActive => 'Actief';
+
+  @override
+  String get dossierInactive => 'Inactief';
+
+  @override
+  String get dossierManage => 'Dossiers Beheren';
+
+  @override
   String get splashTitle => 'Life & Legacy Manager';
 
   @override
@@ -364,5 +566,95 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String validationNameRequired(Object field) {
     return 'Vul $field in';
+  }
+
+  @override
+  String get personEdit => 'Persoon bewerken';
+
+  @override
+  String get personAdd => 'Persoon toevoegen';
+
+  @override
+  String get personNotFound => 'Persoon niet gevonden';
+
+  @override
+  String get personSaveChanges => 'Wijzigingen opslaan';
+
+  @override
+  String get personRelationToUser => 'Relatie tot gebruiker';
+
+  @override
+  String get personRelationSelf => 'Ikzelf';
+
+  @override
+  String get personRelationPartner => 'Partner';
+
+  @override
+  String get personRelationChild => 'Kind';
+
+  @override
+  String get personRelationParent => 'Ouder';
+
+  @override
+  String get personRelationFamily => 'Familie';
+
+  @override
+  String get personRelationFriend => 'Vriend(in)';
+
+  @override
+  String get personRelationOther => 'Overig';
+
+  @override
+  String get personDeathDate => 'Overlijdensdatum (optioneel)';
+
+  @override
+  String get personNotes => 'Opmerkingen / notities';
+
+  @override
+  String get personSelectDate => 'Klik om datum te kiezen';
+
+  @override
+  String get personChooseRelation => 'Kies een relatie';
+
+  @override
+  String get personPhoneShort => 'Telefoonnummer lijkt te kort';
+
+  @override
+  String get personPhoneInvalid => 'Ongeldig telefoonnummer';
+
+  @override
+  String get personPostalInvalid => 'Postcode moet zijn als 1234 AB';
+
+  @override
+  String get personManage => 'Personen Beheren';
+
+  @override
+  String get personNoPersons => 'Nog geen personen in dit dossier';
+
+  @override
+  String get personAddFirst => 'Voeg de eerste persoon toe';
+
+  @override
+  String get personDeleted => 'Persoon verwijderd';
+
+  @override
+  String get personSaved => 'Persoon opgeslagen';
+
+  @override
+  String get personDeleteTitle => 'Persoon Verwijderen?';
+
+  @override
+  String personDeleteMessage(Object name) {
+    return 'Weet u zeker dat u $name wilt verwijderen?';
+  }
+
+  @override
+  String personAge(Object age) {
+    return '$age jaar';
+  }
+
+  @override
+  String personYearsOld(Object years) {
+    return '$years jaar';
   }
 }

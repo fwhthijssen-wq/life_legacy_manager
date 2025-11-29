@@ -54,6 +54,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get close => 'Close';
 
   @override
+  String get confirm => 'Confirm';
+
+  @override
+  String get create => 'Create';
+
+  @override
+  String get update => 'Update';
+
+  @override
+  String get add => 'Add';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get no => 'No';
+
+  @override
   String get email => 'Email Address';
 
   @override
@@ -67,6 +91,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lastName => 'Last Name';
+
+  @override
+  String get namePrefix => 'Prefix';
 
   @override
   String get birthDate => 'Date of Birth';
@@ -85,6 +112,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get city => 'City';
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get name => 'Name';
 
   @override
   String get genderMale => 'Male';
@@ -312,6 +345,175 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unlockInfoMessage => 'Your data is safely stored on this device';
 
   @override
+  String get recoveryPhraseTitle => 'Save Recovery Phrase';
+
+  @override
+  String get recoveryPhraseSubtitle =>
+      'Write down these 12 words and keep them in a safe place';
+
+  @override
+  String get recoveryPhraseWarning =>
+      'IMPORTANT: If you forget your password, these words are the ONLY way to restore access.';
+
+  @override
+  String get recoveryPhraseInstructions =>
+      '1. Write down all 12 words in the correct order\n2. Keep them in a safe place (not digitally!)\n3. Don\'t tell anyone these words\n4. You\'ll need them to recover your password';
+
+  @override
+  String get recoveryPhraseCopyWarning =>
+      'Do NOT copy these words to your clipboard or a digital document';
+
+  @override
+  String get recoveryPhraseConfirmTitle => 'Confirm Recovery Phrase';
+
+  @override
+  String get recoveryPhraseConfirmSubtitle =>
+      'Enter the words to confirm you\'ve written them down';
+
+  @override
+  String recoveryPhraseConfirmInstructions(Object number) {
+    return 'Enter word $number:';
+  }
+
+  @override
+  String get recoveryPhraseConfirmError =>
+      'Incorrect word. Check your notes and try again.';
+
+  @override
+  String get recoveryPhraseConfirmed =>
+      'Recovery phrase confirmed! Your account is now secured.';
+
+  @override
+  String get recoveryPhraseIWroteItDown => 'I\'ve written down the words';
+
+  @override
+  String get recoveryPhraseShowAgain => 'Show again';
+
+  @override
+  String recoveryPhraseWord(Object number) {
+    return 'Word $number';
+  }
+
+  @override
+  String get passwordRecoveryTitle => 'Recover Password';
+
+  @override
+  String get passwordRecoverySubtitle => 'Enter your 12-word recovery phrase';
+
+  @override
+  String get passwordRecoveryInstructions =>
+      'Enter all 12 words in the correct order to recover your password.';
+
+  @override
+  String get passwordRecoveryEnterWords => 'Enter recovery phrase';
+
+  @override
+  String get passwordRecoveryWordsHint => 'word1 word2 word3 ...';
+
+  @override
+  String get passwordRecoveryNewPassword => 'New password';
+
+  @override
+  String get passwordRecoveryConfirmPassword => 'Confirm new password';
+
+  @override
+  String get passwordRecoveryRecover => 'Recover Password';
+
+  @override
+  String get passwordRecoverySuccess => 'Password recovered successfully!';
+
+  @override
+  String get passwordRecoveryFailed =>
+      'Recovery phrase incorrect. Please try again.';
+
+  @override
+  String get passwordRecoveryNoPhrase => 'No recovery phrase set';
+
+  @override
+  String get passwordRecoveryNoAccess =>
+      'Without a recovery phrase you cannot recover your password. Please contact support.';
+
+  @override
+  String get dossierTitle => 'Dossiers';
+
+  @override
+  String get dossierSelect => 'Select Dossier';
+
+  @override
+  String get dossierSelectSubtitle => 'Choose which dossier to manage';
+
+  @override
+  String get dossierCreate => 'New Dossier';
+
+  @override
+  String get dossierCreateTitle => 'Create Dossier';
+
+  @override
+  String get dossierEditTitle => 'Edit Dossier';
+
+  @override
+  String get dossierName => 'Dossier Name';
+
+  @override
+  String get dossierNameHint => 'e.g. My Family, Parents, etc.';
+
+  @override
+  String get dossierDescription => 'Description (optional)';
+
+  @override
+  String get dossierDescriptionHint => 'What is this dossier about?';
+
+  @override
+  String get dossierIcon => 'Icon';
+
+  @override
+  String get dossierColor => 'Color';
+
+  @override
+  String dossierPersonCount(Object count) {
+    return '$count persons';
+  }
+
+  @override
+  String dossierCreatedAt(Object date) {
+    return 'Created on $date';
+  }
+
+  @override
+  String get dossierDeleteTitle => 'Delete Dossier?';
+
+  @override
+  String get dossierDeleteMessage =>
+      'Are you sure you want to delete this dossier?\n\nAll persons and data in this dossier will be permanently deleted.';
+
+  @override
+  String get dossierDeleteConfirm => 'Yes, Delete';
+
+  @override
+  String get dossierDeleteCancel => 'Cancel';
+
+  @override
+  String get dossierDeleted => 'Dossier deleted';
+
+  @override
+  String get dossierSaved => 'Dossier saved';
+
+  @override
+  String get dossierNoDossiers => 'No dossiers yet';
+
+  @override
+  String get dossierCreateFirst => 'Create your first dossier to get started';
+
+  @override
+  String get dossierActive => 'Active';
+
+  @override
+  String get dossierInactive => 'Inactive';
+
+  @override
+  String get dossierManage => 'Manage Dossiers';
+
+  @override
   String get splashTitle => 'Life & Legacy Manager';
 
   @override
@@ -362,5 +564,95 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String validationNameRequired(Object field) {
     return 'Enter $field';
+  }
+
+  @override
+  String get personEdit => 'Edit Person';
+
+  @override
+  String get personAdd => 'Add Person';
+
+  @override
+  String get personNotFound => 'Person not found';
+
+  @override
+  String get personSaveChanges => 'Save Changes';
+
+  @override
+  String get personRelationToUser => 'Relationship to user';
+
+  @override
+  String get personRelationSelf => 'Myself';
+
+  @override
+  String get personRelationPartner => 'Partner';
+
+  @override
+  String get personRelationChild => 'Child';
+
+  @override
+  String get personRelationParent => 'Parent';
+
+  @override
+  String get personRelationFamily => 'Family';
+
+  @override
+  String get personRelationFriend => 'Friend';
+
+  @override
+  String get personRelationOther => 'Other';
+
+  @override
+  String get personDeathDate => 'Date of death (optional)';
+
+  @override
+  String get personNotes => 'Comments / notes';
+
+  @override
+  String get personSelectDate => 'Click to select date';
+
+  @override
+  String get personChooseRelation => 'Choose a relationship';
+
+  @override
+  String get personPhoneShort => 'Phone number seems too short';
+
+  @override
+  String get personPhoneInvalid => 'Invalid phone number';
+
+  @override
+  String get personPostalInvalid => 'Postal code must be like 1234 AB';
+
+  @override
+  String get personManage => 'Manage Persons';
+
+  @override
+  String get personNoPersons => 'No persons in this dossier yet';
+
+  @override
+  String get personAddFirst => 'Add the first person';
+
+  @override
+  String get personDeleted => 'Person deleted';
+
+  @override
+  String get personSaved => 'Person saved';
+
+  @override
+  String get personDeleteTitle => 'Delete Person?';
+
+  @override
+  String personDeleteMessage(Object name) {
+    return 'Are you sure you want to delete $name?';
+  }
+
+  @override
+  String personAge(Object age) {
+    return '$age years';
+  }
+
+  @override
+  String personYearsOld(Object years) {
+    return '$years years old';
   }
 }

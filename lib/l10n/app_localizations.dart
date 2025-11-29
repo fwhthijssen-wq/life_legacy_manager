@@ -104,7 +104,7 @@ abstract class AppLocalizations {
   /// **'Life & Legacy Manager'**
   String get appTitle;
 
-  /// Ondertitel van de app
+  /// No description provided for @appSubtitle.
   ///
   /// In nl, this message translates to:
   /// **'Uw persoonlijke levenscompas'**
@@ -188,6 +188,54 @@ abstract class AppLocalizations {
   /// **'Sluiten'**
   String get close;
 
+  /// No description provided for @confirm.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bevestigen'**
+  String get confirm;
+
+  /// No description provided for @create.
+  ///
+  /// In nl, this message translates to:
+  /// **'Aanmaken'**
+  String get create;
+
+  /// No description provided for @update.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bijwerken'**
+  String get update;
+
+  /// No description provided for @add.
+  ///
+  /// In nl, this message translates to:
+  /// **'Toevoegen'**
+  String get add;
+
+  /// No description provided for @remove.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verwijderen'**
+  String get remove;
+
+  /// No description provided for @continueButton.
+  ///
+  /// In nl, this message translates to:
+  /// **'Doorgaan'**
+  String get continueButton;
+
+  /// No description provided for @yes.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ja'**
+  String get yes;
+
+  /// No description provided for @no.
+  ///
+  /// In nl, this message translates to:
+  /// **'Nee'**
+  String get no;
+
   /// No description provided for @email.
   ///
   /// In nl, this message translates to:
@@ -217,6 +265,12 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'Achternaam'**
   String get lastName;
+
+  /// No description provided for @namePrefix.
+  ///
+  /// In nl, this message translates to:
+  /// **'Tussenvoegsel'**
+  String get namePrefix;
 
   /// No description provided for @birthDate.
   ///
@@ -253,6 +307,18 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'Plaats'**
   String get city;
+
+  /// No description provided for @description.
+  ///
+  /// In nl, this message translates to:
+  /// **'Omschrijving'**
+  String get description;
+
+  /// No description provided for @name.
+  ///
+  /// In nl, this message translates to:
+  /// **'Naam'**
+  String get name;
 
   /// No description provided for @genderMale.
   ///
@@ -674,6 +740,306 @@ abstract class AppLocalizations {
   /// **'Uw gegevens zijn veilig opgeslagen op dit apparaat'**
   String get unlockInfoMessage;
 
+  /// No description provided for @recoveryPhraseTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Herstelzinnen Bewaren'**
+  String get recoveryPhraseTitle;
+
+  /// No description provided for @recoveryPhraseSubtitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Schrijf deze 12 woorden op en bewaar ze op een veilige plek'**
+  String get recoveryPhraseSubtitle;
+
+  /// No description provided for @recoveryPhraseWarning.
+  ///
+  /// In nl, this message translates to:
+  /// **'BELANGRIJK: Als u uw wachtwoord vergeet, zijn deze woorden de ENIGE manier om toegang te herstellen.'**
+  String get recoveryPhraseWarning;
+
+  /// No description provided for @recoveryPhraseInstructions.
+  ///
+  /// In nl, this message translates to:
+  /// **'1. Schrijf alle 12 woorden op in de juiste volgorde\n2. Bewaar ze op een veilige plek (niet digitaal!)\n3. Vertel niemand deze woorden\n4. U hebt ze nodig om uw wachtwoord te herstellen'**
+  String get recoveryPhraseInstructions;
+
+  /// No description provided for @recoveryPhraseCopyWarning.
+  ///
+  /// In nl, this message translates to:
+  /// **'Kopieer deze woorden NIET naar uw klembord of een digitaal document'**
+  String get recoveryPhraseCopyWarning;
+
+  /// No description provided for @recoveryPhraseConfirmTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bevestig Herstelzinnen'**
+  String get recoveryPhraseConfirmTitle;
+
+  /// No description provided for @recoveryPhraseConfirmSubtitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer de woorden in om te bevestigen dat u ze hebt opgeschreven'**
+  String get recoveryPhraseConfirmSubtitle;
+
+  /// No description provided for @recoveryPhraseConfirmInstructions.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer woord {number} in:'**
+  String recoveryPhraseConfirmInstructions(Object number);
+
+  /// No description provided for @recoveryPhraseConfirmError.
+  ///
+  /// In nl, this message translates to:
+  /// **'Onjuist woord. Controleer uw notities en probeer opnieuw.'**
+  String get recoveryPhraseConfirmError;
+
+  /// No description provided for @recoveryPhraseConfirmed.
+  ///
+  /// In nl, this message translates to:
+  /// **'Herstelzinnen bevestigd! Uw account is nu beveiligd.'**
+  String get recoveryPhraseConfirmed;
+
+  /// No description provided for @recoveryPhraseIWroteItDown.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ik heb de woorden opgeschreven'**
+  String get recoveryPhraseIWroteItDown;
+
+  /// No description provided for @recoveryPhraseShowAgain.
+  ///
+  /// In nl, this message translates to:
+  /// **'Toon opnieuw'**
+  String get recoveryPhraseShowAgain;
+
+  /// No description provided for @recoveryPhraseWord.
+  ///
+  /// In nl, this message translates to:
+  /// **'Woord {number}'**
+  String recoveryPhraseWord(Object number);
+
+  /// No description provided for @passwordRecoveryTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wachtwoord Herstellen'**
+  String get passwordRecoveryTitle;
+
+  /// No description provided for @passwordRecoverySubtitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer uw 12-woorden herstelzinnen in'**
+  String get passwordRecoverySubtitle;
+
+  /// No description provided for @passwordRecoveryInstructions.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer alle 12 woorden in de juiste volgorde in om uw wachtwoord te herstellen.'**
+  String get passwordRecoveryInstructions;
+
+  /// No description provided for @passwordRecoveryEnterWords.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer herstelzinnen in'**
+  String get passwordRecoveryEnterWords;
+
+  /// No description provided for @passwordRecoveryWordsHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'woord1 woord2 woord3 ...'**
+  String get passwordRecoveryWordsHint;
+
+  /// No description provided for @passwordRecoveryNewPassword.
+  ///
+  /// In nl, this message translates to:
+  /// **'Nieuw wachtwoord'**
+  String get passwordRecoveryNewPassword;
+
+  /// No description provided for @passwordRecoveryConfirmPassword.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bevestig nieuw wachtwoord'**
+  String get passwordRecoveryConfirmPassword;
+
+  /// No description provided for @passwordRecoveryRecover.
+  ///
+  /// In nl, this message translates to:
+  /// **'Herstel Wachtwoord'**
+  String get passwordRecoveryRecover;
+
+  /// No description provided for @passwordRecoverySuccess.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wachtwoord succesvol hersteld!'**
+  String get passwordRecoverySuccess;
+
+  /// No description provided for @passwordRecoveryFailed.
+  ///
+  /// In nl, this message translates to:
+  /// **'Herstelzinnen onjuist. Probeer opnieuw.'**
+  String get passwordRecoveryFailed;
+
+  /// No description provided for @passwordRecoveryNoPhrase.
+  ///
+  /// In nl, this message translates to:
+  /// **'Geen herstelzinnen ingesteld'**
+  String get passwordRecoveryNoPhrase;
+
+  /// No description provided for @passwordRecoveryNoAccess.
+  ///
+  /// In nl, this message translates to:
+  /// **'Zonder herstelzinnen kunt u uw wachtwoord niet herstellen. Neem contact op met support.'**
+  String get passwordRecoveryNoAccess;
+
+  /// No description provided for @dossierTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossiers'**
+  String get dossierTitle;
+
+  /// No description provided for @dossierSelect.
+  ///
+  /// In nl, this message translates to:
+  /// **'Selecteer Dossier'**
+  String get dossierSelect;
+
+  /// No description provided for @dossierSelectSubtitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Kies welk dossier u wilt beheren'**
+  String get dossierSelectSubtitle;
+
+  /// No description provided for @dossierCreate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Nieuw Dossier'**
+  String get dossierCreate;
+
+  /// No description provided for @dossierCreateTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossier Aanmaken'**
+  String get dossierCreateTitle;
+
+  /// No description provided for @dossierEditTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossier Bewerken'**
+  String get dossierEditTitle;
+
+  /// No description provided for @dossierName.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossiernaam'**
+  String get dossierName;
+
+  /// No description provided for @dossierNameHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Mijn Gezin, Ouders, etc.'**
+  String get dossierNameHint;
+
+  /// No description provided for @dossierDescription.
+  ///
+  /// In nl, this message translates to:
+  /// **'Omschrijving (optioneel)'**
+  String get dossierDescription;
+
+  /// No description provided for @dossierDescriptionHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Waar gaat dit dossier over?'**
+  String get dossierDescriptionHint;
+
+  /// No description provided for @dossierIcon.
+  ///
+  /// In nl, this message translates to:
+  /// **'Icoon'**
+  String get dossierIcon;
+
+  /// No description provided for @dossierColor.
+  ///
+  /// In nl, this message translates to:
+  /// **'Kleur'**
+  String get dossierColor;
+
+  /// No description provided for @dossierPersonCount.
+  ///
+  /// In nl, this message translates to:
+  /// **'{count} personen'**
+  String dossierPersonCount(Object count);
+
+  /// No description provided for @dossierCreatedAt.
+  ///
+  /// In nl, this message translates to:
+  /// **'Aangemaakt op {date}'**
+  String dossierCreatedAt(Object date);
+
+  /// No description provided for @dossierDeleteTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossier Verwijderen?'**
+  String get dossierDeleteTitle;
+
+  /// No description provided for @dossierDeleteMessage.
+  ///
+  /// In nl, this message translates to:
+  /// **'Weet u zeker dat u dit dossier wilt verwijderen?\n\nAlle personen en gegevens in dit dossier worden permanent verwijderd.'**
+  String get dossierDeleteMessage;
+
+  /// No description provided for @dossierDeleteConfirm.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ja, Verwijderen'**
+  String get dossierDeleteConfirm;
+
+  /// No description provided for @dossierDeleteCancel.
+  ///
+  /// In nl, this message translates to:
+  /// **'Annuleren'**
+  String get dossierDeleteCancel;
+
+  /// No description provided for @dossierDeleted.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossier verwijderd'**
+  String get dossierDeleted;
+
+  /// No description provided for @dossierSaved.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossier opgeslagen'**
+  String get dossierSaved;
+
+  /// No description provided for @dossierNoDossiers.
+  ///
+  /// In nl, this message translates to:
+  /// **'Nog geen dossiers'**
+  String get dossierNoDossiers;
+
+  /// No description provided for @dossierCreateFirst.
+  ///
+  /// In nl, this message translates to:
+  /// **'Maak uw eerste dossier aan om te beginnen'**
+  String get dossierCreateFirst;
+
+  /// No description provided for @dossierActive.
+  ///
+  /// In nl, this message translates to:
+  /// **'Actief'**
+  String get dossierActive;
+
+  /// No description provided for @dossierInactive.
+  ///
+  /// In nl, this message translates to:
+  /// **'Inactief'**
+  String get dossierInactive;
+
+  /// No description provided for @dossierManage.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dossiers Beheren'**
+  String get dossierManage;
+
   /// No description provided for @splashTitle.
   ///
   /// In nl, this message translates to:
@@ -769,6 +1135,174 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'Vul {field} in'**
   String validationNameRequired(Object field);
+
+  /// No description provided for @personEdit.
+  ///
+  /// In nl, this message translates to:
+  /// **'Persoon bewerken'**
+  String get personEdit;
+
+  /// No description provided for @personAdd.
+  ///
+  /// In nl, this message translates to:
+  /// **'Persoon toevoegen'**
+  String get personAdd;
+
+  /// No description provided for @personNotFound.
+  ///
+  /// In nl, this message translates to:
+  /// **'Persoon niet gevonden'**
+  String get personNotFound;
+
+  /// No description provided for @personSaveChanges.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wijzigingen opslaan'**
+  String get personSaveChanges;
+
+  /// No description provided for @personRelationToUser.
+  ///
+  /// In nl, this message translates to:
+  /// **'Relatie tot gebruiker'**
+  String get personRelationToUser;
+
+  /// No description provided for @personRelationSelf.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ikzelf'**
+  String get personRelationSelf;
+
+  /// No description provided for @personRelationPartner.
+  ///
+  /// In nl, this message translates to:
+  /// **'Partner'**
+  String get personRelationPartner;
+
+  /// No description provided for @personRelationChild.
+  ///
+  /// In nl, this message translates to:
+  /// **'Kind'**
+  String get personRelationChild;
+
+  /// No description provided for @personRelationParent.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ouder'**
+  String get personRelationParent;
+
+  /// No description provided for @personRelationFamily.
+  ///
+  /// In nl, this message translates to:
+  /// **'Familie'**
+  String get personRelationFamily;
+
+  /// No description provided for @personRelationFriend.
+  ///
+  /// In nl, this message translates to:
+  /// **'Vriend(in)'**
+  String get personRelationFriend;
+
+  /// No description provided for @personRelationOther.
+  ///
+  /// In nl, this message translates to:
+  /// **'Overig'**
+  String get personRelationOther;
+
+  /// No description provided for @personDeathDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Overlijdensdatum (optioneel)'**
+  String get personDeathDate;
+
+  /// No description provided for @personNotes.
+  ///
+  /// In nl, this message translates to:
+  /// **'Opmerkingen / notities'**
+  String get personNotes;
+
+  /// No description provided for @personSelectDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Klik om datum te kiezen'**
+  String get personSelectDate;
+
+  /// No description provided for @personChooseRelation.
+  ///
+  /// In nl, this message translates to:
+  /// **'Kies een relatie'**
+  String get personChooseRelation;
+
+  /// No description provided for @personPhoneShort.
+  ///
+  /// In nl, this message translates to:
+  /// **'Telefoonnummer lijkt te kort'**
+  String get personPhoneShort;
+
+  /// No description provided for @personPhoneInvalid.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ongeldig telefoonnummer'**
+  String get personPhoneInvalid;
+
+  /// No description provided for @personPostalInvalid.
+  ///
+  /// In nl, this message translates to:
+  /// **'Postcode moet zijn als 1234 AB'**
+  String get personPostalInvalid;
+
+  /// No description provided for @personManage.
+  ///
+  /// In nl, this message translates to:
+  /// **'Personen Beheren'**
+  String get personManage;
+
+  /// No description provided for @personNoPersons.
+  ///
+  /// In nl, this message translates to:
+  /// **'Nog geen personen in dit dossier'**
+  String get personNoPersons;
+
+  /// No description provided for @personAddFirst.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voeg de eerste persoon toe'**
+  String get personAddFirst;
+
+  /// No description provided for @personDeleted.
+  ///
+  /// In nl, this message translates to:
+  /// **'Persoon verwijderd'**
+  String get personDeleted;
+
+  /// No description provided for @personSaved.
+  ///
+  /// In nl, this message translates to:
+  /// **'Persoon opgeslagen'**
+  String get personSaved;
+
+  /// No description provided for @personDeleteTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Persoon Verwijderen?'**
+  String get personDeleteTitle;
+
+  /// No description provided for @personDeleteMessage.
+  ///
+  /// In nl, this message translates to:
+  /// **'Weet u zeker dat u {name} wilt verwijderen?'**
+  String personDeleteMessage(Object name);
+
+  /// No description provided for @personAge.
+  ///
+  /// In nl, this message translates to:
+  /// **'{age} jaar'**
+  String personAge(Object age);
+
+  /// No description provided for @personYearsOld.
+  ///
+  /// In nl, this message translates to:
+  /// **'{years} jaar'**
+  String personYearsOld(Object years);
 }
 
 class _AppLocalizationsDelegate

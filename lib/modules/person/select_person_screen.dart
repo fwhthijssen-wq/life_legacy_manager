@@ -1,364 +1,205 @@
 // lib/modules/person/select_person_screen.dart
 
 import 'package:flutter/material.dart';
-
 import '../../core/person_repository.dart';
-import '../../core/app_routes.dart';
+import '../../l10n/app_localizations.dart';
+import 'add_person_screen.dart';
+import 'edit_person_screen.dart';
+import 'person_detail_screen.dart';
 import 'person_model.dart';
 
 class SelectPersonScreen extends StatefulWidget {
-  const SelectPersonScreen({super.key});
+  final String dossierId;
+
+  const SelectPersonScreen({super.key, required this.dossierId});
 
   @override
   State<SelectPersonScreen> createState() => _SelectPersonScreenState();
 }
 
 class _SelectPersonScreenState extends State<SelectPersonScreen> {
-  late Future<List<PersonModel>> _futurePersons;
-  final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-  String _sortKey = 'nameAsc';
+  List<PersonModel> _persons = [];
+  bool _loading = true;
 
   @override
   void initState() {
     super.initState();
-    _reloadPersons();
+    _loadPersons();
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _reloadPersons() {
+  Future<void> _loadPersons() async {
+    setState(() => _loading = true);
+    final persons = await PersonRepository.getPersonsForDossier(widget.dossierId);
     setState(() {
-      _futurePersons = PersonRepository.getAllPersons();
+      _persons = persons;
+      _loading = false;
     });
-  }
-
-  Future<void> _openAddPerson() async {
-    final changed = await Navigator.pushNamed(context, AppRoutes.addPerson);
-    if (changed == true) {
-      _reloadPersons();
-    }
-  }
-
-  Future<void> _openDetail(PersonModel person) async {
-    final changed = await Navigator.pushNamed(
-      context,
-      AppRoutes.personDetail,
-      arguments: person.id,
-    );
-    if (changed == true) {
-      _reloadPersons();
-    }
-  }
-
-  String _initialsFor(PersonModel p) {
-    final first = p.firstName.isNotEmpty ? p.firstName[0] : '';
-    final last = p.lastName.isNotEmpty ? p.lastName[0] : '';
-    final combined = (first + last).toUpperCase();
-    if (combined.trim().isEmpty) return '?';
-    return combined;
-  }
-
-  int _completionPercentage(PersonModel p) {
-    // Velden die meetellen voor 'compleetheid'
-    final fields = <String?>[
-      p.phone,
-      p.email,
-      p.birthDate,
-      p.address,
-      p.postalCode,
-      p.city,
-      p.gender,
-      p.notes,
-      p.relation,
-      // p.deathDate telt bewust NIET mee
-    ];
-    if (fields.isEmpty) return 0;
-    final filled =
-        fields.where((v) => v != null && v!.trim().isNotEmpty).length;
-    return ((filled / fields.length) * 100).round();
-  }
-
-  Color _completionColor(int percent) {
-    if (percent >= 70) {
-      return Colors.green;
-    } else if (percent >= 30) {
-      return Colors.amber;
-    } else {
-      return Colors.redAccent;
-    }
-  }
-
-  List<PersonModel> _filterAndSortPersons(List<PersonModel> persons) {
-    final query = _searchQuery.trim().toLowerCase();
-
-    var filtered = persons.where((p) {
-      if (query.isEmpty) return true;
-      final name = ('${p.firstName} ${p.lastName}').toLowerCase();
-      final phone = (p.phone ?? '').toLowerCase();
-      final email = (p.email ?? '').toLowerCase();
-      return name.contains(query) ||
-          phone.contains(query) ||
-          email.contains(query);
-    }).toList();
-
-    int compareByName(PersonModel a, PersonModel b) {
-      final ln = a.lastName.toLowerCase().compareTo(b.lastName.toLowerCase());
-      if (ln != 0) return ln;
-      return a.firstName.toLowerCase().compareTo(b.firstName.toLowerCase());
-    }
-
-    DateTime? parseDate(String? value) {
-      if (value == null || value.trim().isEmpty) return null;
-      final datePart = value.split(' ').first.split('T').first;
-      try {
-        return DateTime.parse(datePart);
-      } catch (_) {
-        return null;
-      }
-    }
-
-    switch (_sortKey) {
-      case 'nameDesc':
-        filtered.sort((a, b) => compareByName(b, a));
-        break;
-      case 'birthAsc':
-        filtered.sort((a, b) {
-          final da = parseDate(a.birthDate);
-          final db = parseDate(b.birthDate);
-          if (da == null && db == null) return compareByName(a, b);
-          if (da == null) return 1;
-          if (db == null) return -1;
-          final cmp = da.compareTo(db);
-          return cmp != 0 ? cmp : compareByName(a, b);
-        });
-        break;
-      case 'birthDesc':
-        filtered.sort((a, b) {
-          final da = parseDate(a.birthDate);
-          final db = parseDate(b.birthDate);
-          if (da == null && db == null) return compareByName(a, b);
-          if (da == null) return 1;
-          if (db == null) return -1;
-          final cmp = db.compareTo(da);
-          return cmp != 0 ? cmp : compareByName(a, b);
-        });
-        break;
-      case 'nameAsc':
-      default:
-        filtered.sort(compareByName);
-        break;
-    }
-
-    return filtered;
-  }
-
-  Widget _buildPersonCard(PersonModel p) {
-    final subtitleParts = <String>[];
-    if (p.relation != null && p.relation!.trim().isNotEmpty) {
-      subtitleParts.add(p.relation!.trim());
-    }
-    if (p.city != null && p.city!.trim().isNotEmpty) {
-      subtitleParts.add(p.city!.trim());
-    }
-
-    final percent = _completionPercentage(p);
-    final color = _completionColor(percent);
-
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: () => _openDetail(p),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    child: Text(
-                      _initialsFor(p),
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${p.firstName} ${p.lastName}",
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        if (subtitleParts.isNotEmpty)
-                          Text(
-                            subtitleParts.join(" • "),
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.color,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: color,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            "$percent%",
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      const Text(
-                        "Compleet",
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(999),
-                child: LinearProgressIndicator(
-                  value: percent / 100.0,
-                  minHeight: 4,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceVariant,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Personen"),
+        title: Text(l10n.personManage),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _openAddPerson,
-        child: const Icon(Icons.add),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: "Zoeken",
-                hintText: "Zoek op naam, telefoon of e-mail",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Sorteren",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                DropdownButton<String>(
-                  value: _sortKey,
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'nameAsc',
-                      child: Text("Naam A → Z"),
-                    ),
-                    DropdownMenuItem(
-                      value: 'nameDesc',
-                      child: Text("Naam Z → A"),
-                    ),
-                    DropdownMenuItem(
-                      value: 'birthAsc',
-                      child: Text("Leeftijd oplopend"),
-                    ),
-                    DropdownMenuItem(
-                      value: 'birthDesc',
-                      child: Text("Leeftijd aflopend"),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    if (value == null) return;
-                    setState(() {
-                      _sortKey = value;
-                    });
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : _persons.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.people_outline,
+                          size: 80, color: Colors.grey),
+                      const SizedBox(height: 16),
+                      Text(
+                        l10n.personNoPersons,
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        l10n.personAddFirst,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton.icon(
+                        onPressed: () => _addPerson(),
+                        icon: const Icon(Icons.add),
+                        label: Text(l10n.personAdd),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: _persons.length,
+                  padding: const EdgeInsets.all(16),
+                  itemBuilder: (context, index) {
+                    final person = _persons[index];
+                    return _PersonCard(
+                      person: person,
+                      onTap: () => _viewPerson(person),
+                      onEdit: () => _editPerson(person),
+                      onDelete: () => _deletePerson(person),
+                    );
                   },
                 ),
-              ],
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _addPerson,
+        icon: const Icon(Icons.add),
+        label: Text(l10n.personAdd),
+      ),
+    );
+  }
+
+  Future<void> _addPerson() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AddPersonScreen(dossierId: widget.dossierId),
+      ),
+    );
+    if (result == true) _loadPersons();
+  }
+
+  Future<void> _viewPerson(PersonModel person) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PersonDetailScreen(personId: person.id),
+      ),
+    );
+  }
+
+  Future<void> _editPerson(PersonModel person) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => EditPersonScreen(personId: person.id),
+      ),
+    );
+    if (result == true) _loadPersons();
+  }
+
+  Future<void> _deletePerson(PersonModel person) async {
+    final l10n = AppLocalizations.of(context)!;
+    
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.personDeleteTitle),
+        content: Text(
+          // ✅ AANGEPAST: Gebruik string interpolation in plaats van replaceAll
+          'Weet u zeker dat u ${person.fullName} wilt verwijderen?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await PersonRepository.deletePerson(person.id);
+      _loadPersons();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.personDeleted)),
+        );
+      }
+    }
+  }
+}
+
+class _PersonCard extends StatelessWidget {
+  final PersonModel person;
+  final VoidCallback onTap;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+
+  const _PersonCard({
+    required this.person,
+    required this.onTap,
+    required this.onEdit,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: CircleAvatar(
+          child: Text(
+            person.firstName.isNotEmpty ? person.firstName[0].toUpperCase() : '?',
+          ),
+        ),
+        title: Text(person.fullName),
+        subtitle: Text(person.relation ?? l10n.personRelationOther),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: onEdit,
             ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: FutureBuilder<List<PersonModel>>(
-                future: _futurePersons,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  final persons =
-                      _filterAndSortPersons(snapshot.data ?? []);
-
-                  if (persons.isEmpty) {
-                    return const Center(
-                      child: Text("Nog geen personen toegevoegd."),
-                    );
-                  }
-
-                  return ListView.builder(
-                    itemCount: persons.length,
-                    itemBuilder: (context, index) {
-                      final p = persons[index];
-                      return _buildPersonCard(p);
-                    },
-                  );
-                },
-              ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: onDelete,
             ),
           ],
         ),
+        onTap: onTap,
       ),
     );
   }
