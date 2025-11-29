@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:life_legacy_manager/l10n/app_localizations.dart';
 
 import '../providers/auth_providers.dart';
 import '../../../core/app_routes.dart';
@@ -53,11 +54,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> register() async {
+    final l10n = AppLocalizations.of(context)!;
+    
     if (!_formKey.currentState!.validate()) return;
 
     if (birthDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Selecteer een geboortedatum.")),
+        SnackBar(content: Text(l10n.registerSelectBirthDate)),
       );
       return;
     }
@@ -79,7 +82,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     if (userId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Registratie mislukt.")),
+        SnackBar(content: Text(l10n.registerFailed)),
       );
       return;
     }
@@ -96,8 +99,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
-      appBar: AppBar(title: const Text("Account aanmaken")),
+      appBar: AppBar(title: Text(l10n.registerTitle)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Form(
@@ -107,29 +112,39 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               // Voornaam
               TextFormField(
                 controller: firstNameCtrl,
-                decoration: const InputDecoration(labelText: "Voornaam"),
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Vul je voornaam in" : null,
+                decoration: InputDecoration(labelText: l10n.firstName),
+                validator: (v) {
+                  if (v == null || v.isEmpty) {
+                    return "Vul ${l10n.firstName.toLowerCase()} in";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
 
               // Achternaam
               TextFormField(
                 controller: lastNameCtrl,
-                decoration: const InputDecoration(labelText: "Achternaam"),
-                validator: (v) =>
-                    v == null || v.isEmpty ? "Vul je achternaam in" : null,
+                decoration: InputDecoration(labelText: l10n.lastName),
+                validator: (v) {
+                  if (v == null || v.isEmpty) {
+                    return "Vul ${l10n.lastName.toLowerCase()} in";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 16),
 
               // Email
               TextFormField(
                 controller: emailCtrl,
-                decoration: const InputDecoration(labelText: "E-mail"),
+                decoration: InputDecoration(labelText: l10n.email),
                 validator: (v) {
-                  if (v == null || v.isEmpty) return "Vul je e-mail in";
+                  if (v == null || v.isEmpty) {
+                    return "Vul ${l10n.email.toLowerCase()} in";
+                  }
                   if (!v.contains("@") || !v.contains(".")) {
-                    return "Ongeldig e-mailadres";
+                    return l10n.validationEmail;
                   }
                   return null;
                 },
@@ -138,12 +153,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
               // Geslacht dropdown
               DropdownButtonFormField<String>(
-                decoration: const InputDecoration(labelText: "Geslacht"),
+                decoration: InputDecoration(labelText: l10n.gender),
                 value: gender,
-                items: const [
-                  DropdownMenuItem(value: "man", child: Text("Man")),
-                  DropdownMenuItem(value: "vrouw", child: Text("Vrouw")),
-                  DropdownMenuItem(value: "anders", child: Text("Anders")),
+                items: [
+                  DropdownMenuItem(value: "man", child: Text(l10n.genderMale)),
+                  DropdownMenuItem(value: "vrouw", child: Text(l10n.genderFemale)),
+                  DropdownMenuItem(value: "anders", child: Text(l10n.genderOther)),
                 ],
                 onChanged: (v) => setState(() => gender = v ?? "man"),
               ),
@@ -153,15 +168,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               InkWell(
                 onTap: pickBirthDate,
                 child: InputDecorator(
-                  decoration: const InputDecoration(
-                    labelText: "Geboortedatum",
+                  decoration: InputDecoration(
+                    labelText: l10n.birthDate,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         birthDate == null
-                            ? "Selecteer datum"
+                            ? l10n.registerSelectDate
                             : "${birthDate!.day}-${birthDate!.month}-${birthDate!.year}",
                       ),
                       const Icon(Icons.calendar_today),
@@ -175,11 +190,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               TextFormField(
                 controller: passwordCtrl,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: "Wachtwoord"),
+                decoration: InputDecoration(labelText: l10n.password),
                 validator: (v) {
-                  if (v == null || v.isEmpty) return "Vul een wachtwoord in";
+                  if (v == null || v.isEmpty) {
+                    return "Vul ${l10n.password.toLowerCase()} in";
+                  }
                   if (v.length < 6) {
-                    return "Wachtwoord moet minimaal 6 tekens zijn";
+                    return l10n.validationPasswordLength;
                   }
                   return null;
                 },
@@ -190,12 +207,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               TextFormField(
                 controller: confirmPasswordCtrl,
                 obscureText: true,
-                decoration:
-                    const InputDecoration(labelText: "Herhaal wachtwoord"),
+                decoration: InputDecoration(labelText: l10n.confirmPassword),
                 validator: (v) {
-                  if (v == null || v.isEmpty) return "Herhaal je wachtwoord";
+                  if (v == null || v.isEmpty) {
+                    return "Vul ${l10n.confirmPassword.toLowerCase()} in";
+                  }
                   if (v != passwordCtrl.text) {
-                    return "Wachtwoorden komen niet overeen";
+                    return l10n.validationPasswordMatch;
                   }
                   return null;
                 },
@@ -209,7 +227,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   onPressed: isLoading ? null : register,
                   child: isLoading
                       ? const CircularProgressIndicator()
-                      : const Text("Account aanmaken"),
+                      : Text(l10n.registerButton),
                 ),
               ),
             ],

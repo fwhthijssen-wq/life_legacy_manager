@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:life_legacy_manager/l10n/app_localizations.dart';
 
 import '../screens/register_screen.dart';
 import '../screens/login_screen.dart';
@@ -59,6 +60,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -79,7 +81,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                   
                   // Title
                   Text(
-                    'Life & Legacy Manager',
+                    l10n.welcomeTitle,
                     style: theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.primaryColor,
@@ -91,7 +93,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                   
                   // Subtitle
                   Text(
-                    'Uw persoonlijke levenscompas',
+                    l10n.appSubtitle,
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: Colors.grey[600],
                       fontStyle: FontStyle.italic,
@@ -102,12 +104,12 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                   const SizedBox(height: 32),
                   
                   // Introductie tekst
-                  _buildIntroText(theme),
+                  _buildIntroText(theme, l10n),
                   
                   const SizedBox(height: 32),
                   
                   // Feature highlights
-                  _buildFeatureHighlights(theme),
+                  _buildFeatureHighlights(theme, l10n),
                   
                   const SizedBox(height: 40),
                   
@@ -115,12 +117,12 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                   if (_isChecking)
                     const Center(child: CircularProgressIndicator())
                   else
-                    _buildActionButtons(context),
+                    _buildActionButtons(context, l10n),
                   
                   const SizedBox(height: 24),
                   
                   // Footer tekst
-                  _buildFooterText(theme),
+                  _buildFooterText(theme, l10n),
                   
                   const SizedBox(height: 32),
                 ],
@@ -157,7 +159,6 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Placeholder voor logo - vervang met je eigen asset
             Container(
               width: 80,
               height: 80,
@@ -193,7 +194,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
     );
   }
 
-  Widget _buildIntroText(ThemeData theme) {
+  Widget _buildIntroText(ThemeData theme, AppLocalizations l10n) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -205,16 +206,14 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Welkom',
+            l10n.welcomeIntroTitle,
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 12),
           Text(
-            'In het leven verzamelen we belangrijke documenten, contracten, en informatie. '
-            'Van bankrekeningen tot verzekeringen, van energiecontracten tot persoonlijke wensen. '
-            'Maar waar bewaar je dit allemaal? En wat als je nabestaanden deze informatie nodig hebben?',
+            l10n.welcomeIntroText,
             style: theme.textTheme.bodyMedium?.copyWith(
               height: 1.6,
               color: Colors.grey[700],
@@ -222,9 +221,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
           ),
           const SizedBox(height: 16),
           Text(
-            'Life & Legacy Manager is uw persoonlijke levenscompas. '
-            'Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, '
-            'beheert en toegankelijk maakt voor uzelf en uw naasten.',
+            l10n.welcomeIntroText2,
             style: theme.textTheme.bodyMedium?.copyWith(
               height: 1.6,
               color: Colors.grey[700],
@@ -236,37 +233,37 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
     );
   }
 
-  Widget _buildFeatureHighlights(ThemeData theme) {
+  Widget _buildFeatureHighlights(ThemeData theme, AppLocalizations l10n) {
     final features = [
       {
         'icon': Icons.security,
-        'title': 'Volledig Privé',
-        'description': 'Al uw gegevens blijven lokaal op uw apparaat opgeslagen',
+        'title': l10n.featurePrivacyTitle,
+        'description': l10n.featurePrivacyDesc,
       },
       {
         'icon': Icons.dashboard_customize,
-        'title': 'Overzichtelijk',
-        'description': 'Gestructureerd per thema: geldzaken, huis, juridisch, en meer',
+        'title': l10n.featureOverviewTitle,
+        'description': l10n.featureOverviewDesc,
       },
       {
         'icon': Icons.family_restroom,
-        'title': 'Voor Nabestaanden',
-        'description': 'Alles wat ze moeten weten, op één plek toegankelijk',
+        'title': l10n.featureFamilyTitle,
+        'description': l10n.featureFamilyDesc,
       },
       {
         'icon': Icons.attach_file,
-        'title': 'Documentbeheer',
-        'description': 'Voeg documenten toe of noteer waar ze bewaard zijn',
+        'title': l10n.featureDocumentsTitle,
+        'description': l10n.featureDocumentsDesc,
       },
       {
         'icon': Icons.checklist,
-        'title': 'Voortgang Bijhouden',
-        'description': 'Zie in één oogopslag welke onderdelen compleet zijn',
+        'title': l10n.featureProgressTitle,
+        'description': l10n.featureProgressDesc,
       },
       {
         'icon': Icons.lock_clock,
-        'title': 'Veilig Bewaard',
-        'description': 'Beveiligd met wachtwoord, pincode of biometrie',
+        'title': l10n.featureSecurityTitle,
+        'description': l10n.featureSecurityDesc,
       },
     ];
 
@@ -274,7 +271,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Wat kunt u verwachten?',
+          l10n.welcomeWhatToExpect,
           style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
@@ -341,10 +338,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
     );
   }
 
-  Widget _buildActionButtons(BuildContext context) {
+  Widget _buildActionButtons(BuildContext context, AppLocalizations l10n) {
     return Column(
       children: [
-        // Account aanmaken knop (altijd zichtbaar)
         SizedBox(
           width: double.infinity,
           height: 56,
@@ -361,9 +357,9 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
               ),
               elevation: 2,
             ),
-            child: const Text(
-              'Account Aanmaken',
-              style: TextStyle(
+            child: Text(
+              l10n.accountCreate,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -371,7 +367,6 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
           ),
         ),
         
-        // Inloggen knop (alleen als user bestaat)
         if (_userExists) ...[
           const SizedBox(height: 16),
           SizedBox(
@@ -394,7 +389,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
                 ),
               ),
               child: Text(
-                'Inloggen',
+                l10n.login,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -408,11 +403,11 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
     );
   }
 
-  Widget _buildFooterText(ThemeData theme) {
+  Widget _buildFooterText(ThemeData theme, AppLocalizations l10n) {
     return Column(
       children: [
         Text(
-          'Begin vandaag met het organiseren van uw levensinformatie',
+          l10n.welcomeFooter1,
           style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.grey[500],
             fontStyle: FontStyle.italic,
@@ -421,7 +416,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
         ),
         const SizedBox(height: 8),
         Text(
-          'Rust en zekerheid voor u en uw naasten',
+          l10n.welcomeFooter2,
           style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.grey[500],
             fontWeight: FontWeight.w600,

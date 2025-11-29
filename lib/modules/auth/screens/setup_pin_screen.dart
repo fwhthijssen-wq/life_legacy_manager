@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:life_legacy_manager/l10n/app_localizations.dart';
 
 import '../providers/auth_providers.dart';
 import '../services/auth_service.dart';
@@ -47,26 +48,27 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
   }
 
   Future<void> _savePin() async {
+    final l10n = AppLocalizations.of(context)!;
     final pin = pinController.text.trim();
     final confirm = confirmPinController.text.trim();
 
     if (pin.isEmpty) {
-      _showSnackBar("Vul een PIN in");
+      _showSnackBar(l10n.validationPinEmpty);
       return;
     }
 
     if (pin.length < 4) {
-      _showSnackBar("PIN moet minimaal 4 cijfers zijn");
+      _showSnackBar(l10n.validationPinLength);
       return;
     }
 
     if (pin.length > 8) {
-      _showSnackBar("PIN mag maximaal 8 cijfers zijn");
+      _showSnackBar(l10n.validationPinMax);
       return;
     }
 
     if (pin != confirm) {
-      _showSnackBar("PIN's komen niet overeen");
+      _showSnackBar(l10n.validationPinMatch);
       return;
     }
 
@@ -85,28 +87,27 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
         }
       }
     } catch (e) {
-      _showSnackBar("Fout bij opslaan PIN: $e");
+      _showSnackBar("${l10n.error}: $e");
       setState(() => isLoading = false);
     }
   }
 
   Future<void> _askForBiometrics() async {
+    final l10n = AppLocalizations.of(context)!;
+    
     final shouldSetup = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Biometrische beveiliging"),
-        content: const Text(
-          "Uw apparaat ondersteunt vingerafdruk of gezichtsherkenning. "
-          "Wilt u dit ook activeren voor snelle toegang?",
-        ),
+        title: Text(l10n.pinBiometricTitle),
+        content: Text(l10n.pinBiometricMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("Nu niet"),
+            child: Text(l10n.pinBiometricNotNow),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text("Activeren"),
+            child: Text(l10n.pinBiometricActivate),
           ),
         ],
       ),
@@ -121,26 +122,24 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
   }
 
   void _skipSetup() {
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("PIN overslaan"),
-        content: const Text(
-          "Weet u zeker dat u geen PIN wilt instellen? "
-          "U kunt dit later alsnog doen via instellingen.\n\n"
-          "Zonder PIN moet u steeds uw volledige wachtwoord invoeren.",
-        ),
+        title: Text(l10n.pinSkipTitle),
+        content: Text(l10n.pinSkipMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Annuleren"),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
               _goToHome();
             },
-            child: const Text("Overslaan"),
+            child: Text(l10n.skip),
           ),
         ],
       ),
@@ -162,14 +161,15 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Snel Inloggen"),
+        title: Text(l10n.pinSetupTitle),
         actions: [
           TextButton(
             onPressed: _skipSetup,
-            child: const Text("Overslaan"),
+            child: Text(l10n.skip),
           ),
         ],
       ),
@@ -198,7 +198,7 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "Snel en veilig inloggen",
+                      l10n.pinSetupTitle,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -206,8 +206,7 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      "Stel een pincode in om voortaan snel en gemakkelijk "
-                      "in te loggen zonder uw volledige wachtwoord te typen.",
+                      l10n.pinSetupSubtitle,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: Colors.grey[700],
                         height: 1.5,
@@ -222,14 +221,14 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
 
               // PIN invoer
               Text(
-                "Kies uw pincode",
+                l10n.pinChooseTitle,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                "4 tot 8 cijfers",
+                l10n.pinChooseSubtitle,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: Colors.grey[600],
                 ),
@@ -245,8 +244,8 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                   LengthLimitingTextInputFormatter(8),
                 ],
                 decoration: InputDecoration(
-                  labelText: "Nieuwe PIN",
-                  hintText: "Voer 4-8 cijfers in",
+                  labelText: l10n.pinNew,
+                  hintText: l10n.pinNewHint,
                   prefixIcon: const Icon(Icons.pin),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -275,8 +274,8 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                   LengthLimitingTextInputFormatter(8),
                 ],
                 decoration: InputDecoration(
-                  labelText: "Herhaal PIN",
-                  hintText: "Voer dezelfde PIN nogmaals in",
+                  labelText: l10n.pinConfirm,
+                  hintText: l10n.pinConfirmHint,
                   prefixIcon: const Icon(Icons.pin_outlined),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -314,7 +313,7 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                         )
                       : const Icon(Icons.check_circle),
                   label: Text(
-                    isLoading ? "Bezig met opslaan..." : "PIN Instellen",
+                    isLoading ? l10n.pinSetupInProgress : l10n.pinSetup,
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -336,9 +335,9 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                 child: OutlinedButton.icon(
                   onPressed: _skipSetup,
                   icon: const Icon(Icons.skip_next),
-                  label: const Text(
-                    "Nu niet, later instellen",
-                    style: TextStyle(fontSize: 16),
+                  label: Text(
+                    l10n.pinSkipLater,
+                    style: const TextStyle(fontSize: 16),
                   ),
                   style: OutlinedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -371,9 +370,7 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: Text(
-                          "Biometrische beveiliging beschikbaar! "
-                          "Na het instellen van de PIN kunt u ook "
-                          "vingerafdruk/gezichtsherkenning activeren.",
+                          l10n.pinBiometricAvailable,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.green[900],
                             height: 1.4,
@@ -408,7 +405,7 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "Tips voor een veilige PIN",
+                          l10n.pinTipsTitle,
                           style: theme.textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.amber[900],
@@ -417,9 +414,9 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    _buildTip("Gebruik geen voor de hand liggende cijfers zoals 1234 of uw geboortejaar"),
-                    _buildTip("Vertel uw PIN niet aan anderen"),
-                    _buildTip("U kunt de PIN later wijzigen via instellingen"),
+                    _buildTip(l10n.pinTip1),
+                    _buildTip(l10n.pinTip2),
+                    _buildTip(l10n.pinTip3),
                   ],
                 ),
               ),

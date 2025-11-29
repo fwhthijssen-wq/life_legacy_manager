@@ -99,6 +99,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genderUnknown => 'Unknown';
 
   @override
+  String get genderNonBinary => 'Non-binary';
+
+  @override
+  String get welcomeTitle => 'Life & Legacy Manager';
+
+  @override
   String get welcomeIntroTitle => 'Welcome';
 
   @override
@@ -108,6 +114,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get welcomeIntroText2 =>
       'Life & Legacy Manager is your personal life compass. A safe, organized place where you collect, manage and make accessible all important information for yourself and your loved ones.';
+
+  @override
+  String get welcomeWhatToExpect => 'What can you expect?';
+
+  @override
+  String get welcomeFooter1 => 'Start organizing your life information today';
+
+  @override
+  String get welcomeFooter2 => 'Peace of mind for you and your loved ones';
 
   @override
   String get featurePrivacyTitle => 'Completely Private';
@@ -152,6 +167,44 @@ class AppLocalizationsEn extends AppLocalizations {
       'Protected with password, PIN code or biometrics';
 
   @override
+  String get registerTitle => 'Create Account';
+
+  @override
+  String get registerButton => 'Create Account';
+
+  @override
+  String get registerSelectDate => 'Select date';
+
+  @override
+  String registerDateFormat(Object day, Object month, Object year) {
+    return '$month/$day/$year';
+  }
+
+  @override
+  String get registerSuccess => 'Account created successfully';
+
+  @override
+  String get registerFailed => 'Registration failed';
+
+  @override
+  String get registerSelectBirthDate => 'Select a birth date';
+
+  @override
+  String get loginTitle => 'Login';
+
+  @override
+  String get loginButton => 'Login';
+
+  @override
+  String get loginForgotPassword => 'Forgot password?';
+
+  @override
+  String get loginNoAccount => 'Don\'t have an account?';
+
+  @override
+  String get loginFailed => 'Login failed. Please check your credentials.';
+
+  @override
   String get pinSetupTitle => 'Quick Login';
 
   @override
@@ -168,10 +221,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pinNew => 'New PIN';
 
   @override
+  String get pinNewHint => 'Enter 4-8 digits';
+
+  @override
   String get pinConfirm => 'Confirm PIN';
 
   @override
+  String get pinConfirmHint => 'Enter the same PIN again';
+
+  @override
   String get pinSetup => 'Set Up PIN';
+
+  @override
+  String get pinSetupInProgress => 'Saving...';
 
   @override
   String get pinSkipLater => 'Not now, set up later';
@@ -184,13 +246,52 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you don\'t want to set up a PIN? You can still do this later via settings.\n\nWithout a PIN you\'ll need to enter your full password each time.';
 
   @override
+  String get pinTipsTitle => 'Tips for a secure PIN';
+
+  @override
+  String get pinTip1 =>
+      'Don\'t use obvious numbers like 1234 or your birth year';
+
+  @override
+  String get pinTip2 => 'Don\'t share your PIN with others';
+
+  @override
+  String get pinTip3 => 'You can change your PIN later in settings';
+
+  @override
+  String get pinBiometricAvailable =>
+      'Biometric security available! After setting up your PIN you can also activate fingerprint/face recognition.';
+
+  @override
+  String get pinBiometricTitle => 'Biometric Security';
+
+  @override
+  String get pinBiometricMessage =>
+      'Your device supports fingerprint or face recognition. Would you like to activate this for quick access?';
+
+  @override
+  String get pinBiometricNotNow => 'Not now';
+
+  @override
+  String get pinBiometricActivate => 'Activate';
+
+  @override
   String get unlockTitle => 'Welcome back';
 
   @override
   String get unlockSubtitle => 'Enter your PIN code to continue';
 
   @override
+  String get unlockPinLabel => 'PIN code';
+
+  @override
+  String get unlockPinHint => 'Enter your PIN';
+
+  @override
   String get unlockButton => 'Unlock';
+
+  @override
+  String get unlockInProgress => 'Unlocking...';
 
   @override
   String get unlockBiometric => 'Unlock with Biometrics';
@@ -200,6 +301,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unlockError => 'Incorrect PIN. Please try again.';
+
+  @override
+  String get unlockBiometricFailed => 'Biometric authentication failed';
+
+  @override
+  String get unlockBiometricUnavailable => 'Biometrics not available';
+
+  @override
+  String get unlockInfoMessage => 'Your data is safely stored on this device';
+
+  @override
+  String get splashTitle => 'Life & Legacy Manager';
+
+  @override
+  String get splashSubtitle => 'Your personal life compass';
+
+  @override
+  String get splashLoading => 'Please wait...';
 
   @override
   String get loading => 'Please wait...';
@@ -225,4 +344,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validationPinLength => 'PIN must be at least 4 digits';
+
+  @override
+  String get validationPinMax => 'PIN can be maximum 8 digits';
+
+  @override
+  String get validationPinMatch => 'PINs do not match';
+
+  @override
+  String get validationPinEmpty => 'Enter a PIN';
+
+  @override
+  String validationNameMin(Object field) {
+    return '$field must be at least 2 characters';
+  }
+
+  @override
+  String validationNameRequired(Object field) {
+    return 'Enter $field';
+  }
 }

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:life_legacy_manager/l10n/app_localizations.dart';
 
 import '../providers/auth_providers.dart';
 import '../services/biometric_service.dart';
@@ -43,15 +44,16 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
   }
 
   Future<void> _unlockWithPin() async {
+    final l10n = AppLocalizations.of(context)!;
     final pin = _pinController.text.trim();
 
     if (pin.isEmpty) {
-      _showError("Voer een PIN in");
+      _showError(l10n.validationPinEmpty);
       return;
     }
 
     if (pin.length < 4) {
-      _showError("PIN moet minimaal 4 cijfers zijn");
+      _showError(l10n.validationPinLength);
       return;
     }
 
@@ -66,31 +68,32 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
       if (success && mounted) {
         Navigator.pushReplacementNamed(context, AppRoutes.home);
       } else {
-        _showError("Onjuiste PIN. Probeer opnieuw.");
+        _showError(l10n.unlockError);
         _pinController.clear();
       }
     } catch (e) {
       setState(() => isLoading = false);
-      _showError("Er ging iets mis: $e");
+      _showError("${l10n.error}: $e");
       print("❌ Unlock error: $e");
     }
   }
 
   Future<void> _unlockWithBiometrics() async {
+    final l10n = AppLocalizations.of(context)!;
+    
     try {
       final biometricService = ref.read(biometricServiceProvider);
-      final success = await biometricService.authenticate("Ontgrendel Life & Legacy Manager");
+      final success = await biometricService.authenticate(l10n.unlockBiometric);
 
       if (success && mounted) {
-        // Biometrie geslaagd → naar home
         final authNotifier = ref.read(authStateProvider.notifier);
         authNotifier.markAsAuthenticated();
         Navigator.pushReplacementNamed(context, AppRoutes.home);
       } else {
-        _showError("Biometrische authenticatie mislukt");
+        _showError(l10n.unlockBiometricFailed);
       }
     } catch (e) {
-      _showError("Biometrie niet beschikbaar");
+      _showError(l10n.unlockBiometricUnavailable);
       print("❌ Biometric error: $e");
     }
   }
@@ -113,6 +116,7 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -149,7 +153,7 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
 
                 // Title
                 Text(
-                  "Welkom terug",
+                  l10n.unlockTitle,
                   style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -159,7 +163,7 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
                 const SizedBox(height: 8),
 
                 Text(
-                  "Voer uw pincode in om door te gaan",
+                  l10n.unlockSubtitle,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: Colors.grey[600],
                   ),
@@ -178,8 +182,8 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
                     LengthLimitingTextInputFormatter(8),
                   ],
                   decoration: InputDecoration(
-                    labelText: "Pincode",
-                    hintText: "Voer uw PIN in",
+                    labelText: l10n.unlockPinLabel,
+                    hintText: l10n.unlockPinHint,
                     prefixIcon: const Icon(Icons.pin),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -216,7 +220,7 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
                           )
                         : const Icon(Icons.lock_open),
                     label: Text(
-                      isLoading ? "Bezig..." : "Ontgrendelen",
+                      isLoading ? l10n.unlockInProgress : l10n.unlockButton,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -238,9 +242,9 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
                     child: OutlinedButton.icon(
                       onPressed: _unlockWithBiometrics,
                       icon: const Icon(Icons.fingerprint),
-                      label: const Text(
-                        "Biometrisch Ontgrendelen",
-                        style: TextStyle(fontSize: 16),
+                      label: Text(
+                        l10n.unlockBiometric,
+                        style: const TextStyle(fontSize: 16),
                       ),
                       style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -256,9 +260,9 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
                 // Inloggen met wachtwoord optie
                 TextButton(
                   onPressed: _goToLogin,
-                  child: const Text(
-                    "Inloggen met wachtwoord",
-                    style: TextStyle(fontSize: 14),
+                  child: Text(
+                    l10n.unlockWithPassword,
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ),
 
@@ -284,7 +288,7 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          "Uw gegevens zijn veilig opgeslagen op dit apparaat",
+                          l10n.unlockInfoMessage,
                           style: TextStyle(
                             color: Colors.blue[900],
                             fontSize: 13,

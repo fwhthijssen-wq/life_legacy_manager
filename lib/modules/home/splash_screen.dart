@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:life_legacy_manager/l10n/app_localizations.dart';
 
 import '../../core/app_routes.dart';
 import '../../core/app_database.dart';
@@ -65,6 +66,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     
     return Scaffold(
       body: Container(
@@ -108,7 +110,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               
               // App naam
               Text(
-                "Life & Legacy Manager",
+                l10n.splashTitle,
                 style: theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.primaryColor,
@@ -120,7 +122,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               
               // Subtitle
               Text(
-                "Uw persoonlijke levenscompas",
+                l10n.splashSubtitle,
                 style: theme.textTheme.titleMedium?.copyWith(
                   color: Colors.grey[600],
                   fontStyle: FontStyle.italic,
@@ -145,7 +147,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               const SizedBox(height: 16),
               
               Text(
-                "Even geduld...",
+                l10n.splashLoading,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: Colors.grey[500],
                 ),

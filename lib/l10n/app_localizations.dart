@@ -278,6 +278,18 @@ abstract class AppLocalizations {
   /// **'Onbekend'**
   String get genderUnknown;
 
+  /// No description provided for @genderNonBinary.
+  ///
+  /// In nl, this message translates to:
+  /// **'Non-binair'**
+  String get genderNonBinary;
+
+  /// No description provided for @welcomeTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Life & Legacy Manager'**
+  String get welcomeTitle;
+
   /// No description provided for @welcomeIntroTitle.
   ///
   /// In nl, this message translates to:
@@ -295,6 +307,24 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'Life & Legacy Manager is uw persoonlijke levenscompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.'**
   String get welcomeIntroText2;
+
+  /// No description provided for @welcomeWhatToExpect.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wat kunt u verwachten?'**
+  String get welcomeWhatToExpect;
+
+  /// No description provided for @welcomeFooter1.
+  ///
+  /// In nl, this message translates to:
+  /// **'Begin vandaag met het organiseren van uw levensinformatie'**
+  String get welcomeFooter1;
+
+  /// No description provided for @welcomeFooter2.
+  ///
+  /// In nl, this message translates to:
+  /// **'Rust en zekerheid voor u en uw naasten'**
+  String get welcomeFooter2;
 
   /// No description provided for @featurePrivacyTitle.
   ///
@@ -368,6 +398,78 @@ abstract class AppLocalizations {
   /// **'Beveiligd met wachtwoord, pincode of biometrie'**
   String get featureSecurityDesc;
 
+  /// No description provided for @registerTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Account aanmaken'**
+  String get registerTitle;
+
+  /// No description provided for @registerButton.
+  ///
+  /// In nl, this message translates to:
+  /// **'Account aanmaken'**
+  String get registerButton;
+
+  /// No description provided for @registerSelectDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Selecteer datum'**
+  String get registerSelectDate;
+
+  /// No description provided for @registerDateFormat.
+  ///
+  /// In nl, this message translates to:
+  /// **'{day}-{month}-{year}'**
+  String registerDateFormat(Object day, Object month, Object year);
+
+  /// No description provided for @registerSuccess.
+  ///
+  /// In nl, this message translates to:
+  /// **'Account succesvol aangemaakt'**
+  String get registerSuccess;
+
+  /// No description provided for @registerFailed.
+  ///
+  /// In nl, this message translates to:
+  /// **'Registratie mislukt'**
+  String get registerFailed;
+
+  /// No description provided for @registerSelectBirthDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Selecteer een geboortedatum'**
+  String get registerSelectBirthDate;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Inloggen'**
+  String get loginTitle;
+
+  /// No description provided for @loginButton.
+  ///
+  /// In nl, this message translates to:
+  /// **'Inloggen'**
+  String get loginButton;
+
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wachtwoord vergeten?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @loginNoAccount.
+  ///
+  /// In nl, this message translates to:
+  /// **'Nog geen account?'**
+  String get loginNoAccount;
+
+  /// No description provided for @loginFailed.
+  ///
+  /// In nl, this message translates to:
+  /// **'Inloggen mislukt. Controleer uw gegevens.'**
+  String get loginFailed;
+
   /// No description provided for @pinSetupTitle.
   ///
   /// In nl, this message translates to:
@@ -398,17 +500,35 @@ abstract class AppLocalizations {
   /// **'Nieuwe PIN'**
   String get pinNew;
 
+  /// No description provided for @pinNewHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer 4-8 cijfers in'**
+  String get pinNewHint;
+
   /// No description provided for @pinConfirm.
   ///
   /// In nl, this message translates to:
   /// **'Herhaal PIN'**
   String get pinConfirm;
 
+  /// No description provided for @pinConfirmHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer dezelfde PIN nogmaals in'**
+  String get pinConfirmHint;
+
   /// No description provided for @pinSetup.
   ///
   /// In nl, this message translates to:
   /// **'PIN Instellen'**
   String get pinSetup;
+
+  /// No description provided for @pinSetupInProgress.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bezig met opslaan...'**
+  String get pinSetupInProgress;
 
   /// No description provided for @pinSkipLater.
   ///
@@ -428,6 +548,60 @@ abstract class AppLocalizations {
   /// **'Weet u zeker dat u geen PIN wilt instellen? U kunt dit later alsnog doen via instellingen.\n\nZonder PIN moet u steeds uw volledige wachtwoord invoeren.'**
   String get pinSkipMessage;
 
+  /// No description provided for @pinTipsTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Tips voor een veilige PIN'**
+  String get pinTipsTitle;
+
+  /// No description provided for @pinTip1.
+  ///
+  /// In nl, this message translates to:
+  /// **'Gebruik geen voor de hand liggende cijfers zoals 1234 of uw geboortejaar'**
+  String get pinTip1;
+
+  /// No description provided for @pinTip2.
+  ///
+  /// In nl, this message translates to:
+  /// **'Vertel uw PIN niet aan anderen'**
+  String get pinTip2;
+
+  /// No description provided for @pinTip3.
+  ///
+  /// In nl, this message translates to:
+  /// **'U kunt de PIN later wijzigen via instellingen'**
+  String get pinTip3;
+
+  /// No description provided for @pinBiometricAvailable.
+  ///
+  /// In nl, this message translates to:
+  /// **'Biometrische beveiliging beschikbaar! Na het instellen van de PIN kunt u ook vingerafdruk/gezichtsherkenning activeren.'**
+  String get pinBiometricAvailable;
+
+  /// No description provided for @pinBiometricTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Biometrische beveiliging'**
+  String get pinBiometricTitle;
+
+  /// No description provided for @pinBiometricMessage.
+  ///
+  /// In nl, this message translates to:
+  /// **'Uw apparaat ondersteunt vingerafdruk of gezichtsherkenning. Wilt u dit ook activeren voor snelle toegang?'**
+  String get pinBiometricMessage;
+
+  /// No description provided for @pinBiometricNotNow.
+  ///
+  /// In nl, this message translates to:
+  /// **'Nu niet'**
+  String get pinBiometricNotNow;
+
+  /// No description provided for @pinBiometricActivate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Activeren'**
+  String get pinBiometricActivate;
+
   /// No description provided for @unlockTitle.
   ///
   /// In nl, this message translates to:
@@ -440,11 +614,29 @@ abstract class AppLocalizations {
   /// **'Voer uw pincode in om door te gaan'**
   String get unlockSubtitle;
 
+  /// No description provided for @unlockPinLabel.
+  ///
+  /// In nl, this message translates to:
+  /// **'Pincode'**
+  String get unlockPinLabel;
+
+  /// No description provided for @unlockPinHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voer uw PIN in'**
+  String get unlockPinHint;
+
   /// No description provided for @unlockButton.
   ///
   /// In nl, this message translates to:
   /// **'Ontgrendelen'**
   String get unlockButton;
+
+  /// No description provided for @unlockInProgress.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bezig...'**
+  String get unlockInProgress;
 
   /// No description provided for @unlockBiometric.
   ///
@@ -463,6 +655,42 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'Onjuiste PIN. Probeer opnieuw.'**
   String get unlockError;
+
+  /// No description provided for @unlockBiometricFailed.
+  ///
+  /// In nl, this message translates to:
+  /// **'Biometrische authenticatie mislukt'**
+  String get unlockBiometricFailed;
+
+  /// No description provided for @unlockBiometricUnavailable.
+  ///
+  /// In nl, this message translates to:
+  /// **'Biometrie niet beschikbaar'**
+  String get unlockBiometricUnavailable;
+
+  /// No description provided for @unlockInfoMessage.
+  ///
+  /// In nl, this message translates to:
+  /// **'Uw gegevens zijn veilig opgeslagen op dit apparaat'**
+  String get unlockInfoMessage;
+
+  /// No description provided for @splashTitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Life & Legacy Manager'**
+  String get splashTitle;
+
+  /// No description provided for @splashSubtitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Uw persoonlijke levenscompas'**
+  String get splashSubtitle;
+
+  /// No description provided for @splashLoading.
+  ///
+  /// In nl, this message translates to:
+  /// **'Even geduld...'**
+  String get splashLoading;
 
   /// No description provided for @loading.
   ///
@@ -511,6 +739,36 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'PIN moet minimaal 4 cijfers zijn'**
   String get validationPinLength;
+
+  /// No description provided for @validationPinMax.
+  ///
+  /// In nl, this message translates to:
+  /// **'PIN mag maximaal 8 cijfers zijn'**
+  String get validationPinMax;
+
+  /// No description provided for @validationPinMatch.
+  ///
+  /// In nl, this message translates to:
+  /// **'PIN\'s komen niet overeen'**
+  String get validationPinMatch;
+
+  /// No description provided for @validationPinEmpty.
+  ///
+  /// In nl, this message translates to:
+  /// **'Vul een PIN in'**
+  String get validationPinEmpty;
+
+  /// No description provided for @validationNameMin.
+  ///
+  /// In nl, this message translates to:
+  /// **'{field} moet minimaal 2 tekens bevatten'**
+  String validationNameMin(Object field);
+
+  /// No description provided for @validationNameRequired.
+  ///
+  /// In nl, this message translates to:
+  /// **'Vul {field} in'**
+  String validationNameRequired(Object field);
 }
 
 class _AppLocalizationsDelegate
