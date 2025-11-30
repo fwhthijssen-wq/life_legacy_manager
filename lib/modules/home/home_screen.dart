@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../person/select_person_screen.dart';
-import '../dossier/dossier_providers.dart';
-import '../dossier/screens/select_dossier_screen.dart';
 import '../../l10n/app_localizations.dart';
+import '../dossier/screens/select_dossier_screen.dart';
+import '../dossier/dossier_providers.dart';
+import '../person/select_person_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -13,17 +13,16 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    
+    // Check of er een dossier geselecteerd is
     final selectedDossierId = ref.watch(selectedDossierIdProvider);
-    final currentDossierAsync = ref.watch(currentDossierProvider);
-
-    // Als geen dossier geselecteerd, ga naar select screen
+    
     if (selectedDossierId == null) {
+      // Geen dossier geselecteerd → redirect naar selectie
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (_) => const SelectDossierScreen(),
-          ),
+          MaterialPageRoute(builder: (_) => const SelectDossierScreen()),
         );
       });
       return const Scaffold(
@@ -31,83 +30,197 @@ class HomeScreen extends ConsumerWidget {
       );
     }
 
+    // Haal huidige dossier op
+    final currentDossierAsync = ref.watch(currentDossierProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: currentDossierAsync.when(
-          data: (dossier) => Text(dossier?.name ?? l10n.appTitle),
-          loading: () => Text(l10n.appTitle),
-          error: (_, __) => Text(l10n.appTitle),
-        ),
+        title: Text(l10n.appTitle),
         actions: [
-          // Dossier wissel knop
+          // Folder icoon om dossier te wisselen
           IconButton(
-            icon: const Icon(Icons.folder_open),
+            icon: const Icon(Icons.folder),
             tooltip: l10n.dossierSelect,
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const SelectDossierScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const SelectDossierScreen()),
               );
             },
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Huidige dossier info
-            currentDossierAsync.when(
-              data: (dossier) {
-                if (dossier == null) return const SizedBox.shrink();
-                return Card(
-                  margin: const EdgeInsets.all(16),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.folder,
-                          size: 48,
-                          color: Theme.of(context).primaryColor,
+      body: currentDossierAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+        data: (dossier) {
+          if (dossier == null) {
+            return const Center(child: Text('Dossier niet gevonden'));
+          }
+
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // ⭐ Dossier Info Card - NIEUW
+              Card(
+                color: _getColor(dossier.color).withOpacity(0.1),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      // Icoon
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: _getColor(dossier.color).withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        const SizedBox(height: 12),
-                        Text(
-                          dossier.name,
-                          style: Theme.of(context).textTheme.titleLarge,
+                        child: Icon(
+                          _getIcon(dossier.icon),
+                          color: _getColor(dossier.color),
+                          size: 28,
                         ),
-                        if (dossier.description != null) ...[
-                          const SizedBox(height: 4),
-                          Text(
-                            dossier.description!,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ],
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 16),
+                      
+                      // Info
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              dossier.name,
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            if (dossier.description != null) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                dossier.description!,
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: Colors.grey[600],
+                                    ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      
+                      // Wissel knop
+                      IconButton(
+                        icon: const Icon(Icons.swap_horiz),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const SelectDossierScreen(),
+                            ),
+                          );
+                        },
+                        tooltip: l10n.dossierSelect,
+                      ),
+                    ],
                   ),
-                );
-              },
-              loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              child: Text(l10n.personManage),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SelectPersonScreen(dossierId: selectedDossierId),
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+
+              // Personen beheren knop
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.people, size: 32),
+                  title: Text(
+                    l10n.personManage,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                );
-              },
-            ),
-          ],
-        ),
+                  subtitle: Text(l10n.personManageSubtitle),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => SelectPersonScreen(dossierId: selectedDossierId),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              
+              const SizedBox(height: 16),
+
+              // Placeholder voor toekomstige modules
+              Card(
+                color: Colors.grey[100],
+                child: ListTile(
+                  leading: Icon(Icons.euro, size: 32, color: Colors.grey[400]),
+                  title: Text(
+                    l10n.moneyMatters,
+                    style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                  ),
+                  subtitle: Text(
+                    'Binnenkort beschikbaar',
+                    style: TextStyle(color: Colors.grey[500]),
+                  ),
+                  trailing: Icon(Icons.lock, color: Colors.grey[400]),
+                ),
+              ),
+              
+              const SizedBox(height: 8),
+              
+              Card(
+                color: Colors.grey[100],
+                child: ListTile(
+                  leading: Icon(Icons.home, size: 32, color: Colors.grey[400]),
+                  title: Text(
+                    l10n.houseEnergy,
+                    style: TextStyle(fontSize: 18, color: Colors.grey[600]),
+                  ),
+                  subtitle: Text(
+                    'Binnenkort beschikbaar',
+                    style: TextStyle(color: Colors.grey[500]),
+                  ),
+                  trailing: Icon(Icons.lock, color: Colors.grey[400]),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
+  }
+
+  IconData _getIcon(String? icon) {
+    switch (icon) {
+      case 'family':
+        return Icons.family_restroom;
+      case 'elderly':
+        return Icons.elderly;
+      case 'person':
+        return Icons.person;
+      case 'group':
+        return Icons.group;
+      default:
+        return Icons.folder;
+    }
+  }
+
+  Color _getColor(String? color) {
+    switch (color) {
+      case 'blue':
+        return Colors.blue;
+      case 'green':
+        return Colors.green;
+      case 'orange':
+        return Colors.orange;
+      case 'purple':
+        return Colors.purple;
+      case 'red':
+        return Colors.red;
+      default:
+        return Colors.teal;
+    }
   }
 }

@@ -1303,6 +1303,84 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'{years} jaar'**
   String personYearsOld(Object years);
+
+  /// No description provided for @personManageSubtitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Beheer alle personen'**
+  String get personManageSubtitle;
+
+  /// No description provided for @moneyMatters.
+  ///
+  /// In nl, this message translates to:
+  /// **'Geldzaken'**
+  String get moneyMatters;
+
+  /// No description provided for @houseEnergy.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wonen & energie'**
+  String get houseEnergy;
+
+  /// No description provided for @relation.
+  ///
+  /// In nl, this message translates to:
+  /// **'Relatie'**
+  String get relation;
+
+  /// No description provided for @relationSelf.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ikzelf'**
+  String get relationSelf;
+
+  /// No description provided for @relationPartner.
+  ///
+  /// In nl, this message translates to:
+  /// **'Partner'**
+  String get relationPartner;
+
+  /// No description provided for @relationChild.
+  ///
+  /// In nl, this message translates to:
+  /// **'Kind'**
+  String get relationChild;
+
+  /// No description provided for @relationParent.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ouder'**
+  String get relationParent;
+
+  /// No description provided for @relationFamily.
+  ///
+  /// In nl, this message translates to:
+  /// **'Familie'**
+  String get relationFamily;
+
+  /// No description provided for @relationFriend.
+  ///
+  /// In nl, this message translates to:
+  /// **'Vriend'**
+  String get relationFriend;
+
+  /// No description provided for @relationOther.
+  ///
+  /// In nl, this message translates to:
+  /// **'Overig'**
+  String get relationOther;
+
+  /// No description provided for @deathDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Overlijdensdatum'**
+  String get deathDate;
+
+  /// No description provided for @notes.
+  ///
+  /// In nl, this message translates to:
+  /// **'Notities'**
+  String get notes;
 }
 
 class _AppLocalizationsDelegate

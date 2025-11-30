@@ -217,5 +217,22 @@
   "personDeleteTitle": "Delete Person?",
   "personDeleteMessage": "Are you sure you want to delete {name}?",
   "personAge": "{age} years",
-  "personYearsOld": "{years} years old"
+  "personYearsOld": "{years} years old",
+
+  "personManageSubtitle": "Manage all persons",
+"moneyMatters": "Money matters",
+"houseEnergy": "Home & energy",
+
+"relation": "Relation",
+"relationSelf": "Myself",
+"relationPartner": "Partner",
+"relationChild": "Child",
+"relationParent": "Parent",
+"relationFamily": "Family",
+"relationFriend": "Friend",
+"relationOther": "Other",
+
+"deathDate": "Date of death",
+"notes": "Notes"
+
 }

@@ -657,4 +657,43 @@ class AppLocalizationsNl extends AppLocalizations {
   String personYearsOld(Object years) {
     return '$years jaar';
   }
+
+  @override
+  String get personManageSubtitle => 'Beheer alle personen';
+
+  @override
+  String get moneyMatters => 'Geldzaken';
+
+  @override
+  String get houseEnergy => 'Wonen & energie';
+
+  @override
+  String get relation => 'Relatie';
+
+  @override
+  String get relationSelf => 'Ikzelf';
+
+  @override
+  String get relationPartner => 'Partner';
+
+  @override
+  String get relationChild => 'Kind';
+
+  @override
+  String get relationParent => 'Ouder';
+
+  @override
+  String get relationFamily => 'Familie';
+
+  @override
+  String get relationFriend => 'Vriend';
+
+  @override
+  String get relationOther => 'Overig';
+
+  @override
+  String get deathDate => 'Overlijdensdatum';
+
+  @override
+  String get notes => 'Notities';
 }

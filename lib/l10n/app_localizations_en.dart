@@ -655,4 +655,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String personYearsOld(Object years) {
     return '$years years old';
   }
+
+  @override
+  String get personManageSubtitle => 'Manage all persons';
+
+  @override
+  String get moneyMatters => 'Money matters';
+
+  @override
+  String get houseEnergy => 'Home & energy';
+
+  @override
+  String get relation => 'Relation';
+
+  @override
+  String get relationSelf => 'Myself';
+
+  @override
+  String get relationPartner => 'Partner';
+
+  @override
+  String get relationChild => 'Child';
+
+  @override
+  String get relationParent => 'Parent';
+
+  @override
+  String get relationFamily => 'Family';
+
+  @override
+  String get relationFriend => 'Friend';
+
+  @override
+  String get relationOther => 'Other';
+
+  @override
+  String get deathDate => 'Date of death';
+
+  @override
+  String get notes => 'Notes';
 }

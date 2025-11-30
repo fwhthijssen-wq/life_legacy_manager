@@ -221,5 +221,22 @@
   "personDeleteTitle": "Persoon Verwijderen?",
   "personDeleteMessage": "Weet u zeker dat u {name} wilt verwijderen?",
   "personAge": "{age} jaar",
-  "personYearsOld": "{years} jaar"
+  "personYearsOld": "{years} jaar",
+  
+  "personManageSubtitle": "Beheer alle personen",
+  "moneyMatters": "Geldzaken",
+  "houseEnergy": "Wonen & energie",
+
+  "relation": "Relatie",
+  "relationSelf": "Ikzelf",
+  "relationPartner": "Partner",
+  "relationChild": "Kind",
+  "relationParent": "Ouder",
+  "relationFamily": "Familie",
+  "relationFriend": "Vriend",
+  "relationOther": "Overig",
+
+  "deathDate": "Overlijdensdatum",
+  "notes": "Notities"
+
 }
