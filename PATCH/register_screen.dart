@@ -110,31 +110,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   builder: (context) => VerifyRecoveryPhraseScreen(
                     recoveryPhrase: recoveryPhrase,
                     onVerified: () async {
-                      print('🎯 onVerified called!');
+                      // Save recovery phrase hash
+                      await authRepository.saveRecoveryPhrase(
+                        userId,
+                        recoveryPhrase,
+                      );
                       
-                      try {
-                        // Save recovery phrase hash
-                        print('💾 Saving recovery phrase...');
-                        await authRepository.saveRecoveryPhrase(
-                          userId,
-                          recoveryPhrase,
-                        );
-                        print('✅ Recovery phrase saved!');
-                        
-                        // Continue to PIN setup
-                        print('🔄 Navigating to PIN setup...');
-                        
-                        // Use pushReplacement directly without mounted check
-                        // The callback is called synchronously from the verify screen
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => SetupPinScreen(userId: userId),
-                          ),
-                        );
-                        print('✅ Navigation initiated!');
-                      } catch (e) {
-                        print('❌ Error in onVerified: $e');
-                      }
+                      // Continue to PIN setup
+                      if (!mounted) return;
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => SetupPinScreen(userId: userId),
+                        ),
+                      );
                     },
                     onBack: () {
                       Navigator.of(context).pop();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:life_legacy_manager/l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/app_database.dart';
 import '../repository/auth_repository.dart';
@@ -110,31 +110,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   builder: (context) => VerifyRecoveryPhraseScreen(
                     recoveryPhrase: recoveryPhrase,
                     onVerified: () async {
-                      print('🎯 onVerified called!');
+                      // Save recovery phrase hash
+                      await authRepository.saveRecoveryPhrase(
+                        userId,
+                        recoveryPhrase,
+                      );
                       
-                      try {
-                        // Save recovery phrase hash
-                        print('💾 Saving recovery phrase...');
-                        await authRepository.saveRecoveryPhrase(
-                          userId,
-                          recoveryPhrase,
-                        );
-                        print('✅ Recovery phrase saved!');
-                        
-                        // Continue to PIN setup
-                        print('🔄 Navigating to PIN setup...');
-                        
-                        // Use pushReplacement directly without mounted check
-                        // The callback is called synchronously from the verify screen
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => SetupPinScreen(userId: userId),
-                          ),
-                        );
-                        print('✅ Navigation initiated!');
-                      } catch (e) {
-                        print('❌ Error in onVerified: $e');
-                      }
+                      // Continue to PIN setup
+                      if (!mounted) return;
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => SetupPinScreen(userId: userId),
+                        ),
+                      );
                     },
                     onBack: () {
                       Navigator.of(context).pop();
@@ -165,12 +153,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Future<void> _createDefaultDossier(String userId) async {
     final db = await AppDatabase.instance.database;
     final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context);
     
     await db.insert('dossiers', {
       'id': const Uuid().v4(),
       'user_id': userId,
-      'name': locale.languageCode == 'nl' ? 'Mijn Dossier' : 'My Dossier',
+      'name': l10n.locale.languageCode == 'nl' ? 'Mijn Dossier' : 'My Dossier',
       'description': null,
       'icon': 'folder',
       'color': 'teal',
@@ -239,7 +226,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       return l10n.validationRequired;
                     }
                     if (value.trim().length < 2) {
-                      return 'Minimaal 2 tekens vereist';
+                      return l10n.validationNameMin
+                          .replaceAll('{field}', l10n.firstName);
                     }
                     return null;
                   },
@@ -278,7 +266,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       return l10n.validationRequired;
                     }
                     if (value.trim().length < 2) {
-                      return 'Minimaal 2 tekens vereist';
+                      return l10n.validationNameMin
+                          .replaceAll('{field}', l10n.lastName);
                     }
                     return null;
                   },

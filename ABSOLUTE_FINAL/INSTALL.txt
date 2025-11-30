@@ -1,0 +1,20 @@
+# ABSOLUTE FINAL FIX
+
+## INSTALLATIE (COPY-PASTE)
+
+cd C:\Projects\life_legacy_manager
+
+# Extract
+Expand-Archive -Path ABSOLUTE_FINAL.zip -DestinationPath . -Force
+
+# Kopieer bestanden
+copy ABSOLUTE_FINAL\auth_providers.dart lib\modules\auth\providers\
+copy ABSOLUTE_FINAL\setup_pin_screen.dart lib\modules\auth\screens\
+copy ABSOLUTE_FINAL\unlock_screen.dart lib\modules\auth\screens\
+
+# Clean & build
+flutter clean
+flutter pub get
+flutter run -d windows
+
+KLAAR! ✅

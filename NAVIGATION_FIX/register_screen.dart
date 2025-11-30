@@ -123,9 +123,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         
                         // Continue to PIN setup
                         print('🔄 Navigating to PIN setup...');
+                        if (!mounted) {
+                          print('❌ Widget not mounted!');
+                          return;
+                        }
                         
-                        // Use pushReplacement directly without mounted check
-                        // The callback is called synchronously from the verify screen
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => SetupPinScreen(userId: userId),
