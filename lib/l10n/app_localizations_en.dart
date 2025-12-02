@@ -223,6 +223,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get registerSelectBirthDate => 'Select a birth date';
 
   @override
+  String get registerWelcome => 'Create Your Account';
+
+  @override
+  String get registerSubtitle => 'Fill in your details to get started';
+
+  @override
+  String get registerBackToLogin => 'Already have an account? Login';
+
+  @override
+  String get optional => 'optional';
+
+  @override
+  String get namePrefixHint => 'e.g. van, de, van de';
+
+  @override
   String get loginTitle => 'Login';
 
   @override

@@ -21,6 +21,13 @@ class AuthRepository {
   }) async {
     final db = await AppDatabase.instance.database;
 
+    // DEBUG: Toon alle bestaande users
+    final allUsers = await db.query('users');
+    print('📊 ALLE USERS IN DATABASE: ${allUsers.length}');
+    for (var u in allUsers) {
+      print('   - ${u['email']}');
+    }
+
     // Check if email already exists
     final existingUsers = await db.query(
       'users',
@@ -28,7 +35,10 @@ class AuthRepository {
       whereArgs: [email.toLowerCase()],
     );
 
+    print('🔍 Check email "$email": gevonden=${existingUsers.length}');
+
     if (existingUsers.isNotEmpty) {
+      print('❌ EMAIL BESTAAT AL!');
       throw Exception('Email already in use');
     }
 

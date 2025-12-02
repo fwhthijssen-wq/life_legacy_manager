@@ -9,6 +9,7 @@ import '../providers/auth_providers.dart';
 import '../repository/auth_repository.dart';
 // import '../services/biometric_service.dart';  // DISABLED for Sprint 1B
 import '../../../core/app_routes.dart';
+import '../../../core/app_database.dart';
 import '../state/auth_state.dart';
 
 class UnlockScreen extends ConsumerStatefulWidget {
@@ -62,25 +63,47 @@ class _UnlockScreenState extends ConsumerState<UnlockScreen> {
     setState(() => isLoading = true);
 
     try {
-      final authState = ref.read(authStateProvider);
-      final userId = authState.userId;
-      
-      if (userId == null) {
-        throw Exception('No user ID found in auth state');
-      }
-
-      // Verify PIN
+      // Get userId from database (last logged in user with PIN enabled)
       final authRepository = ref.read(authRepositoryProvider);
+      final database = await AppDatabase.instance.database;
+      
+      // Find user with PIN enabled, ordered by last login
+      final users = await database.query(
+        'users',
+        where: 'is_pin_enabled = 1',
+        orderBy: 'last_login DESC',
+        limit: 1,
+      );
+      
+      if (users.isEmpty) {
+        throw Exception('Geen gebruiker met PIN gevonden');
+      }
+      
+      final userId = users.first['id'] as String;
+      print('🔐 Trying PIN for user: $userId');
+      
+      // Verify PIN
       final success = await authRepository.verifyPin(
         userId: userId,
         pin: pin,
       );
+      
+      print('✅ PIN verification result: $success');
 
       setState(() => isLoading = false);
 
       if (success && mounted) {
         // Update state to authenticated
         ref.read(authStateProvider.notifier).markAsAuthenticated(userId);
+        
+        // Update last login
+        await database.update(
+          'users',
+          {'last_login': DateTime.now().millisecondsSinceEpoch},
+          where: 'id = ?',
+          whereArgs: [userId],
+        );
+        
         Navigator.pushReplacementNamed(context, AppRoutes.home);
       } else {
         _showError(l10n.unlockError);

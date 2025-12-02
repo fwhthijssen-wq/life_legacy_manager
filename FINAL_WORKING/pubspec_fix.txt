@@ -1,8 +1,0 @@
-# pubspec.yaml FIX voor flutter_gen
-
-flutter:
-  uses-material-design: true
-  generate: true  # ⭐ DIT MOET ER STAAN!
-  
-# Deze regel activeert flutter_gen
-# Zonder deze regel krijg je de "Couldn't resolve package 'flutter_gen'" error

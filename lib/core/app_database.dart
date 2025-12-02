@@ -31,10 +31,17 @@ class AppDatabase {
 
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'life_legacy_manager.db');
+    
+    // DEBUG: Print database locatie
+    print('');
+    print('════════════════════════════════════════════');
+    print('📁 DATABASE PAD: $path');
+    print('════════════════════════════════════════════');
+    print('');
 
     return await openDatabase(
       path,
-      version: 2, // ← VERSIE VERHOOGD van 1 naar 2
+      version: 3, // ← VERSIE 3: Gezin & Persoonlijke Gegevens
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -102,6 +109,51 @@ class AppDatabase {
     // Index voor sneller zoeken
     await db.execute('CREATE INDEX idx_persons_dossier ON persons(dossier_id);');
     await db.execute('CREATE INDEX idx_dossiers_user ON dossiers(user_id);');
+    
+    // ===== VERSIE 3: GEZIN & PERSOONLIJKE GEGEVENS =====
+    
+    // HOUSEHOLD_MEMBERS tabel (gezinsleden per dossier)
+    await db.execute('''
+      CREATE TABLE household_members (
+        id TEXT PRIMARY KEY,
+        dossier_id TEXT NOT NULL,
+        person_id TEXT NOT NULL,
+        relation TEXT NOT NULL,
+        is_primary INTEGER NOT NULL DEFAULT 0,
+        created_at INTEGER NOT NULL,
+        FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE,
+        FOREIGN KEY (person_id) REFERENCES persons(id) ON DELETE CASCADE,
+        UNIQUE(dossier_id, person_id)
+      );
+    ''');
+    
+    // PERSONAL_DOCUMENTS tabel (documenten per persoon)
+    await db.execute('''
+      CREATE TABLE personal_documents (
+        id TEXT PRIMARY KEY,
+        person_id TEXT NOT NULL,
+        document_type TEXT NOT NULL,
+        document_number TEXT,
+        issue_date TEXT,
+        expiry_date TEXT,
+        issuing_authority TEXT,
+        document_file_path TEXT,
+        physical_location TEXT,
+        notes TEXT,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER,
+        FOREIGN KEY (person_id) REFERENCES persons(id) ON DELETE CASCADE
+      );
+    ''');
+    
+    // Uitbreiding persons tabel met BSN en burgerlijke staat
+    await db.execute('ALTER TABLE persons ADD COLUMN bsn TEXT;');
+    await db.execute('ALTER TABLE persons ADD COLUMN civil_status TEXT;');
+    
+    // Indexes voor nieuwe tabellen
+    await db.execute('CREATE INDEX idx_household_dossier ON household_members(dossier_id);');
+    await db.execute('CREATE INDEX idx_household_person ON household_members(person_id);');
+    await db.execute('CREATE INDEX idx_documents_person ON personal_documents(person_id);');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -176,6 +228,59 @@ class AppDatabase {
       print('✅ Indexes aangemaakt');
 
       print('🎉 Database upgrade naar v2 voltooid!');
+    }
+    
+    if (oldVersion < 3) {
+      print('👨‍👩‍👧‍👦 Upgrading to version 3: Gezin & Persoonlijke Gegevens...');
+      
+      // 1. Household Members tabel
+      await db.execute('''
+        CREATE TABLE household_members (
+          id TEXT PRIMARY KEY,
+          dossier_id TEXT NOT NULL,
+          person_id TEXT NOT NULL,
+          relation TEXT NOT NULL,
+          is_primary INTEGER NOT NULL DEFAULT 0,
+          created_at INTEGER NOT NULL,
+          FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE,
+          FOREIGN KEY (person_id) REFERENCES persons(id) ON DELETE CASCADE,
+          UNIQUE(dossier_id, person_id)
+        );
+      ''');
+      print('✅ Household members tabel aangemaakt');
+      
+      // 2. Personal Documents tabel
+      await db.execute('''
+        CREATE TABLE personal_documents (
+          id TEXT PRIMARY KEY,
+          person_id TEXT NOT NULL,
+          document_type TEXT NOT NULL,
+          document_number TEXT,
+          issue_date TEXT,
+          expiry_date TEXT,
+          issuing_authority TEXT,
+          document_file_path TEXT,
+          physical_location TEXT,
+          notes TEXT,
+          created_at INTEGER NOT NULL,
+          updated_at INTEGER,
+          FOREIGN KEY (person_id) REFERENCES persons(id) ON DELETE CASCADE
+        );
+      ''');
+      print('✅ Personal documents tabel aangemaakt');
+      
+      // 3. Uitbreiden persons tabel
+      await db.execute('ALTER TABLE persons ADD COLUMN bsn TEXT;');
+      await db.execute('ALTER TABLE persons ADD COLUMN civil_status TEXT;');
+      print('✅ Persons tabel uitgebreid met BSN en burgerlijke staat');
+      
+      // 4. Indexes
+      await db.execute('CREATE INDEX idx_household_dossier ON household_members(dossier_id);');
+      await db.execute('CREATE INDEX idx_household_person ON household_members(person_id);');
+      await db.execute('CREATE INDEX idx_documents_person ON personal_documents(person_id);');
+      print('✅ Indexes aangemaakt');
+      
+      print('🎉 Database upgrade naar v3 voltooid!');
     }
   }
 

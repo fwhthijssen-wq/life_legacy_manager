@@ -75,6 +75,11 @@
   "registerSuccess": "Account created successfully",
   "registerFailed": "Registration failed",
   "registerSelectBirthDate": "Select a birth date",
+  "registerWelcome": "Create Your Account",
+  "registerSubtitle": "Fill in your details to get started",
+  "registerBackToLogin": "Already have an account? Login",
+  "optional": "optional",
+  "namePrefixHint": "e.g. van, de, van de",
 
   "loginTitle": "Login",
   "loginButton": "Login",

@@ -1,3 +1,0 @@
-# Verwijder deze oude bestanden (niet meer nodig):
-del lib\modules\auth\services\auth_service.dart
-del lib\modules\auth\state\auth_state_notifier.dart

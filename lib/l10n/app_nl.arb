@@ -6,7 +6,7 @@
     "description": "De titel van de applicatie"
   },
 
-  "appSubtitle": "Uw persoonlijke levenscompas",
+  "appSubtitle": "Uw persoonlijke levenskompas",
   
   "welcome": "Welkom",
   "accountCreate": "Account Aanmaken",
@@ -54,7 +54,7 @@
   "welcomeTitle": "Life & Legacy Manager",
   "welcomeIntroTitle": "Welkom",
   "welcomeIntroText": "In het leven verzamelen we belangrijke documenten, contracten, en informatie. Van bankrekeningen tot verzekeringen, van energiecontracten tot persoonlijke wensen. Maar waar bewaar je dit allemaal? En wat als je nabestaanden deze informatie nodig hebben?",
-  "welcomeIntroText2": "Life & Legacy Manager is uw persoonlijke levenscompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.",
+  "welcomeIntroText2": "Life & Legacy Manager is uw persoonlijke levenskompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.",
   "welcomeWhatToExpect": "Wat kunt u verwachten?",
   "welcomeFooter1": "Begin vandaag met het organiseren van uw levensinformatie",
   "welcomeFooter2": "Rust en zekerheid voor u en uw naasten",
@@ -79,6 +79,11 @@
   "registerSuccess": "Account succesvol aangemaakt",
   "registerFailed": "Registratie mislukt",
   "registerSelectBirthDate": "Selecteer een geboortedatum",
+  "registerWelcome": "Maak uw account aan",
+  "registerSubtitle": "Vul uw gegevens in om te beginnen",
+  "registerBackToLogin": "Al een account? Inloggen",
+  "optional": "optioneel",
+  "namePrefixHint": "bijv. van, de, van de",
 
   "loginTitle": "Inloggen",
   "loginButton": "Inloggen",
@@ -176,7 +181,7 @@
   "dossierManage": "Dossiers Beheren",
 
   "splashTitle": "Life & Legacy Manager",
-  "splashSubtitle": "Uw persoonlijke levenscompas",
+  "splashSubtitle": "Uw persoonlijke levenskompas",
   "splashLoading": "Even geduld...",
 
   "loading": "Even geduld...",

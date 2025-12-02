@@ -45,6 +45,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
+    // Voorkom dubbele aanroep
+    if (_isRegistering) {
+      print('⚠️ Registratie al bezig, skip dubbele aanroep');
+      return;
+    }
+    
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -62,6 +68,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     setState(() {
       _isRegistering = true;
     });
+    
+    print('🚀 START REGISTRATIE');
 
     try {
       final authRepository = AuthRepository();
@@ -85,9 +93,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
       // Create default dossier
       await _createDefaultDossier(userId);
+      
+      print('✅ Dossier created, checking mounted state...');
+      if (!mounted) {
+        print('⚠️ Widget unmounted after dossier creation!');
+        return;
+      }
+      print('✅ Still mounted, continuing...');
 
       // Generate recovery phrase (based on app language)
+      print('📝 Generating recovery phrase...');
       final locale = Localizations.localeOf(context).languageCode;
+      print('📝 Locale: $locale');
       final language = locale == 'nl' 
           ? RecoveryPhraseLanguage.dutch 
           : RecoveryPhraseLanguage.english;
@@ -95,10 +112,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       final recoveryPhrase = RecoveryPhraseService.generatePhrase(
         language: language,
       );
+      print('✅ Recovery phrase generated: ${recoveryPhrase.length} words');
 
-      if (!mounted) return;
+      if (!mounted) {
+        print('⚠️ Widget not mounted, aborting navigation');
+        return;
+      }
 
       // Navigate to recovery phrase setup
+      print('🔄 Navigating to SetupRecoveryPhraseScreen...');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => SetupRecoveryPhraseScreen(
@@ -124,8 +146,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         // Continue to PIN setup
                         print('🔄 Navigating to PIN setup...');
                         
-                        // Use pushReplacement directly without mounted check
-                        // The callback is called synchronously from the verify screen
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => SetupPinScreen(userId: userId),
@@ -147,6 +167,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         ),
       );
     } catch (e) {
+      print('❌ REGISTRATIE FOUT: $e');
+      print('❌ Stack trace: ${StackTrace.current}');
+      
       setState(() {
         _isRegistering = false;
       });
@@ -167,8 +190,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context);
     
+    // Create dossier
+    final dossierId = const Uuid().v4();
     await db.insert('dossiers', {
-      'id': const Uuid().v4(),
+      'id': dossierId,
       'user_id': userId,
       'name': locale.languageCode == 'nl' ? 'Mijn Dossier' : 'My Dossier',
       'description': null,
@@ -177,6 +202,45 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       'is_active': 1,
       'created_at': DateTime.now().millisecondsSinceEpoch,
     });
+    
+    print('✅ Dossier created: $dossierId');
+    
+    // Create person entry with registration data
+    final personId = const Uuid().v4();
+    await db.insert('persons', {
+      'id': personId,
+      'dossier_id': dossierId,
+      'first_name': _firstNameController.text.trim(),
+      'name_prefix': _namePrefixController.text.trim().isNotEmpty 
+          ? _namePrefixController.text.trim() 
+          : null,
+      'last_name': _lastNameController.text.trim(),
+      'email': _emailController.text.trim(),
+      'gender': _selectedGender,
+      'birth_date': _selectedBirthDate?.toIso8601String().substring(0, 10),
+      'relation': null,
+      'phone': null,
+      'address': null,
+      'postal_code': null,
+      'city': null,
+      'notes': null,
+      'death_date': null,
+      // created_at bestaat niet in persons tabel
+    });
+    
+    print('✅ Person created with email: $personId');
+    
+    // Add as household member (primary)
+    await db.insert('household_members', {
+      'id': const Uuid().v4(),
+      'dossier_id': dossierId,
+      'person_id': personId,
+      'relation': 'accounthouder',
+      'is_primary': 1,
+      'created_at': DateTime.now().millisecondsSinceEpoch,
+    });
+    
+    print('✅ Accounthouder added to household');
   }
 
   Future<void> _selectBirthDate() async {
@@ -216,46 +280,54 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               children: [
                 // Welcome Icon
                 Icon(
-                  Icons.person_add_outlined,
-                  size: 64,
+                  Icons.person_add,
+                  size: 80,
                   color: theme.colorScheme.primary,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 16),
+                
+                Text(
+                  l10n.registerWelcome,
+                  style: theme.textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                
+                Text(
+                  l10n.registerSubtitle,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
 
                 // First Name
                 TextFormField(
                   controller: _firstNameController,
                   decoration: InputDecoration(
                     labelText: l10n.firstName,
-                    prefixIcon: const Icon(Icons.person_outline),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    prefixIcon: const Icon(Icons.person),
+                    border: const OutlineInputBorder(),
                   ),
-                  textInputAction: TextInputAction.next,
-                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return l10n.validationRequired;
                     }
-                    if (value.trim().length < 2) {
-                      return 'Minimaal 2 tekens vereist';
-                    }
                     return null;
                   },
+                  textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 16),
 
-                // Name Prefix (Tussenvoegsel)
+                // Name Prefix
                 TextFormField(
                   controller: _namePrefixController,
                   decoration: InputDecoration(
-                    labelText: l10n.namePrefix,
-                    hintText: 'van, van der, de, etc.',
+                    labelText: '${l10n.namePrefix} (${l10n.optional})',
+                    hintText: l10n.namePrefixHint,
                     prefixIcon: const Icon(Icons.text_fields),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    border: const OutlineInputBorder(),
                   ),
                   textInputAction: TextInputAction.next,
                 ),
@@ -267,21 +339,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   decoration: InputDecoration(
                     labelText: l10n.lastName,
                     prefixIcon: const Icon(Icons.person_outline),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    border: const OutlineInputBorder(),
                   ),
-                  textInputAction: TextInputAction.next,
-                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return l10n.validationRequired;
                     }
-                    if (value.trim().length < 2) {
-                      return 'Minimaal 2 tekens vereist';
-                    }
                     return null;
                   },
+                  textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 16),
 
@@ -290,126 +356,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: l10n.email,
-                    prefixIcon: const Icon(Icons.email_outlined),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    prefixIcon: const Icon(Icons.email),
+                    border: const OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return l10n.validationRequired;
                     }
-                    if (!value.contains('@') || !value.contains('.')) {
+                    if (!value.contains('@')) {
                       return l10n.validationEmail;
                     }
                     return null;
                   },
-                ),
-                const SizedBox(height: 16),
-
-                // Password
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  decoration: InputDecoration(
-                    labelText: l10n.password,
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
                   textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return l10n.validationRequired;
-                    }
-                    if (value.length < 6) {
-                      return l10n.validationPasswordLength;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // Confirm Password
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: _obscureConfirmPassword,
-                  decoration: InputDecoration(
-                    labelText: l10n.confirmPassword,
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureConfirmPassword
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureConfirmPassword = !_obscureConfirmPassword;
-                        });
-                      },
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  textInputAction: TextInputAction.next,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return l10n.validationRequired;
-                    }
-                    if (value != _passwordController.text) {
-                      return l10n.validationPasswordMatch;
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-
-                // Gender Selection
-                DropdownButtonFormField<String>(
-                  value: _selectedGender,
-                  decoration: InputDecoration(
-                    labelText: l10n.gender,
-                    prefixIcon: const Icon(Icons.wc),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  items: [
-                    DropdownMenuItem(
-                      value: 'male',
-                      child: Text(l10n.genderMale),
-                    ),
-                    DropdownMenuItem(
-                      value: 'female',
-                      child: Text(l10n.genderFemale),
-                    ),
-                    DropdownMenuItem(
-                      value: 'other',
-                      child: Text(l10n.genderOther),
-                    ),
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedGender = value;
-                    });
-                  },
                 ),
                 const SizedBox(height: 16),
 
@@ -419,29 +379,111 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   child: InputDecorator(
                     decoration: InputDecoration(
                       labelText: l10n.birthDate,
-                      prefixIcon: const Icon(Icons.calendar_today),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                      prefixIcon: const Icon(Icons.cake),
+                      border: const OutlineInputBorder(),
                     ),
                     child: Text(
-                      _selectedBirthDate != null
-                          ? '${_selectedBirthDate!.day}-${_selectedBirthDate!.month}-${_selectedBirthDate!.year}'
-                          : l10n.personSelectDate,
-                      style: TextStyle(
-                        color: _selectedBirthDate != null
-                            ? theme.colorScheme.onSurface
-                            : theme.colorScheme.onSurfaceVariant,
-                      ),
+                      _selectedBirthDate == null
+                          ? l10n.registerSelectDate
+                          : '${_selectedBirthDate!.day}-${_selectedBirthDate!.month}-${_selectedBirthDate!.year}',
                     ),
                   ),
+                ),
+                const SizedBox(height: 16),
+
+                // Gender
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: l10n.gender,
+                    prefixIcon: const Icon(Icons.wc),
+                    border: const OutlineInputBorder(),
+                  ),
+                  value: _selectedGender,
+                  items: [
+                    DropdownMenuItem(value: 'male', child: Text(l10n.genderMale)),
+                    DropdownMenuItem(value: 'female', child: Text(l10n.genderFemale)),
+                    DropdownMenuItem(value: 'non-binary', child: Text(l10n.genderNonBinary)),
+                    DropdownMenuItem(value: 'other', child: Text(l10n.genderOther)),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedGender = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
+
+                // Password
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(
+                    labelText: l10n.password,
+                    prefixIcon: const Icon(Icons.lock),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: _obscurePassword,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return l10n.validationRequired;
+                    }
+                    if (value.length < 6) {
+                      return l10n.validationPasswordLength;
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.next,
+                ),
+                const SizedBox(height: 16),
+
+                // Confirm Password
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  decoration: InputDecoration(
+                    labelText: l10n.confirmPassword,
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureConfirmPassword = !_obscureConfirmPassword;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: _obscureConfirmPassword,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return l10n.validationRequired;
+                    }
+                    if (value != _passwordController.text) {
+                      return l10n.validationPasswordMatch;
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) {
+                    if (!_isRegistering) _handleRegister();
+                  },
                 ),
                 const SizedBox(height: 32),
 
                 // Register Button
-                FilledButton(
+                ElevatedButton(
                   onPressed: _isRegistering ? null : _handleRegister,
-                  style: FilledButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: _isRegistering
@@ -456,10 +498,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
                 // Back to Login
                 TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(l10n.back),
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(l10n.registerBackToLogin),
                 ),
               ],
             ),

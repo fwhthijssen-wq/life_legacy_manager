@@ -12,7 +12,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get appTitle => 'Life & Legacy Manager';
 
   @override
-  String get appSubtitle => 'Uw persoonlijke levenscompas';
+  String get appSubtitle => 'Uw persoonlijke levenskompas';
 
   @override
   String get welcome => 'Welkom';
@@ -146,7 +146,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get welcomeIntroText2 =>
-      'Life & Legacy Manager is uw persoonlijke levenscompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.';
+      'Life & Legacy Manager is uw persoonlijke levenskompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.';
 
   @override
   String get welcomeWhatToExpect => 'Wat kunt u verwachten?';
@@ -222,6 +222,21 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get registerSelectBirthDate => 'Selecteer een geboortedatum';
+
+  @override
+  String get registerWelcome => 'Maak uw account aan';
+
+  @override
+  String get registerSubtitle => 'Vul uw gegevens in om te beginnen';
+
+  @override
+  String get registerBackToLogin => 'Al een account? Inloggen';
+
+  @override
+  String get optional => 'optioneel';
+
+  @override
+  String get namePrefixHint => 'bijv. van, de, van de';
 
   @override
   String get loginTitle => 'Inloggen';
@@ -519,7 +534,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get splashTitle => 'Life & Legacy Manager';
 
   @override
-  String get splashSubtitle => 'Uw persoonlijke levenscompas';
+  String get splashSubtitle => 'Uw persoonlijke levenskompas';
 
   @override
   String get splashLoading => 'Even geduld...';

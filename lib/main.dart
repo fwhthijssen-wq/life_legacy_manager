@@ -39,6 +39,17 @@ class LLMApp extends StatelessWidget {
       // Default locale (Nederlands)
       locale: const Locale('nl', ''),
       
+      // Donker thema
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF4E6E5D),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+        fontFamily: 'Segoe UI',
+      ),
+      
+      // Licht thema (fallback)
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFF4E6E5D),
@@ -46,6 +57,9 @@ class LLMApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Segoe UI',
       ),
+      
+      // Licht thema gebruiken
+      themeMode: ThemeMode.light,
       
       initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRouter.generateRoute,

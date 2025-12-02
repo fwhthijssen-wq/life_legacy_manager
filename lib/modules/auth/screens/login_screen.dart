@@ -159,6 +159,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.loginTitle),
+        automaticallyImplyLeading: false, // Geen terug-knop - gebruiker moet inloggen
       ),
       body: SafeArea(
         child: Center(

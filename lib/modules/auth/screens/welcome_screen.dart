@@ -33,6 +33,13 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen>
     _animationController.forward();
     _checkForExistingUser();
   }
+  
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Hercontroleer of er een gebruiker bestaat (bijv. na terugnavigatie)
+    _checkForExistingUser();
+  }
 
   Future<void> _checkForExistingUser() async {
     try {

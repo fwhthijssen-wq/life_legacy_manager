@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// No description provided for @appSubtitle.
   ///
   /// In nl, this message translates to:
-  /// **'Uw persoonlijke levenscompas'**
+  /// **'Uw persoonlijke levenskompas'**
   String get appSubtitle;
 
   /// No description provided for @welcome.
@@ -371,7 +371,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeIntroText2.
   ///
   /// In nl, this message translates to:
-  /// **'Life & Legacy Manager is uw persoonlijke levenscompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.'**
+  /// **'Life & Legacy Manager is uw persoonlijke levenskompas. Een veilige, overzichtelijke plek waar u alle belangrijke informatie verzamelt, beheert en toegankelijk maakt voor uzelf en uw naasten.'**
   String get welcomeIntroText2;
 
   /// No description provided for @welcomeWhatToExpect.
@@ -505,6 +505,36 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'Selecteer een geboortedatum'**
   String get registerSelectBirthDate;
+
+  /// No description provided for @registerWelcome.
+  ///
+  /// In nl, this message translates to:
+  /// **'Maak uw account aan'**
+  String get registerWelcome;
+
+  /// No description provided for @registerSubtitle.
+  ///
+  /// In nl, this message translates to:
+  /// **'Vul uw gegevens in om te beginnen'**
+  String get registerSubtitle;
+
+  /// No description provided for @registerBackToLogin.
+  ///
+  /// In nl, this message translates to:
+  /// **'Al een account? Inloggen'**
+  String get registerBackToLogin;
+
+  /// No description provided for @optional.
+  ///
+  /// In nl, this message translates to:
+  /// **'optioneel'**
+  String get optional;
+
+  /// No description provided for @namePrefixHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. van, de, van de'**
+  String get namePrefixHint;
 
   /// No description provided for @loginTitle.
   ///
@@ -1049,7 +1079,7 @@ abstract class AppLocalizations {
   /// No description provided for @splashSubtitle.
   ///
   /// In nl, this message translates to:
-  /// **'Uw persoonlijke levenscompas'**
+  /// **'Uw persoonlijke levenskompas'**
   String get splashSubtitle;
 
   /// No description provided for @splashLoading.

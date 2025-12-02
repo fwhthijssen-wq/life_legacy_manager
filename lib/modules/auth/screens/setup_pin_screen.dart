@@ -80,11 +80,17 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
     try {
       // Use AuthRepository directly instead of AuthService
       final authRepository = ref.read(authRepositoryProvider);
+      
+      print('💾 Setting up PIN for user: ${widget.userId}');
+      print('📌 PIN length: ${pin.length}');
+      
       await authRepository.setupPin(
         userId: widget.userId,
         pin: pin,
         enableBiometric: false,  // Disabled for Sprint 1B
       );
+      
+      print('✅ PIN saved successfully!');
 
       if (mounted) {
         // Skip biometrics setup for Sprint 1B
@@ -96,6 +102,7 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
         _goToHome();
       }
     } catch (e) {
+      print('❌ Error setting up PIN: $e');
       _showSnackBar("${l10n.error}: $e");
       setState(() => isLoading = false);
     }
