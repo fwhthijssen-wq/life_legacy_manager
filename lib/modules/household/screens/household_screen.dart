@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:life_legacy_manager/l10n/app_localizations.dart';
 import '../../../core/app_database.dart';
+import 'add_household_member_screen.dart';
 
 class HouseholdScreen extends ConsumerStatefulWidget {
   final String dossierId;
@@ -240,13 +241,16 @@ class _HouseholdScreenState extends ConsumerState<HouseholdScreen> {
                   ),
                 ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // TODO: Add household member
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Gezinslid toevoegen - komt binnenkort!'),
+        onPressed: () async {
+          final result = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (_) => AddHouseholdMemberScreen(dossierId: widget.dossierId),
             ),
           );
+          if (result == true) {
+            _loadHouseholdMembers();
+          }
         },
         icon: const Icon(Icons.person_add),
         label: const Text('Toevoegen'),

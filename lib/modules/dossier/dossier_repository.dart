@@ -17,6 +17,7 @@ class DossierRepository {
     String? description,
     String? icon,
     String? color,
+    DossierType type = DossierType.family,
   }) async {
     final db = await _getDb();
     
@@ -27,6 +28,7 @@ class DossierRepository {
       description: description,
       icon: icon,
       color: color,
+      type: type,
       isActive: true,
       createdAt: DateTime.now(),
     );

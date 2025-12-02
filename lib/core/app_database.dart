@@ -41,7 +41,7 @@ class AppDatabase {
 
     return await openDatabase(
       path,
-      version: 3, // ← VERSIE 3: Gezin & Persoonlijke Gegevens
+      version: 4, // ← VERSIE 4: Contacten geïntegreerd in persons
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -68,7 +68,7 @@ class AppDatabase {
       );
     ''');
 
-    // DOSSIERS tabel (✅ NIEUW - meerdere dossiers per user)
+    // DOSSIERS tabel
     await db.execute('''
       CREATE TABLE dossiers (
         id TEXT PRIMARY KEY,
@@ -77,6 +77,7 @@ class AppDatabase {
         description TEXT,
         icon TEXT,
         color TEXT,
+        type TEXT DEFAULT 'family',
         is_active INTEGER NOT NULL DEFAULT 1,
         created_at INTEGER NOT NULL,
         updated_at INTEGER,
@@ -84,7 +85,7 @@ class AppDatabase {
       );
     ''');
 
-    // PERSONS tabel (uitgebreid met dossier_id en name_prefix)
+    // PERSONS tabel (uitgebreid met contact-velden)
     await db.execute('''
       CREATE TABLE persons (
         id TEXT PRIMARY KEY,
@@ -102,6 +103,12 @@ class AppDatabase {
         notes TEXT,
         relation TEXT,
         death_date TEXT,
+        is_contact INTEGER NOT NULL DEFAULT 0,
+        contact_category TEXT,
+        for_christmas_card INTEGER NOT NULL DEFAULT 0,
+        for_newsletter INTEGER NOT NULL DEFAULT 0,
+        for_party INTEGER NOT NULL DEFAULT 0,
+        for_funeral INTEGER NOT NULL DEFAULT 0,
         FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE
       );
     ''');
@@ -109,8 +116,7 @@ class AppDatabase {
     // Index voor sneller zoeken
     await db.execute('CREATE INDEX idx_persons_dossier ON persons(dossier_id);');
     await db.execute('CREATE INDEX idx_dossiers_user ON dossiers(user_id);');
-    
-    // ===== VERSIE 3: GEZIN & PERSOONLIJKE GEGEVENS =====
+    await db.execute('CREATE INDEX idx_persons_contact ON persons(is_contact);');
     
     // HOUSEHOLD_MEMBERS tabel (gezinsleden per dossier)
     await db.execute('''
@@ -162,7 +168,6 @@ class AppDatabase {
     if (oldVersion < 2) {
       print('📊 Upgrading to version 2...');
       
-      // 1. Voeg dossiers tabel toe
       await db.execute('''
         CREATE TABLE dossiers (
           id TEXT PRIMARY KEY,
@@ -177,24 +182,14 @@ class AppDatabase {
           FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
       ''');
-      print('✅ Dossiers tabel aangemaakt');
 
-      // 2. Voeg name_prefix en dossier_id toe aan persons
       await db.execute('ALTER TABLE persons ADD COLUMN name_prefix TEXT;');
       await db.execute('ALTER TABLE persons ADD COLUMN dossier_id TEXT;');
-      print('✅ Persons tabel uitgebreid');
-
-      // 3. Voeg recovery_phrase_hash toe aan users
       await db.execute('ALTER TABLE users ADD COLUMN recovery_phrase_hash TEXT;');
-      print('✅ Users tabel uitgebreid');
 
-      // 4. Migratie: Maak standaard dossier voor elke user
       final users = await db.query('users');
       for (final user in users) {
         final userId = user['id'] as String;
-        final firstName = user['first_name'] as String;
-        
-        // Maak standaard dossier
         final dossierId = 'dossier_${userId}_default';
         await db.insert('dossiers', {
           'id': dossierId,
@@ -204,36 +199,17 @@ class AppDatabase {
           'is_active': 1,
           'created_at': DateTime.now().millisecondsSinceEpoch,
         });
-        print('✅ Standaard dossier aangemaakt voor $firstName');
-
-        // Update alle bestaande persons
-        await db.execute('''
-          UPDATE persons 
-          SET dossier_id = ? 
-          WHERE id = ? OR id IN (
-            SELECT id FROM persons WHERE dossier_id IS NULL
-          )
-        ''', [dossierId, userId]);
-        
-        print('✅ Persons gekoppeld aan dossier');
+        await db.execute('UPDATE persons SET dossier_id = ? WHERE dossier_id IS NULL', [dossierId]);
       }
 
-      // 5. Maak dossier_id NOT NULL (nu alle records een waarde hebben)
-      // SQLite ondersteunt ALTER COLUMN niet, dus we recreate de tabel
-      // Maar dit is al gedaan via de update hierboven
-      
-      // 6. Maak indexes
       await db.execute('CREATE INDEX idx_persons_dossier ON persons(dossier_id);');
       await db.execute('CREATE INDEX idx_dossiers_user ON dossiers(user_id);');
-      print('✅ Indexes aangemaakt');
-
       print('🎉 Database upgrade naar v2 voltooid!');
     }
     
     if (oldVersion < 3) {
-      print('👨‍👩‍👧‍👦 Upgrading to version 3: Gezin & Persoonlijke Gegevens...');
+      print('👨‍👩‍👧‍👦 Upgrading to version 3...');
       
-      // 1. Household Members tabel
       await db.execute('''
         CREATE TABLE household_members (
           id TEXT PRIMARY KEY,
@@ -247,9 +223,7 @@ class AppDatabase {
           UNIQUE(dossier_id, person_id)
         );
       ''');
-      print('✅ Household members tabel aangemaakt');
       
-      // 2. Personal Documents tabel
       await db.execute('''
         CREATE TABLE personal_documents (
           id TEXT PRIMARY KEY,
@@ -267,20 +241,34 @@ class AppDatabase {
           FOREIGN KEY (person_id) REFERENCES persons(id) ON DELETE CASCADE
         );
       ''');
-      print('✅ Personal documents tabel aangemaakt');
       
-      // 3. Uitbreiden persons tabel
       await db.execute('ALTER TABLE persons ADD COLUMN bsn TEXT;');
       await db.execute('ALTER TABLE persons ADD COLUMN civil_status TEXT;');
-      print('✅ Persons tabel uitgebreid met BSN en burgerlijke staat');
       
-      // 4. Indexes
       await db.execute('CREATE INDEX idx_household_dossier ON household_members(dossier_id);');
       await db.execute('CREATE INDEX idx_household_person ON household_members(person_id);');
       await db.execute('CREATE INDEX idx_documents_person ON personal_documents(person_id);');
-      print('✅ Indexes aangemaakt');
       
       print('🎉 Database upgrade naar v3 voltooid!');
+    }
+    
+    if (oldVersion < 4) {
+      print('📇 Upgrading to version 4: Contacten in persons tabel...');
+      
+      // Contact-velden toevoegen aan persons tabel
+      await db.execute('ALTER TABLE persons ADD COLUMN is_contact INTEGER NOT NULL DEFAULT 0;');
+      await db.execute('ALTER TABLE persons ADD COLUMN contact_category TEXT;');
+      await db.execute('ALTER TABLE persons ADD COLUMN for_christmas_card INTEGER NOT NULL DEFAULT 0;');
+      await db.execute('ALTER TABLE persons ADD COLUMN for_newsletter INTEGER NOT NULL DEFAULT 0;');
+      await db.execute('ALTER TABLE persons ADD COLUMN for_party INTEGER NOT NULL DEFAULT 0;');
+      await db.execute('ALTER TABLE persons ADD COLUMN for_funeral INTEGER NOT NULL DEFAULT 0;');
+      print('✅ Persons tabel uitgebreid met contact-velden');
+      
+      // Index voor contacten
+      await db.execute('CREATE INDEX idx_persons_contact ON persons(is_contact);');
+      print('✅ Contact index aangemaakt');
+      
+      print('🎉 Database upgrade naar v4 voltooid!');
     }
   }
 

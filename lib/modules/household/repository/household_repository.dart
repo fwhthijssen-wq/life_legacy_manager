@@ -4,7 +4,6 @@ import 'package:uuid/uuid.dart';
 import '../../../core/app_database.dart';
 import '../models/household_member.dart';
 import '../models/personal_document.dart';
-import '../../person/models/person.dart';
 
 class HouseholdRepository {
   final AppDatabase _db = AppDatabase.instance;

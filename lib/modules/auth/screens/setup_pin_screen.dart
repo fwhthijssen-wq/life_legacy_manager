@@ -167,7 +167,12 @@ class _SetupPinScreenState extends ConsumerState<SetupPinScreen> {
     if (mounted) {
       // Update auth state
       ref.read(authStateProvider.notifier).login(widget.userId);
-      Navigator.pushReplacementNamed(context, '/home');
+      // Verwijder hele navigatie stack en ga naar home
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+        (route) => false, // Verwijder alle routes
+      );
     }
   }
 

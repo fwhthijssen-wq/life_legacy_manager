@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 import '../../../core/app_database.dart';
 import '../repository/auth_repository.dart';
 import '../services/recovery_phrase_service.dart';
+import '../../dossier/dossier_model.dart';
 import 'setup_recovery_phrase_screen.dart';
 import 'verify_recovery_phrase_screen.dart';
 import 'setup_pin_screen.dart';
@@ -29,6 +30,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   DateTime? _selectedBirthDate;
   String? _selectedGender;
+  DossierType _selectedDossierType = DossierType.family;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isRegistering = false;
@@ -187,18 +189,55 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   Future<void> _createDefaultDossier(String userId) async {
     final db = await AppDatabase.instance.database;
-    final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context);
+    
+    // Bepaal dossiernaam op basis van type
+    final lastName = _lastNameController.text.trim();
+    String dossierName;
+    String? dossierDescription;
+    
+    switch (_selectedDossierType) {
+      case DossierType.family:
+        dossierName = locale.languageCode == 'nl' 
+            ? 'Familie $lastName' 
+            : 'Family $lastName';
+        dossierDescription = locale.languageCode == 'nl'
+            ? 'Gezinsdossier'
+            : 'Family dossier';
+        break;
+      case DossierType.couple:
+        dossierName = locale.languageCode == 'nl'
+            ? 'Huishouden $lastName'
+            : 'Household $lastName';
+        dossierDescription = locale.languageCode == 'nl'
+            ? 'Echtpaar/samenwonend'
+            : 'Couple';
+        break;
+      case DossierType.single:
+        final firstName = _firstNameController.text.trim();
+        dossierName = '$firstName $lastName';
+        dossierDescription = locale.languageCode == 'nl'
+            ? 'Persoonlijk dossier'
+            : 'Personal dossier';
+        break;
+      case DossierType.other:
+        dossierName = locale.languageCode == 'nl' 
+            ? 'Mijn Dossier' 
+            : 'My Dossier';
+        dossierDescription = null;
+        break;
+    }
     
     // Create dossier
     final dossierId = const Uuid().v4();
     await db.insert('dossiers', {
       'id': dossierId,
       'user_id': userId,
-      'name': locale.languageCode == 'nl' ? 'Mijn Dossier' : 'My Dossier',
-      'description': null,
-      'icon': 'folder',
+      'name': dossierName,
+      'description': dossierDescription,
+      'icon': _selectedDossierType.defaultIcon,
       'color': 'teal',
+      'type': _selectedDossierType.name,
       'is_active': 1,
       'created_at': DateTime.now().millisecondsSinceEpoch,
     });
@@ -410,6 +449,69 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       _selectedGender = value;
                     });
                   },
+                ),
+                const SizedBox(height: 24),
+
+                // Dossier Type Selection
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: theme.primaryColor.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: theme.primaryColor.withOpacity(0.2)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.home, color: theme.primaryColor),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Uw leefsituatie',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Dit bepaalt hoe uw standaard dossier wordt aangemaakt.',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: DossierType.values.map((type) {
+                          final isSelected = _selectedDossierType == type;
+                          return ChoiceChip(
+                            label: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(type.emoji),
+                                const SizedBox(width: 6),
+                                Text(type.displayName),
+                              ],
+                            ),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              if (selected) {
+                                setState(() {
+                                  _selectedDossierType = type;
+                                });
+                              }
+                            },
+                            selectedColor: theme.primaryColor.withOpacity(0.2),
+                            checkmarkColor: theme.primaryColor,
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 16),
 
