@@ -5,7 +5,6 @@ import 'package:uuid/uuid.dart';
 import '../../../core/app_database.dart';
 import '../repository/auth_repository.dart';
 import '../services/recovery_phrase_service.dart';
-import '../../dossier/dossier_model.dart';
 import 'setup_recovery_phrase_screen.dart';
 import 'verify_recovery_phrase_screen.dart';
 import 'setup_pin_screen.dart';
@@ -30,10 +29,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   DateTime? _selectedBirthDate;
   String? _selectedGender;
-  DossierType _selectedDossierType = DossierType.family;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isRegistering = false;
+  DateTime? _lastRegisterAttempt; // Debounce voor dubbele clicks
 
   @override
   void dispose() {
@@ -47,17 +46,30 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
-    // Voorkom dubbele aanroep
+    // Debounce: voorkom clicks binnen 2 seconden van elkaar
+    final now = DateTime.now();
+    if (_lastRegisterAttempt != null && 
+        now.difference(_lastRegisterAttempt!).inSeconds < 2) {
+      print('⚠️ Debounce: te snel na vorige poging');
+      return;
+    }
+    _lastRegisterAttempt = now;
+    
+    // Voorkom dubbele registratie
     if (_isRegistering) {
       print('⚠️ Registratie al bezig, skip dubbele aanroep');
       return;
     }
+    _isRegistering = true; // Direct zetten voor synchrone lock
+    print('🟢 Starting registration...');
     
     if (!_formKey.currentState!.validate()) {
+      _isRegistering = false;
       return;
     }
 
     if (_selectedBirthDate == null) {
+      _isRegistering = false;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(AppLocalizations.of(context)!.registerSelectBirthDate),
@@ -67,12 +79,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       return;
     }
 
-    setState(() {
-      _isRegistering = true;
-    });
-    
-    print('🚀 START REGISTRATIE');
+    // Update UI om loading state te tonen
+    setState(() {});
 
+    bool userCreated = false; // Track of user al is aangemaakt
+    
     try {
       final authRepository = AuthRepository();
 
@@ -92,21 +103,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       if (userId == null) {
         throw Exception('Registration failed');
       }
+      
+      userCreated = true; // User is aangemaakt - NIET meer resetten!
+      print('✅ User created, userCreated=$userCreated');
 
       // Create default dossier
       await _createDefaultDossier(userId);
-      
-      print('✅ Dossier created, checking mounted state...');
-      if (!mounted) {
-        print('⚠️ Widget unmounted after dossier creation!');
-        return;
-      }
-      print('✅ Still mounted, continuing...');
 
       // Generate recovery phrase (based on app language)
-      print('📝 Generating recovery phrase...');
       final locale = Localizations.localeOf(context).languageCode;
-      print('📝 Locale: $locale');
       final language = locale == 'nl' 
           ? RecoveryPhraseLanguage.dutch 
           : RecoveryPhraseLanguage.english;
@@ -114,15 +119,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       final recoveryPhrase = RecoveryPhraseService.generatePhrase(
         language: language,
       );
-      print('✅ Recovery phrase generated: ${recoveryPhrase.length} words');
 
-      if (!mounted) {
-        print('⚠️ Widget not mounted, aborting navigation');
-        return;
-      }
+      if (!mounted) return;
 
       // Navigate to recovery phrase setup
-      print('🔄 Navigating to SetupRecoveryPhraseScreen...');
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => SetupRecoveryPhraseScreen(
@@ -148,6 +148,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         // Continue to PIN setup
                         print('🔄 Navigating to PIN setup...');
                         
+                        // Use pushReplacement directly without mounted check
+                        // The callback is called synchronously from the verify screen
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => SetupPinScreen(userId: userId),
@@ -169,82 +171,48 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         ),
       );
     } catch (e) {
-      print('❌ REGISTRATIE FOUT: $e');
-      print('❌ Stack trace: ${StackTrace.current}');
+      print('❌ Registration error: $e (userCreated=$userCreated)');
       
-      setState(() {
-        _isRegistering = false;
-      });
-
-      if (!mounted) return;
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${AppLocalizations.of(context)!.registerFailed}: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ),
-      );
+      // ALLEEN resetten als de USER nog niet is aangemaakt
+      // Als user WEL is aangemaakt, NIET resetten - voorkomt dubbele registratie
+      if (!userCreated && mounted) {
+        setState(() {
+          _isRegistering = false;
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context)!.registerFailed}: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } else if (userCreated) {
+        print('⚠️ Error na user creation - NIET resetten om dubbele registratie te voorkomen');
+      }
     }
   }
 
   Future<void> _createDefaultDossier(String userId) async {
     final db = await AppDatabase.instance.database;
+    final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context);
-    
-    // Bepaal dossiernaam op basis van type
-    final lastName = _lastNameController.text.trim();
-    String dossierName;
-    String? dossierDescription;
-    
-    switch (_selectedDossierType) {
-      case DossierType.family:
-        dossierName = locale.languageCode == 'nl' 
-            ? 'Familie $lastName' 
-            : 'Family $lastName';
-        dossierDescription = locale.languageCode == 'nl'
-            ? 'Gezinsdossier'
-            : 'Family dossier';
-        break;
-      case DossierType.couple:
-        dossierName = locale.languageCode == 'nl'
-            ? 'Huishouden $lastName'
-            : 'Household $lastName';
-        dossierDescription = locale.languageCode == 'nl'
-            ? 'Echtpaar/samenwonend'
-            : 'Couple';
-        break;
-      case DossierType.single:
-        final firstName = _firstNameController.text.trim();
-        dossierName = '$firstName $lastName';
-        dossierDescription = locale.languageCode == 'nl'
-            ? 'Persoonlijk dossier'
-            : 'Personal dossier';
-        break;
-      case DossierType.other:
-        dossierName = locale.languageCode == 'nl' 
-            ? 'Mijn Dossier' 
-            : 'My Dossier';
-        dossierDescription = null;
-        break;
-    }
     
     // Create dossier
     final dossierId = const Uuid().v4();
     await db.insert('dossiers', {
       'id': dossierId,
       'user_id': userId,
-      'name': dossierName,
-      'description': dossierDescription,
-      'icon': _selectedDossierType.defaultIcon,
+      'name': locale.languageCode == 'nl' ? 'Mijn Dossier' : 'My Dossier',
+      'description': null,
+      'icon': 'folder',
       'color': 'teal',
-      'type': _selectedDossierType.name,
       'is_active': 1,
       'created_at': DateTime.now().millisecondsSinceEpoch,
     });
     
     print('✅ Dossier created: $dossierId');
     
-    // Create person entry with registration data
+    // Create person entry for the account holder
     final personId = const Uuid().v4();
     await db.insert('persons', {
       'id': personId,
@@ -264,7 +232,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       'city': null,
       'notes': null,
       'death_date': null,
-      // created_at bestaat niet in persons tabel
+      'is_contact': 0, // Accounthouder is geen extern contact
+      'contact_categories': null,
+      'created_at': DateTime.now().millisecondsSinceEpoch,
     });
     
     print('✅ Person created with email: $personId');
@@ -450,69 +420,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     });
                   },
                 ),
-                const SizedBox(height: 24),
-
-                // Dossier Type Selection
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: theme.primaryColor.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: theme.primaryColor.withOpacity(0.2)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.home, color: theme.primaryColor),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Uw leefsituatie',
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Dit bepaalt hoe uw standaard dossier wordt aangemaakt.',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: DossierType.values.map((type) {
-                          final isSelected = _selectedDossierType == type;
-                          return ChoiceChip(
-                            label: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(type.emoji),
-                                const SizedBox(width: 6),
-                                Text(type.displayName),
-                              ],
-                            ),
-                            selected: isSelected,
-                            onSelected: (selected) {
-                              if (selected) {
-                                setState(() {
-                                  _selectedDossierType = type;
-                                });
-                              }
-                            },
-                            selectedColor: theme.primaryColor.withOpacity(0.2),
-                            checkmarkColor: theme.primaryColor,
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 16),
 
                 // Password
@@ -576,9 +483,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     return null;
                   },
                   textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) {
-                    if (!_isRegistering) _handleRegister();
-                  },
+                  // onFieldSubmitted verwijderd om dubbele registratie te voorkomen
+                  // Gebruiker moet op de knop klikken
                 ),
                 const SizedBox(height: 32),
 

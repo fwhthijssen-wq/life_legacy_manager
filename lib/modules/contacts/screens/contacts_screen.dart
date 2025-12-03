@@ -4,8 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/app_database.dart';
 import '../../person/person_model.dart';
+import '../models/email_template_model.dart';
+import '../repository/email_template_repository.dart';
+import '../services/contact_export_service.dart';
+import '../services/duplicate_detection_service.dart';
+import '../repository/mailing_list_repository.dart';
+import '../models/mailing_list_model.dart';
+import '../../../core/person_repository.dart';
 import 'add_contact_screen.dart';
 import 'edit_contact_screen.dart';
+import 'email_templates_screen.dart';
+import 'import_contacts_screen.dart';
 
 /// Volledigheids-status voor een contact
 enum ContactCompleteness {
@@ -137,6 +146,102 @@ class ContactsScreen extends ConsumerWidget {
                 ],
               ),
             )).toList(),
+          ),
+          // Export/Meer opties menu
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'Meer opties',
+            onSelected: (action) => _handleMenuAction(context, ref, action),
+            itemBuilder: (context) => [
+              // EMAIL & BRIEF
+              const PopupMenuItem(
+                value: 'email_advanced',
+                child: Row(
+                  children: [
+                    Icon(Icons.email, size: 20),
+                    SizedBox(width: 12),
+                    Text('Email versturen...'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'postal_letters',
+                child: Row(
+                  children: [
+                    Icon(Icons.mail, size: 20),
+                    SizedBox(width: 12),
+                    Text('Brieven maken...'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'postal_labels',
+                child: Row(
+                  children: [
+                    Icon(Icons.label, size: 20),
+                    SizedBox(width: 12),
+                    Text('Adresetiketten...'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'address_list',
+                child: Row(
+                  children: [
+                    Icon(Icons.list_alt, size: 20),
+                    SizedBox(width: 12),
+                    Text('Adreslijst...'),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
+              // EXPORT OPTIES
+              const PopupMenuItem(
+                value: 'export_csv',
+                child: Row(
+                  children: [
+                    Icon(Icons.table_chart, size: 20),
+                    SizedBox(width: 12),
+                    Text('Exporteer CSV'),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
+              // IMPORT
+              const PopupMenuItem(
+                value: 'import_contacts',
+                child: Row(
+                  children: [
+                    Icon(Icons.file_upload, size: 20),
+                    SizedBox(width: 12),
+                    Text('Contacten importeren'),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
+              // MAILING LIJSTEN
+              const PopupMenuItem(
+                value: 'mailing_lists',
+                child: Row(
+                  children: [
+                    Icon(Icons.folder_special, size: 20),
+                    SizedBox(width: 12),
+                    Text('Opgeslagen lijsten'),
+                  ],
+                ),
+              ),
+              // TEMPLATES BEHEREN
+              const PopupMenuItem(
+                value: 'manage_templates',
+                child: Row(
+                  children: [
+                    Icon(Icons.description, size: 20),
+                    SizedBox(width: 12),
+                    Text('Templates beheren'),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -409,6 +514,76 @@ class ContactsScreen extends ConsumerWidget {
     }
   }
 
+  void _handleMenuAction(BuildContext context, WidgetRef ref, String action) async {
+    final contactsAsync = ref.read(contactsProvider(dossierId));
+    final contacts = contactsAsync.valueOrNull ?? [];
+    
+    if (contacts.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Geen contacten om te exporteren')),
+      );
+      return;
+    }
+
+    switch (action) {
+      case 'email_advanced':
+        _showAdvancedEmailDialog(context, ref, contacts);
+        break;
+        
+      case 'export_csv':
+        await ContactExportService.exportToCsv(context, contacts);
+        break;
+        
+      case 'share_list':
+        await ContactExportService.shareAddressList(context, contacts);
+        break;
+        
+      case 'postal_letters':
+        _showPostalLettersDialog(context, ref, contacts);
+        break;
+        
+      case 'postal_labels':
+        _showAddressLabelsDialog(context, ref, contacts);
+        break;
+        
+      case 'address_list':
+        _showAddressListDialog(context, ref, contacts);
+        break;
+        
+      case 'manage_templates':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => EmailTemplatesScreen(dossierId: dossierId),
+          ),
+        );
+        break;
+        
+      case 'import_contacts':
+        final result = await Navigator.push<bool>(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ImportContactsScreen(dossierId: dossierId),
+          ),
+        );
+        if (result == true) {
+          ref.invalidate(contactsProvider(dossierId));
+        }
+        break;
+        
+      case 'mailing_lists':
+        _showMailingListsDialog(context, ref);
+        break;
+    }
+  }
+  
+  void _showMailingListsDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => _MailingListsDialog(dossierId: dossierId),
+    );
+  }
+
   void _addContact(BuildContext context, WidgetRef ref) async {
     final result = await Navigator.push<bool>(
       context,
@@ -433,6 +608,46 @@ class ContactsScreen extends ConsumerWidget {
     if (changed == true) {
       ref.invalidate(contactsProvider(dossierId));
     }
+  }
+
+  void _showAdvancedEmailDialog(BuildContext context, WidgetRef ref, List<PersonModel> contacts) {
+    showDialog(
+      context: context,
+      builder: (context) => _AdvancedEmailDialog(
+        contacts: contacts,
+        dossierId: dossierId,
+      ),
+    );
+  }
+
+  void _showPostalLettersDialog(BuildContext context, WidgetRef ref, List<PersonModel> contacts) {
+    showDialog(
+      context: context,
+      builder: (context) => _PostalLettersDialog(
+        contacts: contacts,
+        dossierId: dossierId,
+      ),
+    );
+  }
+
+  void _showAddressLabelsDialog(BuildContext context, WidgetRef ref, List<PersonModel> contacts) {
+    showDialog(
+      context: context,
+      builder: (context) => _AddressLabelsDialog(
+        contacts: contacts,
+        dossierId: dossierId,
+      ),
+    );
+  }
+
+  void _showAddressListDialog(BuildContext context, WidgetRef ref, List<PersonModel> contacts) {
+    showDialog(
+      context: context,
+      builder: (context) => _AddressListDialog(
+        contacts: contacts,
+        dossierId: dossierId,
+      ),
+    );
   }
 
   void _deleteContact(BuildContext context, WidgetRef ref, PersonModel contact) async {
@@ -774,5 +989,2795 @@ class _ContactTile extends StatelessWidget {
         child: Text(emoji, style: const TextStyle(fontSize: 14)),
       ),
     );
+  }
+}
+
+// ===== GEAVANCEERDE EMAIL DIALOOG =====
+
+class _AdvancedEmailDialog extends StatefulWidget {
+  final List<PersonModel> contacts;
+  final String dossierId;
+
+  const _AdvancedEmailDialog({
+    required this.contacts,
+    required this.dossierId,
+  });
+
+  @override
+  State<_AdvancedEmailDialog> createState() => _AdvancedEmailDialogState();
+}
+
+class _AdvancedEmailDialogState extends State<_AdvancedEmailDialog> {
+  // Stap beheer (0 = filter, 1 = preview, 2 = inhoud)
+  int _currentStep = 0;
+  
+  // Categorie filters (mailing type filters verwijderd - nu alleen categorieën)
+  final Set<ContactCategory> _selectedCategories = {};
+  
+  // Geselecteerde contacten (na filter en handmatige aanpassingen)
+  List<PersonModel> _selectedContacts = [];
+  
+  // Email inhoud
+  final _subjectController = TextEditingController();
+  final _bodyController = TextEditingController(text: 'Beste allemaal,\n\n');
+  
+  // Templates
+  List<EmailTemplateModel> _templates = [];
+  EmailTemplateModel? _selectedTemplate;
+  
+  @override
+  void initState() {
+    super.initState();
+    _loadTemplates();
+  }
+  
+  @override
+  void dispose() {
+    _subjectController.dispose();
+    _bodyController.dispose();
+    super.dispose();
+  }
+  
+  void _loadTemplates() {
+    final templates = DefaultEmailTemplates.getDefaults(widget.dossierId);
+    setState(() {
+      _templates = templates;
+    });
+  }
+  
+  List<PersonModel> get _filteredContacts {
+    var filtered = widget.contacts.where((c) => c.email != null && c.email!.isNotEmpty).toList();
+    
+    // Filter op categorieën (OR logic)
+    if (_selectedCategories.isNotEmpty) {
+      filtered = filtered.where((c) => c.hasAnyCategory(_selectedCategories)).toList();
+    }
+    
+    return filtered;
+  }
+  
+  // Contacten die nog toegevoegd kunnen worden (hebben email, niet geselecteerd)
+  List<PersonModel> get _availableToAdd {
+    final selectedIds = _selectedContacts.map((c) => c.id).toSet();
+    return widget.contacts
+        .where((c) => c.email != null && c.email!.isNotEmpty && !selectedIds.contains(c.id))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: const BoxConstraints(maxWidth: 550, maxHeight: 750),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.primaryColor.withOpacity(0.1),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.email, color: theme.primaryColor),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Email Versturen',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          _getStepTitle(),
+                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ],
+              ),
+            ),
+            
+            // Stap indicator
+            _buildStepIndicator(theme),
+            
+            // Content per stap
+            Expanded(
+              child: _buildStepContent(theme),
+            ),
+            
+            // Footer met navigatie
+            _buildFooter(theme),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  String _getStepTitle() {
+    switch (_currentStep) {
+      case 0: return 'Stap 1: Selecteer ontvangers';
+      case 1: return 'Stap 2: Controleer selectie';
+      case 2: return 'Stap 3: Stel bericht op';
+      default: return '';
+    }
+  }
+  
+  Widget _buildStepIndicator(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      child: Row(
+        children: [
+          _buildStepDot(0, 'Filter', theme),
+          Expanded(child: Container(height: 2, color: _currentStep > 0 ? theme.primaryColor : Colors.grey[300])),
+          _buildStepDot(1, 'Preview', theme),
+          Expanded(child: Container(height: 2, color: _currentStep > 1 ? theme.primaryColor : Colors.grey[300])),
+          _buildStepDot(2, 'Bericht', theme),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildStepDot(int step, String label, ThemeData theme) {
+    final isActive = _currentStep >= step;
+    final isCurrent = _currentStep == step;
+    
+    return Column(
+      children: [
+        Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isActive ? theme.primaryColor : Colors.grey[300],
+            border: isCurrent ? Border.all(color: theme.primaryColor, width: 3) : null,
+          ),
+          child: Center(
+            child: Text(
+              '${step + 1}',
+              style: TextStyle(
+                color: isActive ? Colors.white : Colors.grey[600],
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            color: isActive ? theme.primaryColor : Colors.grey[600],
+            fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildStepContent(ThemeData theme) {
+    switch (_currentStep) {
+      case 0:
+        return _buildFilterStep(theme);
+      case 1:
+        return _buildPreviewStep(theme);
+      case 2:
+        return _buildContentStep(theme);
+      default:
+        return const SizedBox();
+    }
+  }
+  
+  // === STAP 1: FILTER ===
+  Widget _buildFilterStep(ThemeData theme) {
+    final filteredContacts = _filteredContacts;
+    
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Categorie filters
+          Text('Selecteer categorieën:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Text('Kies één of meer categorieën om te filteren', style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600])),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: ContactCategory.values.map((cat) {
+              final isSelected = _selectedCategories.contains(cat);
+              return FilterChip(
+                avatar: Text(cat.emoji, style: const TextStyle(fontSize: 14)),
+                label: Text(cat.displayName),
+                selected: isSelected,
+                onSelected: (selected) {
+                  setState(() {
+                    if (selected) {
+                      _selectedCategories.add(cat);
+                    } else {
+                      _selectedCategories.remove(cat);
+                    }
+                  });
+                },
+              );
+            }).toList(),
+          ),
+          
+          const SizedBox(height: 24),
+          
+          // Preview
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: filteredContacts.isEmpty ? Colors.orange.withOpacity(0.1) : Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: filteredContacts.isEmpty ? Colors.orange.withOpacity(0.3) : Colors.green.withOpacity(0.3),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  filteredContacts.isEmpty ? Icons.warning : Icons.check_circle,
+                  color: filteredContacts.isEmpty ? Colors.orange : Colors.green,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${filteredContacts.length} contacten gevonden',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: filteredContacts.isEmpty ? Colors.orange[800] : Colors.green[800],
+                        ),
+                      ),
+                      if (filteredContacts.isEmpty)
+                        Text(
+                          'Pas de filters aan of selecteer handmatig',
+                          style: TextStyle(fontSize: 12, color: Colors.orange[700]),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          if (_selectedCategories.isEmpty) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, color: Colors.blue, size: 20),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Geen categorie geselecteerd = alle contacten met email',
+                      style: theme.textTheme.bodySmall?.copyWith(color: Colors.blue[800]),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+  
+  // === STAP 2: PREVIEW ===
+  Widget _buildPreviewStep(ThemeData theme) {
+    return Column(
+      children: [
+        // Acties balk
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
+          ),
+          child: Row(
+            children: [
+              Text(
+                '${_selectedContacts.length} ontvangers',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              // Lijst opslaan knop
+              TextButton.icon(
+                onPressed: _selectedContacts.isEmpty ? null : () => _saveAsList(theme),
+                icon: const Icon(Icons.save_alt, size: 18),
+                label: const Text('Opslaan'),
+              ),
+              TextButton.icon(
+                onPressed: _availableToAdd.isEmpty ? null : () => _showAddContactDialog(theme),
+                icon: const Icon(Icons.person_add, size: 18),
+                label: const Text('Toevoegen'),
+              ),
+            ],
+          ),
+        ),
+        
+        // Contacten lijst
+        Expanded(
+          child: _selectedContacts.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.people_outline, size: 60, color: Colors.grey[400]),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Geen ontvangers geselecteerd',
+                        style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(height: 8),
+                      TextButton.icon(
+                        onPressed: () => _showAddContactDialog(theme),
+                        icon: const Icon(Icons.person_add),
+                        label: const Text('Contacten toevoegen'),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: _selectedContacts.length,
+                  itemBuilder: (context, index) {
+                    final contact = _selectedContacts[index];
+                    return ListTile(
+                      dense: true,
+                      leading: CircleAvatar(
+                        radius: 18,
+                        backgroundColor: theme.primaryColor.withOpacity(0.1),
+                        child: Text(
+                          contact.firstName.isNotEmpty ? contact.firstName[0].toUpperCase() : '?',
+                          style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      title: Text(contact.fullName),
+                      subtitle: Text(
+                        contact.email ?? '',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            _selectedContacts.removeAt(index);
+                          });
+                        },
+                        tooltip: 'Verwijderen',
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ],
+    );
+  }
+  
+  void _showAddContactDialog(ThemeData theme) {
+    final available = _availableToAdd;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Contact toevoegen'),
+        content: SizedBox(
+          width: 300,
+          height: 400,
+          child: available.isEmpty
+              ? const Center(child: Text('Alle contacten met email zijn al geselecteerd'))
+              : ListView.builder(
+                  itemCount: available.length,
+                  itemBuilder: (context, index) {
+                    final contact = available[index];
+                    return ListTile(
+                      dense: true,
+                      title: Text(contact.fullName),
+                      subtitle: Text(contact.email ?? '', style: const TextStyle(fontSize: 12)),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.add_circle_outline, color: Colors.green),
+                        onPressed: () {
+                          setState(() {
+                            _selectedContacts.add(contact);
+                          });
+                          Navigator.pop(context);
+                          // Reopen to add more
+                          if (_availableToAdd.isNotEmpty) {
+                            _showAddContactDialog(theme);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Sluiten'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Future<void> _saveAsList(ThemeData theme) async {
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (context) => SaveMailingListDialog(
+        dossierId: widget.dossierId,
+        contactIds: _selectedContacts.map((c) => c.id).toList(),
+        suggestedType: _getSelectedMailingType(),
+      ),
+    );
+    
+    if (result != null && mounted) {
+      try {
+        final repository = MailingListRepository(AppDatabase.instance);
+        final desc = result['description'] as String?;
+        await repository.createList(
+          dossierId: widget.dossierId,
+          name: result['name'] as String,
+          description: (desc != null && desc.isNotEmpty) ? desc : null,
+          contactIds: _selectedContacts.map((c) => c.id).toList(),
+          mailingType: result['type'] as String?,
+        );
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Lijst "${result['name']}" opgeslagen'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Fout bij opslaan: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+  
+  String? _getSelectedMailingType() {
+    // Mailing type filters zijn verwijderd - nu alleen categorieën
+    return null;
+  }
+  
+  // === STAP 3: CONTENT ===
+  Widget _buildContentStep(ThemeData theme) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Template selectie
+          Text('Template:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<EmailTemplateModel>(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            hint: const Text('Selecteer template (optioneel)'),
+            value: _selectedTemplate,
+            items: _templates.map((template) {
+              return DropdownMenuItem(
+                value: template,
+                child: Text('${template.emoji} ${template.name}'),
+              );
+            }).toList(),
+            onChanged: (template) {
+              setState(() {
+                _selectedTemplate = template;
+                if (template != null) {
+                  _subjectController.text = template.subject;
+                  _bodyController.text = template.body;
+                }
+              });
+            },
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Onderwerp
+          Text('Onderwerp:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: _subjectController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Bijv. "Uitnodiging"',
+            ),
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Body
+          Text('Bericht:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: _bodyController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              alignLabelWithHint: true,
+              hintText: 'Beste {naam},\n\n...',
+            ),
+            maxLines: 8,
+          ),
+          
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.amber.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.lightbulb_outline, color: Colors.amber, size: 20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Let op: Bij bulk email opent je email-app met één bericht voor alle ontvangers. '
+                    'De {naam} placeholder werkt alleen bij individuele emails.',
+                    style: theme.textTheme.bodySmall?.copyWith(color: Colors.amber[900]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildFooter(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey[300]!)),
+      ),
+      child: Row(
+        children: [
+          if (_currentStep > 0)
+            TextButton.icon(
+              onPressed: () => setState(() => _currentStep--),
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('Terug'),
+            ),
+          const Spacer(),
+          if (_currentStep < 2)
+            ElevatedButton.icon(
+              onPressed: _canProceed() ? _nextStep : null,
+              icon: const Icon(Icons.arrow_forward),
+              label: Text(_currentStep == 0 ? 'Volgende' : 'Naar bericht'),
+            )
+          else
+            ElevatedButton.icon(
+              onPressed: _selectedContacts.isNotEmpty ? _sendEmail : null,
+              icon: const Icon(Icons.send),
+              label: Text('Verstuur (${_selectedContacts.length})'),
+            ),
+        ],
+      ),
+    );
+  }
+  
+  bool _canProceed() {
+    if (_currentStep == 0) {
+      return _filteredContacts.isNotEmpty;
+    } else if (_currentStep == 1) {
+      return _selectedContacts.isNotEmpty;
+    }
+    return true;
+  }
+  
+  void _nextStep() {
+    if (_currentStep == 0) {
+      // Ga naar preview, kopieer gefilterde contacten naar selectie
+      setState(() {
+        _selectedContacts = List.from(_filteredContacts);
+        _currentStep = 1;
+      });
+    } else if (_currentStep == 1) {
+      setState(() => _currentStep = 2);
+    }
+  }
+  
+  Widget _buildFilterChip(String label, bool selected, Function(bool) onSelected) {
+    return FilterChip(
+      label: Text(label),
+      selected: selected,
+      onSelected: onSelected,
+    );
+  }
+  
+  Future<void> _sendEmail() async {
+    Navigator.pop(context);
+    
+    final subject = _subjectController.text;
+    final body = _bodyController.text;
+    
+    await ContactExportService.sendBulkEmail(
+      _selectedContacts,
+      subject: subject.isNotEmpty ? subject : null,
+      body: body.isNotEmpty ? body : null,
+    );
+  }
+}
+
+// ===== POST/BRIEF DIALOOG =====
+
+class _PostalLettersDialog extends StatefulWidget {
+  final List<PersonModel> contacts;
+  final String dossierId;
+
+  const _PostalLettersDialog({
+    required this.contacts,
+    required this.dossierId,
+  });
+
+  @override
+  State<_PostalLettersDialog> createState() => _PostalLettersDialogState();
+}
+
+class _PostalLettersDialogState extends State<_PostalLettersDialog> {
+  // Stap beheer (0 = filter, 1 = preview, 2 = inhoud)
+  int _currentStep = 0;
+  
+  // Categorie filters (mailing type filters verwijderd)
+  final Set<ContactCategory> _selectedCategories = {};
+  
+  // Geselecteerde contacten
+  List<PersonModel> _selectedContacts = [];
+  
+  // Brief inhoud
+  final _bodyController = TextEditingController(text: 'Beste,\n\n');
+  final _senderNameController = TextEditingController();
+  final _senderAddressController = TextEditingController();
+  
+  // Templates
+  List<EmailTemplateModel> _templates = [];
+  EmailTemplateModel? _selectedTemplate;
+  
+  @override
+  void initState() {
+    super.initState();
+    _loadTemplates();
+  }
+  
+  @override
+  void dispose() {
+    _bodyController.dispose();
+    _senderNameController.dispose();
+    _senderAddressController.dispose();
+    super.dispose();
+  }
+  
+  void _loadTemplates() {
+    final templates = DefaultEmailTemplates.getDefaults(widget.dossierId);
+    setState(() {
+      _templates = templates;
+    });
+  }
+  
+  List<PersonModel> get _filteredContacts {
+    var filtered = ContactExportService.filterWithAddress(widget.contacts);
+    
+    // Filter op categorieën (OR logic)
+    if (_selectedCategories.isNotEmpty) {
+      filtered = filtered.where((c) => c.hasAnyCategory(_selectedCategories)).toList();
+    }
+    
+    return filtered;
+  }
+  
+  // Contacten die nog toegevoegd kunnen worden (hebben adres, niet geselecteerd)
+  List<PersonModel> get _availableToAdd {
+    final selectedIds = _selectedContacts.map((c) => c.id).toSet();
+    return ContactExportService.filterWithAddress(widget.contacts)
+        .where((c) => !selectedIds.contains(c.id))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: const BoxConstraints(maxWidth: 550, maxHeight: 750),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.brown.withOpacity(0.1),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.mail, color: Colors.brown),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Brieven Maken',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          _getStepTitle(),
+                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ],
+              ),
+            ),
+            
+            // Stap indicator
+            _buildStepIndicator(theme),
+            
+            // Content per stap
+            Expanded(
+              child: _buildStepContent(theme),
+            ),
+            
+            // Footer met navigatie
+            _buildFooter(theme),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  String _getStepTitle() {
+    switch (_currentStep) {
+      case 0: return 'Stap 1: Selecteer ontvangers';
+      case 1: return 'Stap 2: Controleer selectie';
+      case 2: return 'Stap 3: Stel brief op';
+      default: return '';
+    }
+  }
+  
+  Widget _buildStepIndicator(ThemeData theme) {
+    const brown = Colors.brown;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      child: Row(
+        children: [
+          _buildStepDot(0, 'Filter', theme, brown),
+          Expanded(child: Container(height: 2, color: _currentStep > 0 ? brown : Colors.grey[300])),
+          _buildStepDot(1, 'Preview', theme, brown),
+          Expanded(child: Container(height: 2, color: _currentStep > 1 ? brown : Colors.grey[300])),
+          _buildStepDot(2, 'Brief', theme, brown),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildStepDot(int step, String label, ThemeData theme, Color color) {
+    final isActive = _currentStep >= step;
+    final isCurrent = _currentStep == step;
+    
+    return Column(
+      children: [
+        Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isActive ? color : Colors.grey[300],
+            border: isCurrent ? Border.all(color: color, width: 3) : null,
+          ),
+          child: Center(
+            child: Text(
+              '${step + 1}',
+              style: TextStyle(
+                color: isActive ? Colors.white : Colors.grey[600],
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 11,
+            color: isActive ? color : Colors.grey[600],
+            fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildStepContent(ThemeData theme) {
+    switch (_currentStep) {
+      case 0:
+        return _buildFilterStep(theme);
+      case 1:
+        return _buildPreviewStep(theme);
+      case 2:
+        return _buildContentStep(theme);
+      default:
+        return const SizedBox();
+    }
+  }
+  
+  // === STAP 1: FILTER ===
+  Widget _buildFilterStep(ThemeData theme) {
+    final filteredContacts = _filteredContacts;
+    final totalWithAddress = ContactExportService.filterWithAddress(widget.contacts).length;
+    
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Info
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.amber.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.info_outline, color: Colors.amber, size: 20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    '$totalWithAddress van ${widget.contacts.length} contacten hebben een volledig adres',
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          
+          // Categorie filters (EERST)
+          Text('Categorie:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: ContactCategory.values.map((cat) {
+              final isSelected = _selectedCategories.contains(cat);
+              return FilterChip(
+                label: Text(cat.displayName),
+                selected: isSelected,
+                onSelected: (selected) {
+                  setState(() {
+                    if (selected) {
+                      _selectedCategories.add(cat);
+                    } else {
+                      _selectedCategories.remove(cat);
+                    }
+                  });
+                },
+              );
+            }).toList(),
+          ),
+          
+          
+          const SizedBox(height: 24),
+          
+          // Preview
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: filteredContacts.isEmpty ? Colors.orange.withOpacity(0.1) : Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: filteredContacts.isEmpty ? Colors.orange.withOpacity(0.3) : Colors.green.withOpacity(0.3),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  filteredContacts.isEmpty ? Icons.warning : Icons.check_circle,
+                  color: filteredContacts.isEmpty ? Colors.orange : Colors.green,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${filteredContacts.length} contacten gevonden',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: filteredContacts.isEmpty ? Colors.orange[800] : Colors.green[800],
+                        ),
+                      ),
+                      if (filteredContacts.isEmpty)
+                        Text(
+                          'Pas de filters aan of selecteer handmatig',
+                          style: TextStyle(fontSize: 12, color: Colors.orange[700]),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  // === STAP 2: PREVIEW ===
+  Widget _buildPreviewStep(ThemeData theme) {
+    return Column(
+      children: [
+        // Acties balk
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
+          ),
+          child: Row(
+            children: [
+              Text(
+                '${_selectedContacts.length} brieven',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              // Lijst opslaan knop
+              TextButton.icon(
+                onPressed: _selectedContacts.isEmpty ? null : () => _saveAsList(theme),
+                icon: const Icon(Icons.save_alt, size: 18),
+                label: const Text('Opslaan'),
+              ),
+              TextButton.icon(
+                onPressed: _availableToAdd.isEmpty ? null : () => _showAddContactDialog(theme),
+                icon: const Icon(Icons.person_add, size: 18),
+                label: const Text('Toevoegen'),
+              ),
+            ],
+          ),
+        ),
+        
+        // Contacten lijst
+        Expanded(
+          child: _selectedContacts.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.people_outline, size: 60, color: Colors.grey[400]),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Geen ontvangers geselecteerd',
+                        style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+                      ),
+                      const SizedBox(height: 8),
+                      TextButton.icon(
+                        onPressed: () => _showAddContactDialog(theme),
+                        icon: const Icon(Icons.person_add),
+                        label: const Text('Contacten toevoegen'),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: _selectedContacts.length,
+                  itemBuilder: (context, index) {
+                    final contact = _selectedContacts[index];
+                    return ListTile(
+                      dense: true,
+                      leading: CircleAvatar(
+                        radius: 18,
+                        backgroundColor: Colors.brown.withOpacity(0.1),
+                        child: Text(
+                          contact.firstName.isNotEmpty ? contact.firstName[0].toUpperCase() : '?',
+                          style: const TextStyle(color: Colors.brown, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      title: Text(contact.fullName),
+                      subtitle: Text(
+                        '${contact.address ?? ''}, ${contact.city ?? ''}',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            _selectedContacts.removeAt(index);
+                          });
+                        },
+                        tooltip: 'Verwijderen',
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ],
+    );
+  }
+  
+  void _showAddContactDialog(ThemeData theme) {
+    final available = _availableToAdd;
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Contact toevoegen'),
+        content: SizedBox(
+          width: 300,
+          height: 400,
+          child: available.isEmpty
+              ? const Center(child: Text('Alle contacten met adres zijn al geselecteerd'))
+              : ListView.builder(
+                  itemCount: available.length,
+                  itemBuilder: (context, index) {
+                    final contact = available[index];
+                    return ListTile(
+                      dense: true,
+                      title: Text(contact.fullName),
+                      subtitle: Text('${contact.city ?? ''}', style: const TextStyle(fontSize: 12)),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.add_circle_outline, color: Colors.green),
+                        onPressed: () {
+                          setState(() {
+                            _selectedContacts.add(contact);
+                          });
+                          Navigator.pop(context);
+                          if (_availableToAdd.isNotEmpty) {
+                            _showAddContactDialog(theme);
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Sluiten'),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Future<void> _saveAsList(ThemeData theme) async {
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (context) => SaveMailingListDialog(
+        dossierId: widget.dossierId,
+        contactIds: _selectedContacts.map((c) => c.id).toList(),
+        suggestedType: _getSelectedMailingType(),
+      ),
+    );
+    
+    if (result != null && mounted) {
+      try {
+        final repository = MailingListRepository(AppDatabase.instance);
+        final desc = result['description'] as String?;
+        await repository.createList(
+          dossierId: widget.dossierId,
+          name: result['name'] as String,
+          description: (desc != null && desc.isNotEmpty) ? desc : null,
+          contactIds: _selectedContacts.map((c) => c.id).toList(),
+          mailingType: result['type'] as String?,
+        );
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Lijst "${result['name']}" opgeslagen'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Fout bij opslaan: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+  
+  String? _getSelectedMailingType() {
+    // Mailing type filters zijn verwijderd - nu alleen categorieën
+    return null;
+  }
+  
+  // === STAP 3: CONTENT ===
+  Widget _buildContentStep(ThemeData theme) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Afzender sectie
+          Text('Afzender (optioneel):', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: _senderNameController,
+            decoration: const InputDecoration(
+              labelText: 'Naam afzender',
+              border: OutlineInputBorder(),
+              isDense: true,
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextFormField(
+            controller: _senderAddressController,
+            decoration: const InputDecoration(
+              labelText: 'Adres afzender',
+              hintText: 'Straat 123\n1234 AB Plaats',
+              border: OutlineInputBorder(),
+              isDense: true,
+            ),
+            maxLines: 2,
+            minLines: 2,
+            maxLines: 2,
+          ),
+          
+          const SizedBox(height: 24),
+          
+          // Template selectie
+          Text('Template:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<EmailTemplateModel>(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ),
+            hint: const Text('Selecteer template (optioneel)'),
+            value: _selectedTemplate,
+            items: _templates.map((template) {
+              return DropdownMenuItem(
+                value: template,
+                child: Text('${template.emoji} ${template.name}'),
+              );
+            }).toList(),
+            onChanged: (template) {
+              setState(() {
+                _selectedTemplate = template;
+                if (template != null) {
+                  _bodyController.text = template.body;
+                }
+              });
+            },
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Body
+          Text('Inhoud brief:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: _bodyController,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              alignLabelWithHint: true,
+              hintText: 'Beste {naam},\n\n...',
+            ),
+            maxLines: 10,
+          ),
+          
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.amber.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.lightbulb_outline, color: Colors.amber, size: 20),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Placeholders: {naam} = volledige naam, {voornaam}, {achternaam}\n'
+                    'Deze worden automatisch vervangen per ontvanger.',
+                    style: theme.textTheme.bodySmall?.copyWith(color: Colors.amber[900]),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildFooter(ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey[300]!)),
+      ),
+      child: Row(
+        children: [
+          if (_currentStep > 0)
+            TextButton.icon(
+              onPressed: () => setState(() => _currentStep--),
+              icon: const Icon(Icons.arrow_back),
+              label: const Text('Terug'),
+            ),
+          const Spacer(),
+          if (_currentStep < 2)
+            ElevatedButton.icon(
+              onPressed: _canProceed() ? _nextStep : null,
+              icon: const Icon(Icons.arrow_forward),
+              label: Text(_currentStep == 0 ? 'Volgende' : 'Naar brief'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.brown,
+                foregroundColor: Colors.white,
+              ),
+            )
+          else
+            ElevatedButton.icon(
+              onPressed: _selectedContacts.isNotEmpty && _bodyController.text.isNotEmpty 
+                  ? _exportLetters 
+                  : null,
+              icon: const Icon(Icons.file_download),
+              label: Text('Exporteer (${_selectedContacts.length})'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.brown,
+                foregroundColor: Colors.white,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+  
+  bool _canProceed() {
+    if (_currentStep == 0) {
+      return _filteredContacts.isNotEmpty;
+    } else if (_currentStep == 1) {
+      return _selectedContacts.isNotEmpty;
+    }
+    return true;
+  }
+  
+  void _nextStep() {
+    if (_currentStep == 0) {
+      setState(() {
+        _selectedContacts = List.from(_filteredContacts);
+        _currentStep = 1;
+      });
+    } else if (_currentStep == 1) {
+      setState(() => _currentStep = 2);
+    }
+  }
+  
+  Widget _buildFilterChip(String label, bool selected, Function(bool) onSelected) {
+    return FilterChip(
+      label: Text(label),
+      selected: selected,
+      onSelected: onSelected,
+    );
+  }
+  
+  Future<void> _exportLetters() async {
+    // Toon export opties dialoog
+    final result = await showDialog<ExportDialogResult>(
+      context: context,
+      builder: (context) => _ExportOptionsDialog(
+        title: 'Brieven exporteren',
+        count: _selectedContacts.length,
+      ),
+    );
+    
+    if (result == null) return;
+    Navigator.pop(context);
+    
+    if (result.action == 'print') {
+      await ContactExportService.printLetters(
+        context,
+        _selectedContacts,
+        body: _bodyController.text,
+        senderName: _senderNameController.text.isNotEmpty ? _senderNameController.text : null,
+        senderAddress: _senderAddressController.text.isNotEmpty ? _senderAddressController.text : null,
+      );
+    } else {
+      await ContactExportService.exportLetters(
+        context,
+        _selectedContacts,
+        body: _bodyController.text,
+        senderName: _senderNameController.text.isNotEmpty ? _senderNameController.text : null,
+        senderAddress: _senderAddressController.text.isNotEmpty ? _senderAddressController.text : null,
+        format: result.format,
+      );
+    }
+  }
+}
+
+// ===== ADRESETIKETTEN DIALOOG =====
+
+class _AddressLabelsDialog extends StatefulWidget {
+  final List<PersonModel> contacts;
+  final String dossierId;
+
+  const _AddressLabelsDialog({
+    required this.contacts,
+    required this.dossierId,
+  });
+
+  @override
+  State<_AddressLabelsDialog> createState() => _AddressLabelsDialogState();
+}
+
+class _AddressLabelsDialogState extends State<_AddressLabelsDialog> {
+  int _currentStep = 0;
+  
+  final Set<ContactCategory> _selectedCategories = {};
+  List<PersonModel> _selectedContacts = [];
+  
+  List<PersonModel> get _filteredContacts {
+    var filtered = ContactExportService.filterWithAddress(widget.contacts);
+    
+    if (_selectedCategories.isNotEmpty) {
+      filtered = filtered.where((c) => c.hasAnyCategory(_selectedCategories)).toList();
+    }
+    
+    return filtered;
+  }
+  
+  List<PersonModel> get _availableToAdd {
+    final selectedIds = _selectedContacts.map((c) => c.id).toSet();
+    return ContactExportService.filterWithAddress(widget.contacts)
+        .where((c) => !selectedIds.contains(c.id))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    const accentColor = Colors.teal;
+    
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: const BoxConstraints(maxWidth: 550, maxHeight: 700),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: accentColor.withOpacity(0.1),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.label, color: accentColor),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Adresetiketten',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          _currentStep == 0 ? 'Stap 1: Selecteer' : 'Stap 2: Controleer',
+                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+            
+            // Step indicator
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Row(
+                children: [
+                  _buildDot(0, 'Filter', accentColor),
+                  Expanded(child: Container(height: 2, color: _currentStep > 0 ? accentColor : Colors.grey[300])),
+                  _buildDot(1, 'Preview', accentColor),
+                ],
+              ),
+            ),
+            
+            // Content
+            Expanded(
+              child: _currentStep == 0 ? _buildFilterStep(theme) : _buildPreviewStep(theme),
+            ),
+            
+            // Footer
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: Colors.grey[300]!)),
+              ),
+              child: Row(
+                children: [
+                  if (_currentStep > 0)
+                    TextButton.icon(
+                      onPressed: () => setState(() => _currentStep--),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('Terug'),
+                    ),
+                  const Spacer(),
+                  if (_currentStep == 0)
+                    ElevatedButton.icon(
+                      onPressed: _filteredContacts.isNotEmpty ? () {
+                        setState(() {
+                          _selectedContacts = List.from(_filteredContacts);
+                          _currentStep = 1;
+                        });
+                      } : null,
+                      icon: const Icon(Icons.arrow_forward),
+                      label: const Text('Volgende'),
+                      style: ElevatedButton.styleFrom(backgroundColor: accentColor, foregroundColor: Colors.white),
+                    )
+                  else
+                    ElevatedButton.icon(
+                      onPressed: _selectedContacts.isNotEmpty ? _export : null,
+                      icon: const Icon(Icons.file_download),
+                      label: Text('Exporteer (${_selectedContacts.length})'),
+                      style: ElevatedButton.styleFrom(backgroundColor: accentColor, foregroundColor: Colors.white),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildDot(int step, String label, Color color) {
+    final isActive = _currentStep >= step;
+    return Column(
+      children: [
+        Container(
+          width: 28, height: 28,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: isActive ? color : Colors.grey[300]),
+          child: Center(child: Text('${step + 1}', style: TextStyle(color: isActive ? Colors.white : Colors.grey[600], fontWeight: FontWeight.bold, fontSize: 12))),
+        ),
+        const SizedBox(height: 4),
+        Text(label, style: TextStyle(fontSize: 11, color: isActive ? color : Colors.grey[600])),
+      ],
+    );
+  }
+  
+  Widget _buildFilterStep(ThemeData theme) {
+    final filtered = _filteredContacts;
+    final total = ContactExportService.filterWithAddress(widget.contacts).length;
+    
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: Colors.amber.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+            child: Row(children: [
+              const Icon(Icons.info_outline, color: Colors.amber, size: 20),
+              const SizedBox(width: 12),
+              Expanded(child: Text('$total van ${widget.contacts.length} contacten hebben een adres', style: theme.textTheme.bodySmall)),
+            ]),
+          ),
+          const SizedBox(height: 20),
+          Text('Categorie:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8, runSpacing: 8,
+            children: ContactCategory.values.map((cat) {
+              return FilterChip(
+                label: Text(cat.displayName),
+                selected: _selectedCategories.contains(cat),
+                onSelected: (s) => setState(() => s ? _selectedCategories.add(cat) : _selectedCategories.remove(cat)),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: filtered.isEmpty ? Colors.orange.withOpacity(0.1) : Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(children: [
+              Icon(filtered.isEmpty ? Icons.warning : Icons.check_circle, color: filtered.isEmpty ? Colors.orange : Colors.green),
+              const SizedBox(width: 12),
+              Text('${filtered.length} etiketten', style: TextStyle(fontWeight: FontWeight.bold, color: filtered.isEmpty ? Colors.orange[800] : Colors.green[800])),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildPreviewStep(ThemeData theme) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(color: Colors.grey[100], border: Border(bottom: BorderSide(color: Colors.grey[300]!))),
+          child: Row(children: [
+            Text('${_selectedContacts.length} etiketten', style: const TextStyle(fontWeight: FontWeight.bold)),
+            const Spacer(),
+            TextButton.icon(
+              onPressed: _selectedContacts.isEmpty ? null : () => _saveAsList(theme),
+              icon: const Icon(Icons.save_alt, size: 18),
+              label: const Text('Opslaan'),
+            ),
+            TextButton.icon(
+              onPressed: _availableToAdd.isEmpty ? null : () => _showAddDialog(theme),
+              icon: const Icon(Icons.person_add, size: 18),
+              label: const Text('Toevoegen'),
+            ),
+          ]),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _selectedContacts.length,
+            itemBuilder: (context, index) {
+              final c = _selectedContacts[index];
+              return ListTile(
+                dense: true,
+                leading: CircleAvatar(radius: 18, backgroundColor: Colors.teal.withOpacity(0.1), child: Text(c.firstName.isNotEmpty ? c.firstName[0].toUpperCase() : '?', style: const TextStyle(color: Colors.teal, fontWeight: FontWeight.bold))),
+                title: Text(c.fullName),
+                subtitle: Text('${c.address ?? ''}, ${c.city ?? ''}', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                trailing: IconButton(icon: const Icon(Icons.remove_circle_outline, color: Colors.red), onPressed: () => setState(() => _selectedContacts.removeAt(index))),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Future<void> _saveAsList(ThemeData theme) async {
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (context) => SaveMailingListDialog(
+        dossierId: widget.dossierId,
+        contactIds: _selectedContacts.map((c) => c.id).toList(),
+        suggestedType: _getSelectedMailingType(),
+      ),
+    );
+    
+    if (result != null && mounted) {
+      try {
+        final repository = MailingListRepository(AppDatabase.instance);
+        final desc = result['description'] as String?;
+        await repository.createList(
+          dossierId: widget.dossierId,
+          name: result['name'] as String,
+          description: (desc != null && desc.isNotEmpty) ? desc : null,
+          contactIds: _selectedContacts.map((c) => c.id).toList(),
+          mailingType: result['type'] as String?,
+        );
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Lijst "${result['name']}" opgeslagen'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Fout bij opslaan: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+  
+  String? _getSelectedMailingType() {
+    // Mailing type filters zijn verwijderd - nu alleen categorieën
+    return null;
+  }
+  
+  void _showAddDialog(ThemeData theme) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Contact toevoegen'),
+        content: SizedBox(
+          width: 300, height: 400,
+          child: ListView.builder(
+            itemCount: _availableToAdd.length,
+            itemBuilder: (_, i) {
+              final c = _availableToAdd[i];
+              return ListTile(
+                dense: true,
+                title: Text(c.fullName),
+                subtitle: Text(c.city ?? ''),
+                trailing: IconButton(
+                  icon: const Icon(Icons.add_circle_outline, color: Colors.green),
+                  onPressed: () {
+                    setState(() => _selectedContacts.add(c));
+                    Navigator.pop(ctx);
+                    if (_availableToAdd.isNotEmpty) _showAddDialog(theme);
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+        actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Sluiten'))],
+      ),
+    );
+  }
+  
+  Future<void> _export() async {
+    final result = await showDialog<ExportDialogResult>(
+      context: context,
+      builder: (context) => _ExportOptionsDialog(title: 'Etiketten exporteren', count: _selectedContacts.length),
+    );
+    if (result == null) return;
+    Navigator.pop(context);
+    
+    if (result.action == 'print') {
+      await ContactExportService.printAddressLabels(context, _selectedContacts);
+    } else {
+      await ContactExportService.exportAddressLabels(context, _selectedContacts, format: result.format);
+    }
+  }
+}
+
+// ===== ADRESLIJST DIALOOG =====
+
+class _AddressListDialog extends StatefulWidget {
+  final List<PersonModel> contacts;
+  final String dossierId;
+
+  const _AddressListDialog({
+    required this.contacts,
+    required this.dossierId,
+  });
+
+  @override
+  State<_AddressListDialog> createState() => _AddressListDialogState();
+}
+
+class _AddressListDialogState extends State<_AddressListDialog> {
+  int _currentStep = 0;
+  
+  final Set<ContactCategory> _selectedCategories = {};
+  List<PersonModel> _selectedContacts = [];
+  
+  List<PersonModel> get _filteredContacts {
+    var filtered = ContactExportService.filterWithAddress(widget.contacts);
+    
+    if (_selectedCategories.isNotEmpty) {
+      filtered = filtered.where((c) => c.hasAnyCategory(_selectedCategories)).toList();
+    }
+    
+    return filtered;
+  }
+  
+  List<PersonModel> get _availableToAdd {
+    final selectedIds = _selectedContacts.map((c) => c.id).toSet();
+    return ContactExportService.filterWithAddress(widget.contacts)
+        .where((c) => !selectedIds.contains(c.id))
+        .toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    const accentColor = Colors.indigo;
+    
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: const BoxConstraints(maxWidth: 550, maxHeight: 700),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: accentColor.withOpacity(0.1),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.list_alt, color: accentColor),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Adreslijst',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          _currentStep == 0 ? 'Stap 1: Selecteer' : 'Stap 2: Controleer',
+                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+                ],
+              ),
+            ),
+            
+            // Step indicator
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              child: Row(
+                children: [
+                  _buildDot(0, 'Filter', accentColor),
+                  Expanded(child: Container(height: 2, color: _currentStep > 0 ? accentColor : Colors.grey[300])),
+                  _buildDot(1, 'Preview', accentColor),
+                ],
+              ),
+            ),
+            
+            // Content
+            Expanded(
+              child: _currentStep == 0 ? _buildFilterStep(theme) : _buildPreviewStep(theme),
+            ),
+            
+            // Footer
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[300]!))),
+              child: Row(
+                children: [
+                  if (_currentStep > 0)
+                    TextButton.icon(onPressed: () => setState(() => _currentStep--), icon: const Icon(Icons.arrow_back), label: const Text('Terug')),
+                  const Spacer(),
+                  if (_currentStep == 0)
+                    ElevatedButton.icon(
+                      onPressed: _filteredContacts.isNotEmpty ? () {
+                        setState(() {
+                          _selectedContacts = List.from(_filteredContacts);
+                          _currentStep = 1;
+                        });
+                      } : null,
+                      icon: const Icon(Icons.arrow_forward),
+                      label: const Text('Volgende'),
+                      style: ElevatedButton.styleFrom(backgroundColor: accentColor, foregroundColor: Colors.white),
+                    )
+                  else
+                    ElevatedButton.icon(
+                      onPressed: _selectedContacts.isNotEmpty ? _export : null,
+                      icon: const Icon(Icons.file_download),
+                      label: Text('Exporteer (${_selectedContacts.length})'),
+                      style: ElevatedButton.styleFrom(backgroundColor: accentColor, foregroundColor: Colors.white),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildDot(int step, String label, Color color) {
+    final isActive = _currentStep >= step;
+    return Column(
+      children: [
+        Container(
+          width: 28, height: 28,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: isActive ? color : Colors.grey[300]),
+          child: Center(child: Text('${step + 1}', style: TextStyle(color: isActive ? Colors.white : Colors.grey[600], fontWeight: FontWeight.bold, fontSize: 12))),
+        ),
+        const SizedBox(height: 4),
+        Text(label, style: TextStyle(fontSize: 11, color: isActive ? color : Colors.grey[600])),
+      ],
+    );
+  }
+  
+  Widget _buildFilterStep(ThemeData theme) {
+    final filtered = _filteredContacts;
+    final total = ContactExportService.filterWithAddress(widget.contacts).length;
+    
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(color: Colors.amber.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+            child: Row(children: [
+              const Icon(Icons.info_outline, color: Colors.amber, size: 20),
+              const SizedBox(width: 12),
+              Expanded(child: Text('$total van ${widget.contacts.length} contacten hebben een adres', style: theme.textTheme.bodySmall)),
+            ]),
+          ),
+          const SizedBox(height: 20),
+          Text('Categorie:', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8, runSpacing: 8,
+            children: ContactCategory.values.map((cat) {
+              return FilterChip(
+                label: Text(cat.displayName),
+                selected: _selectedCategories.contains(cat),
+                onSelected: (s) => setState(() => s ? _selectedCategories.add(cat) : _selectedCategories.remove(cat)),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: filtered.isEmpty ? Colors.orange.withOpacity(0.1) : Colors.green.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(children: [
+              Icon(filtered.isEmpty ? Icons.warning : Icons.check_circle, color: filtered.isEmpty ? Colors.orange : Colors.green),
+              const SizedBox(width: 12),
+              Text('${filtered.length} adressen', style: TextStyle(fontWeight: FontWeight.bold, color: filtered.isEmpty ? Colors.orange[800] : Colors.green[800])),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildPreviewStep(ThemeData theme) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(color: Colors.grey[100], border: Border(bottom: BorderSide(color: Colors.grey[300]!))),
+          child: Row(children: [
+            Text('${_selectedContacts.length} adressen', style: const TextStyle(fontWeight: FontWeight.bold)),
+            const Spacer(),
+            TextButton.icon(
+              onPressed: _selectedContacts.isEmpty ? null : () => _saveAsList(theme),
+              icon: const Icon(Icons.save_alt, size: 18),
+              label: const Text('Opslaan'),
+            ),
+            TextButton.icon(
+              onPressed: _availableToAdd.isEmpty ? null : () => _showAddDialog(theme),
+              icon: const Icon(Icons.person_add, size: 18),
+              label: const Text('Toevoegen'),
+            ),
+          ]),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _selectedContacts.length,
+            itemBuilder: (context, index) {
+              final c = _selectedContacts[index];
+              return ListTile(
+                dense: true,
+                leading: CircleAvatar(radius: 18, backgroundColor: Colors.indigo.withOpacity(0.1), child: Text(c.firstName.isNotEmpty ? c.firstName[0].toUpperCase() : '?', style: const TextStyle(color: Colors.indigo, fontWeight: FontWeight.bold))),
+                title: Text(c.fullName),
+                subtitle: Text('${c.address ?? ''}, ${c.city ?? ''}', maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                trailing: IconButton(icon: const Icon(Icons.remove_circle_outline, color: Colors.red), onPressed: () => setState(() => _selectedContacts.removeAt(index))),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Future<void> _saveAsList(ThemeData theme) async {
+    final result = await showDialog<Map<String, dynamic>>(
+      context: context,
+      builder: (context) => SaveMailingListDialog(
+        dossierId: widget.dossierId,
+        contactIds: _selectedContacts.map((c) => c.id).toList(),
+        suggestedType: _getSelectedMailingType(),
+      ),
+    );
+    
+    if (result != null && mounted) {
+      try {
+        final repository = MailingListRepository(AppDatabase.instance);
+        final desc = result['description'] as String?;
+        await repository.createList(
+          dossierId: widget.dossierId,
+          name: result['name'] as String,
+          description: (desc != null && desc.isNotEmpty) ? desc : null,
+          contactIds: _selectedContacts.map((c) => c.id).toList(),
+          mailingType: result['type'] as String?,
+        );
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Lijst "${result['name']}" opgeslagen'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Fout bij opslaan: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+  
+  String? _getSelectedMailingType() {
+    // Mailing type filters zijn verwijderd - nu alleen categorieën
+    return null;
+  }
+  
+  void _showAddDialog(ThemeData theme) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Contact toevoegen'),
+        content: SizedBox(
+          width: 300, height: 400,
+          child: ListView.builder(
+            itemCount: _availableToAdd.length,
+            itemBuilder: (_, i) {
+              final c = _availableToAdd[i];
+              return ListTile(
+                dense: true,
+                title: Text(c.fullName),
+                subtitle: Text(c.city ?? ''),
+                trailing: IconButton(
+                  icon: const Icon(Icons.add_circle_outline, color: Colors.green),
+                  onPressed: () {
+                    setState(() => _selectedContacts.add(c));
+                    Navigator.pop(ctx);
+                    if (_availableToAdd.isNotEmpty) _showAddDialog(theme);
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+        actions: [TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Sluiten'))],
+      ),
+    );
+  }
+  
+  Future<void> _export() async {
+    final result = await showDialog<ExportDialogResult>(
+      context: context,
+      builder: (context) => _ExportOptionsDialog(title: 'Adreslijst exporteren', count: _selectedContacts.length),
+    );
+    if (result == null) return;
+    Navigator.pop(context);
+    
+    if (result.action == 'print') {
+      await ContactExportService.printAddressList(context, _selectedContacts);
+    } else {
+      await ContactExportService.shareAddressList(context, _selectedContacts, format: result.format);
+    }
+  }
+}
+
+// ===== EXPORT OPTIES DIALOOG =====
+
+/// Resultaat van de export opties dialoog
+class ExportDialogResult {
+  final String action; // 'file' or 'print'
+  final ExportFormat? format; // alleen voor 'file'
+
+  ExportDialogResult({required this.action, this.format});
+}
+
+class _ExportOptionsDialog extends StatefulWidget {
+  final String title;
+  final int count;
+
+  const _ExportOptionsDialog({
+    required this.title,
+    required this.count,
+  });
+
+  @override
+  State<_ExportOptionsDialog> createState() => _ExportOptionsDialogState();
+}
+
+class _ExportOptionsDialogState extends State<_ExportOptionsDialog> {
+  ExportFormat _selectedFormat = ExportFormat.pdf;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(widget.title),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('${widget.count} items klaar voor export'),
+          const SizedBox(height: 20),
+          
+          // Formaat selectie
+          const Text('Bestandsformaat:', style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            children: ExportFormat.values.map((format) => ChoiceChip(
+              avatar: Icon(format.icon, size: 18),
+              label: Text(format.label),
+              selected: _selectedFormat == format,
+              onSelected: (selected) {
+                if (selected) setState(() => _selectedFormat = format);
+              },
+            )).toList(),
+          ),
+          const SizedBox(height: 24),
+          
+          // Exporteer naar bestand
+          ListTile(
+            leading: const CircleAvatar(
+              backgroundColor: Colors.blue,
+              child: Icon(Icons.file_download, color: Colors.white),
+            ),
+            title: const Text('Opslaan als bestand'),
+            subtitle: Text('Exporteer als ${_selectedFormat.label}'),
+            onTap: () => Navigator.pop(context, ExportDialogResult(
+              action: 'file',
+              format: _selectedFormat,
+            )),
+          ),
+          const Divider(),
+          
+          // Direct printen
+          ListTile(
+            leading: const CircleAvatar(
+              backgroundColor: Colors.green,
+              child: Icon(Icons.print, color: Colors.white),
+            ),
+            title: const Text('Direct printen'),
+            subtitle: const Text('Open printdialoog'),
+            onTap: () => Navigator.pop(context, ExportDialogResult(action: 'print')),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Annuleren'),
+        ),
+      ],
+    );
+  }
+}
+
+// ===== MAILING LIJSTEN DIALOOG =====
+
+class _MailingListsDialog extends ConsumerStatefulWidget {
+  final String dossierId;
+
+  const _MailingListsDialog({required this.dossierId});
+
+  @override
+  ConsumerState<_MailingListsDialog> createState() => _MailingListsDialogState();
+}
+
+class _MailingListsDialogState extends ConsumerState<_MailingListsDialog> {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final listsAsync = ref.watch(mailingListsProvider(widget.dossierId));
+
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: const BoxConstraints(maxWidth: 500, maxHeight: 600),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.primaryColor.withOpacity(0.1),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.folder_special, color: theme.primaryColor),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Text(
+                      'Opgeslagen Mailing Lijsten',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+
+            // Content
+            Expanded(
+              child: listsAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (err, _) => Center(child: Text('Fout: $err')),
+                data: (lists) {
+                  if (lists.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.folder_open, size: 60, color: Colors.grey[400]),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Geen opgeslagen lijsten',
+                            style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Sla een selectie op vanuit\n"Email versturen" of "Brieven maken"',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[500]),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: lists.length,
+                    itemBuilder: (context, index) {
+                      final list = lists[index];
+                      return Card(
+                        child: ListTile(
+                          onTap: () => _viewList(list),
+                          leading: CircleAvatar(
+                            backgroundColor: theme.primaryColor.withOpacity(0.1),
+                            child: Text(list.emoji, style: const TextStyle(fontSize: 20)),
+                          ),
+                          title: Text(list.name),
+                          subtitle: Text(
+                            '${list.contactCount} contacten • ${list.typeLabel}',
+                            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit, size: 20),
+                                onPressed: () => _viewList(list),
+                                tooltip: 'Bekijken/bewerken',
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.email, size: 20),
+                                onPressed: () => _useList(list, 'email'),
+                                tooltip: 'Email versturen',
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete, size: 20, color: Colors.red),
+                                onPressed: () => _deleteList(list),
+                                tooltip: 'Verwijderen',
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+
+            // Footer
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: Colors.grey[300]!)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Sluiten'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _viewList(MailingListModel list) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => _EditMailingListDialog(
+        mailingList: list,
+        dossierId: widget.dossierId,
+      ),
+    );
+    
+    if (result == true) {
+      ref.invalidate(mailingListsProvider(widget.dossierId));
+    }
+  }
+
+  void _useList(MailingListModel list, String action) async {
+    Navigator.pop(context);
+    // TODO: Implementeer gebruik van opgeslagen lijst
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Lijst "${list.name}" geladen met ${list.contactCount} contacten')),
+    );
+  }
+
+  void _deleteList(MailingListModel list) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Lijst verwijderen'),
+        content: Text('Weet je zeker dat je "${list.name}" wilt verwijderen?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Annuleren'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Verwijderen'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      final repository = ref.read(mailingListRepositoryProvider);
+      await repository.deleteList(list.id);
+      ref.invalidate(mailingListsProvider(widget.dossierId));
+    }
+  }
+}
+
+// ===== SAVE MAILING LIST DIALOOG =====
+
+class SaveMailingListDialog extends StatefulWidget {
+  final String dossierId;
+  final List<String> contactIds;
+  final String? suggestedType;
+
+  const SaveMailingListDialog({
+    super.key,
+    required this.dossierId,
+    required this.contactIds,
+    this.suggestedType,
+  });
+
+  @override
+  State<SaveMailingListDialog> createState() => _SaveMailingListDialogState();
+}
+
+class _SaveMailingListDialogState extends State<SaveMailingListDialog> {
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  String? _selectedType;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedType = widget.suggestedType;
+    
+    // Suggestie voor naam
+    final now = DateTime.now();
+    final typeLabel = _getTypeLabel(widget.suggestedType);
+    _nameController.text = '$typeLabel ${now.day}-${now.month}-${now.year}';
+  }
+
+  String _getTypeLabel(String? type) {
+    switch (type) {
+      case 'christmas': return 'Kerstlijst';
+      case 'newsletter': return 'Nieuwsbrieflijst';
+      case 'party': return 'Feestlijst';
+      case 'funeral': return 'Rouwlijst';
+      default: return 'Mailing';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Selectie opslaan'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${widget.contactIds.length} contacten opslaan als mailing lijst',
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 16),
+            
+            TextFormField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                labelText: 'Naam *',
+                border: OutlineInputBorder(),
+              ),
+              autofocus: true,
+            ),
+            const SizedBox(height: 12),
+            
+            DropdownButtonFormField<String?>(
+              value: _selectedType,
+              decoration: const InputDecoration(
+                labelText: 'Type',
+                border: OutlineInputBorder(),
+              ),
+              items: const [
+                DropdownMenuItem(value: null, child: Text('Algemeen')),
+                DropdownMenuItem(value: 'christmas', child: Text('🎄 Kerstkaarten')),
+                DropdownMenuItem(value: 'newsletter', child: Text('📧 Nieuwsbrief')),
+                DropdownMenuItem(value: 'party', child: Text('🎉 Feesten')),
+                DropdownMenuItem(value: 'funeral', child: Text('🕯️ Rouwkaarten')),
+              ],
+              onChanged: (v) => setState(() => _selectedType = v),
+            ),
+            const SizedBox(height: 12),
+            
+            TextFormField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(
+                labelText: 'Beschrijving (optioneel)',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 2,
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Annuleren'),
+        ),
+        ElevatedButton(
+          onPressed: _nameController.text.trim().isNotEmpty ? _save : null,
+          child: const Text('Opslaan'),
+        ),
+      ],
+    );
+  }
+
+  void _save() {
+    Navigator.pop(context, {
+      'name': _nameController.text.trim(),
+      'description': _descriptionController.text.trim(),
+      'type': _selectedType,
+    });
+  }
+}
+
+// ===== EDIT MAILING LIST DIALOOG =====
+
+class _EditMailingListDialog extends ConsumerStatefulWidget {
+  final MailingListModel mailingList;
+  final String dossierId;
+
+  const _EditMailingListDialog({
+    required this.mailingList,
+    required this.dossierId,
+  });
+
+  @override
+  ConsumerState<_EditMailingListDialog> createState() => _EditMailingListDialogState();
+}
+
+class _EditMailingListDialogState extends ConsumerState<_EditMailingListDialog> {
+  late TextEditingController _nameController;
+  late TextEditingController _descriptionController;
+  late List<String> _contactIds;
+  List<PersonModel> _contacts = [];
+  List<PersonModel> _allContacts = [];
+  bool _isLoading = true;
+  bool _hasChanges = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.mailingList.name);
+    _descriptionController = TextEditingController(text: widget.mailingList.description ?? '');
+    _contactIds = List.from(widget.mailingList.contactIds);
+    _loadContacts();
+  }
+
+  Future<void> _loadContacts() async {
+    final allContacts = await PersonRepository.getPersonsForDossier(widget.dossierId);
+    
+    setState(() {
+      _allContacts = allContacts;
+      _contacts = allContacts.where((c) => _contactIds.contains(c.id)).toList();
+      _isLoading = false;
+    });
+  }
+
+  List<PersonModel> get _availableToAdd {
+    return _allContacts.where((c) => !_contactIds.contains(c.id)).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        constraints: const BoxConstraints(maxWidth: 600, maxHeight: 700),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.primaryColor.withOpacity(0.1),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              ),
+              child: Row(
+                children: [
+                  Text(widget.mailingList.emoji, style: const TextStyle(fontSize: 24)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Mailing Lijst Bewerken',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          widget.mailingList.typeLabel,
+                          style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => Navigator.pop(context, _hasChanges),
+                    icon: const Icon(Icons.close),
+                  ),
+                ],
+              ),
+            ),
+
+            // Naam en beschrijving
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Naam',
+                      border: OutlineInputBorder(),
+                      isDense: true,
+                    ),
+                    onChanged: (_) => setState(() => _hasChanges = true),
+                  ),
+                  const SizedBox(height: 12),
+                  TextFormField(
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      labelText: 'Beschrijving (optioneel)',
+                      border: OutlineInputBorder(),
+                      isDense: true,
+                    ),
+                    onChanged: (_) => setState(() => _hasChanges = true),
+                  ),
+                ],
+              ),
+            ),
+
+            // Contacten header
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                border: Border(
+                  top: BorderSide(color: Colors.grey[300]!),
+                  bottom: BorderSide(color: Colors.grey[300]!),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    '${_contacts.length} contacten',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const Spacer(),
+                  TextButton.icon(
+                    onPressed: _availableToAdd.isEmpty ? null : _showAddContactDialog,
+                    icon: const Icon(Icons.person_add, size: 18),
+                    label: const Text('Toevoegen'),
+                  ),
+                ],
+              ),
+            ),
+
+            // Contacten lijst
+            Expanded(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : _contacts.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.people_outline, size: 48, color: Colors.grey[400]),
+                              const SizedBox(height: 12),
+                              Text(
+                                'Geen contacten in deze lijst',
+                                style: TextStyle(color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          itemCount: _contacts.length,
+                          itemBuilder: (context, index) {
+                            final contact = _contacts[index];
+                            return Card(
+                              child: ListTile(
+                                dense: true,
+                                leading: CircleAvatar(
+                                  radius: 18,
+                                  backgroundColor: theme.primaryColor.withOpacity(0.1),
+                                  child: Text(
+                                    contact.firstName.isNotEmpty ? contact.firstName[0].toUpperCase() : '?',
+                                    style: TextStyle(color: theme.primaryColor, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                title: Text(contact.fullName),
+                                subtitle: Text(
+                                  contact.email ?? contact.city ?? '',
+                                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
+                                  onPressed: () => _removeContact(contact),
+                                  tooltip: 'Verwijderen uit lijst',
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+            ),
+
+            // Footer
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: Colors.grey[300]!)),
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    _hasChanges ? 'Wijzigingen niet opgeslagen' : '',
+                    style: TextStyle(color: Colors.orange[700], fontSize: 12),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, _hasChanges),
+                    child: const Text('Sluiten'),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton.icon(
+                    onPressed: _hasChanges ? _saveChanges : null,
+                    icon: const Icon(Icons.save),
+                    label: const Text('Opslaan'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _removeContact(PersonModel contact) {
+    setState(() {
+      _contactIds.remove(contact.id);
+      _contacts.removeWhere((c) => c.id == contact.id);
+      _hasChanges = true;
+    });
+  }
+
+  void _showAddContactDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Contact toevoegen'),
+        content: SizedBox(
+          width: 350,
+          height: 400,
+          child: _availableToAdd.isEmpty
+              ? const Center(child: Text('Alle contacten zijn al toegevoegd'))
+              : ListView.builder(
+                  itemCount: _availableToAdd.length,
+                  itemBuilder: (_, index) {
+                    final contact = _availableToAdd[index];
+                    return ListTile(
+                      dense: true,
+                      leading: CircleAvatar(
+                        radius: 16,
+                        child: Text(contact.firstName.isNotEmpty ? contact.firstName[0] : '?'),
+                      ),
+                      title: Text(contact.fullName),
+                      subtitle: Text(contact.email ?? contact.city ?? ''),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.add_circle_outline, color: Colors.green),
+                        onPressed: () {
+                          setState(() {
+                            _contactIds.add(contact.id);
+                            _contacts.add(contact);
+                            _hasChanges = true;
+                          });
+                          Navigator.pop(ctx);
+                          if (_availableToAdd.isNotEmpty) {
+                            _showAddContactDialog();
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Sluiten'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _saveChanges() async {
+    if (_nameController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Naam is verplicht'), backgroundColor: Colors.red),
+      );
+      return;
+    }
+
+    try {
+      final repository = ref.read(mailingListRepositoryProvider);
+      final updated = widget.mailingList.copyWith(
+        name: _nameController.text.trim(),
+        description: _descriptionController.text.trim().isNotEmpty 
+            ? _descriptionController.text.trim() 
+            : null,
+        contactIds: _contactIds,
+        updatedAt: DateTime.now(),
+      );
+      
+      await repository.updateList(updated);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Lijst "${updated.name}" opgeslagen'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context, true);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Fout bij opslaan: $e'), backgroundColor: Colors.red),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
   }
 }

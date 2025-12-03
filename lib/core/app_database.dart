@@ -41,7 +41,7 @@ class AppDatabase {
 
     return await openDatabase(
       path,
-      version: 4, // ← VERSIE 4: Contacten geïntegreerd in persons
+      version: 8, // ← VERSIE 8: created_at kolom + schema cleanup
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -104,11 +104,8 @@ class AppDatabase {
         relation TEXT,
         death_date TEXT,
         is_contact INTEGER NOT NULL DEFAULT 0,
-        contact_category TEXT,
-        for_christmas_card INTEGER NOT NULL DEFAULT 0,
-        for_newsletter INTEGER NOT NULL DEFAULT 0,
-        for_party INTEGER NOT NULL DEFAULT 0,
-        for_funeral INTEGER NOT NULL DEFAULT 0,
+        contact_categories TEXT,
+        created_at INTEGER,
         FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE
       );
     ''');
@@ -156,10 +153,44 @@ class AppDatabase {
     await db.execute('ALTER TABLE persons ADD COLUMN bsn TEXT;');
     await db.execute('ALTER TABLE persons ADD COLUMN civil_status TEXT;');
     
+    // EMAIL_TEMPLATES tabel
+    await db.execute('''
+      CREATE TABLE email_templates (
+        id TEXT PRIMARY KEY,
+        dossier_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        subject TEXT,
+        body TEXT,
+        mailing_type TEXT,
+        is_default INTEGER NOT NULL DEFAULT 0,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER,
+        FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE
+      );
+    ''');
+    
+    // MAILING_LISTS tabel
+    await db.execute('''
+      CREATE TABLE mailing_lists (
+        id TEXT PRIMARY KEY,
+        dossier_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        description TEXT,
+        contact_ids TEXT,
+        mailing_type TEXT,
+        created_at INTEGER NOT NULL,
+        updated_at INTEGER,
+        FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE
+      );
+    ''');
+    
     // Indexes voor nieuwe tabellen
     await db.execute('CREATE INDEX idx_household_dossier ON household_members(dossier_id);');
     await db.execute('CREATE INDEX idx_household_person ON household_members(person_id);');
     await db.execute('CREATE INDEX idx_documents_person ON personal_documents(person_id);');
+    await db.execute('CREATE INDEX idx_templates_dossier ON email_templates(dossier_id);');
+    await db.execute('CREATE INDEX idx_templates_type ON email_templates(mailing_type);');
+    await db.execute('CREATE INDEX idx_mailing_lists_dossier ON mailing_lists(dossier_id);');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -269,6 +300,95 @@ class AppDatabase {
       print('✅ Contact index aangemaakt');
       
       print('🎉 Database upgrade naar v4 voltooid!');
+    }
+    
+    if (oldVersion < 5) {
+      print('📧 Upgrading to version 5: Email templates...');
+      
+      // Email templates tabel
+      await db.execute('''
+        CREATE TABLE email_templates (
+          id TEXT PRIMARY KEY,
+          dossier_id TEXT NOT NULL,
+          name TEXT NOT NULL,
+          subject TEXT,
+          body TEXT,
+          mailing_type TEXT,
+          is_default INTEGER NOT NULL DEFAULT 0,
+          created_at INTEGER NOT NULL,
+          updated_at INTEGER,
+          FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE
+        );
+      ''');
+      
+      // Index voor templates
+      await db.execute('CREATE INDEX idx_templates_dossier ON email_templates(dossier_id);');
+      await db.execute('CREATE INDEX idx_templates_type ON email_templates(mailing_type);');
+      
+      print('🎉 Database upgrade naar v5 voltooid!');
+    }
+    
+    if (oldVersion < 6) {
+      print('📋 Upgrading to version 6: Mailing lijsten...');
+      
+      // Mailing lijsten tabel
+      await db.execute('''
+        CREATE TABLE mailing_lists (
+          id TEXT PRIMARY KEY,
+          dossier_id TEXT NOT NULL,
+          name TEXT NOT NULL,
+          description TEXT,
+          contact_ids TEXT,
+          mailing_type TEXT,
+          created_at INTEGER NOT NULL,
+          updated_at INTEGER,
+          FOREIGN KEY (dossier_id) REFERENCES dossiers(id) ON DELETE CASCADE
+        );
+      ''');
+      
+      // Index voor lijsten
+      await db.execute('CREATE INDEX idx_mailing_lists_dossier ON mailing_lists(dossier_id);');
+      
+      print('🎉 Database upgrade naar v6 voltooid!');
+    }
+    
+    if (oldVersion < 7) {
+      print('📋 Upgrading to version 7: Meerdere categorieën per contact...');
+      
+      // Voeg nieuwe 'categories' kolom toe
+      await db.execute('ALTER TABLE persons ADD COLUMN categories TEXT;');
+      
+      // Migreer bestaande data: kopieer contact_category naar categories
+      await db.execute('''
+        UPDATE persons 
+        SET categories = contact_category 
+        WHERE contact_category IS NOT NULL AND contact_category != ''
+      ''');
+      
+      print('🎉 Database upgrade naar v7 voltooid!');
+      print('   → Bestaande categorieën gemigreerd naar nieuwe structuur');
+    }
+    
+    if (oldVersion < 8) {
+      print('📋 Upgrading to version 8: created_at kolom + schema cleanup...');
+      
+      // Voeg created_at kolom toe aan persons
+      await db.execute('ALTER TABLE persons ADD COLUMN created_at INTEGER;');
+      
+      // Voeg contact_categories kolom toe (hernoemd van categories)
+      try {
+        await db.execute('ALTER TABLE persons ADD COLUMN contact_categories TEXT;');
+        // Kopieer bestaande categories data
+        await db.execute('''
+          UPDATE persons 
+          SET contact_categories = categories 
+          WHERE categories IS NOT NULL AND categories != ''
+        ''');
+      } catch (e) {
+        print('   contact_categories kolom bestaat mogelijk al: $e');
+      }
+      
+      print('🎉 Database upgrade naar v8 voltooid!');
     }
   }
 

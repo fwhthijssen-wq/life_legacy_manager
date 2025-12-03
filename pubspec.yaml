@@ -32,6 +32,18 @@ dependencies:
   uuid: ^3.0.7
   local_auth: ^2.1.7
 
+  # Export / Sharing
+  url_launcher: ^6.2.0
+  path_provider: ^2.1.0
+  share_plus: ^7.2.0
+  
+  # File picker voor import
+  file_picker: ^6.1.1
+  
+  # PDF generation
+  pdf: ^3.10.8
+  printing: ^5.12.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

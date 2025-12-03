@@ -3,23 +3,47 @@
 // Sentinel object voor undefined values in copyWith
 const _undefined = Object();
 
-/// Contact categorieën
+/// Contact categorieën (uitgebreid, meerdere mogelijk per contact)
 enum ContactCategory {
-  family('Familie', 'family'),
-  friend('Vriend', 'friend'),
-  professional('Beroepsmatig', 'professional'),
-  other('Overig', 'other');
+  family('Familie', 'family', '👨‍👩‍👧'),
+  friend('Vrienden', 'friend', '👫'),
+  colleague('Collega\'s/Werk', 'colleague', '💼'),
+  neighbor('Buren', 'neighbor', '🏠'),
+  acquaintance('Kennissen', 'acquaintance', '👋'),
+  club('Club/Vereniging', 'club', '🎾'),
+  school('School/Kinderen', 'school', '🏫'),
+  medical('Zorg/Medisch', 'medical', '⚕️'),
+  other('Overig', 'other', '📋');
 
   final String displayName;
   final String value;
-  const ContactCategory(this.displayName, this.value);
+  final String emoji;
+  const ContactCategory(this.displayName, this.value, this.emoji);
+
+  String get displayWithEmoji => '$emoji $displayName';
 
   static ContactCategory? fromValue(String? value) {
-    if (value == null) return null;
+    if (value == null || value.isEmpty) return null;
     return ContactCategory.values.firstWhere(
       (e) => e.value == value,
       orElse: () => ContactCategory.other,
     );
+  }
+  
+  /// Parse meerdere categorieën uit comma-separated string
+  static Set<ContactCategory> fromValues(String? values) {
+    if (values == null || values.isEmpty) return {};
+    return values
+        .split(',')
+        .map((v) => fromValue(v.trim()))
+        .whereType<ContactCategory>()
+        .toSet();
+  }
+  
+  /// Converteer set naar comma-separated string
+  static String toValues(Set<ContactCategory>? categories) {
+    if (categories == null || categories.isEmpty) return '';
+    return categories.map((c) => c.value).join(',');
   }
 }
 
@@ -43,11 +67,8 @@ class PersonModel {
   
   // ===== CONTACT-VELDEN =====
   final bool isContact;
-  final ContactCategory? contactCategory;
-  final bool forChristmasCard;
-  final bool forNewsletter;
-  final bool forParty;
-  final bool forFuneral;
+  /// Meerdere categorieën mogelijk per contact
+  final Set<ContactCategory> categories;
 
   PersonModel({
     required this.id,
@@ -66,12 +87,8 @@ class PersonModel {
     this.relation,
     this.deathDate,
     this.isContact = false,
-    this.contactCategory,
-    this.forChristmasCard = false,
-    this.forNewsletter = false,
-    this.forParty = false,
-    this.forFuneral = false,
-  });
+    Set<ContactCategory>? categories,
+  }) : categories = categories ?? {};
 
   String get fullName {
     if (namePrefix != null && namePrefix!.isNotEmpty) {
@@ -87,6 +104,32 @@ class PersonModel {
     }
     return '$lastName, $firstInitial';
   }
+  
+  /// Geeft een leesbare string van categorieën
+  String get categoriesDisplay {
+    if (categories.isEmpty) return 'Geen categorie';
+    return categories.map((c) => c.displayName).join(', ');
+  }
+  
+  /// Geeft categorieën met emoji's
+  String get categoriesWithEmoji {
+    if (categories.isEmpty) return '';
+    return categories.map((c) => c.emoji).join(' ');
+  }
+  
+  /// Check of contact in een bepaalde categorie zit
+  bool hasCategory(ContactCategory category) => categories.contains(category);
+  
+  /// Check of contact in een van de gegeven categorieën zit
+  bool hasAnyCategory(Set<ContactCategory> cats) => 
+      categories.any((c) => cats.contains(c));
+
+  // Legacy getters voor backwards compatibility tijdens migratie
+  ContactCategory? get contactCategory => categories.isNotEmpty ? categories.first : null;
+  bool get forChristmasCard => false; // Deprecated
+  bool get forNewsletter => false; // Deprecated
+  bool get forParty => false; // Deprecated
+  bool get forFuneral => false; // Deprecated
 
   PersonModel copyWith({
     String? dossierId,
@@ -104,11 +147,7 @@ class PersonModel {
     Object? relation = _undefined,
     Object? deathDate = _undefined,
     bool? isContact,
-    Object? contactCategory = _undefined,
-    bool? forChristmasCard,
-    bool? forNewsletter,
-    bool? forParty,
-    bool? forFuneral,
+    Set<ContactCategory>? categories,
   }) {
     return PersonModel(
       id: id,
@@ -127,11 +166,7 @@ class PersonModel {
       relation: relation == _undefined ? this.relation : relation as String?,
       deathDate: deathDate == _undefined ? this.deathDate : deathDate as String?,
       isContact: isContact ?? this.isContact,
-      contactCategory: contactCategory == _undefined ? this.contactCategory : contactCategory as ContactCategory?,
-      forChristmasCard: forChristmasCard ?? this.forChristmasCard,
-      forNewsletter: forNewsletter ?? this.forNewsletter,
-      forParty: forParty ?? this.forParty,
-      forFuneral: forFuneral ?? this.forFuneral,
+      categories: categories ?? this.categories,
     );
   }
 
@@ -153,15 +188,24 @@ class PersonModel {
       'relation': relation,
       'death_date': deathDate,
       'is_contact': isContact ? 1 : 0,
-      'contact_category': contactCategory?.value,
-      'for_christmas_card': forChristmasCard ? 1 : 0,
-      'for_newsletter': forNewsletter ? 1 : 0,
-      'for_party': forParty ? 1 : 0,
-      'for_funeral': forFuneral ? 1 : 0,
+      'contact_categories': ContactCategory.toValues(categories),
+      'created_at': DateTime.now().millisecondsSinceEpoch,
     };
   }
 
   factory PersonModel.fromMap(Map<String, dynamic> map) {
+    // Parse categorieën - probeer nieuwe veldnaam, dan legacy
+    Set<ContactCategory> cats = {};
+    
+    final categoriesStr = map['contact_categories'] ?? map['categories'];
+    if (categoriesStr != null && (categoriesStr as String).isNotEmpty) {
+      cats = ContactCategory.fromValues(categoriesStr);
+    } else if (map['contact_category'] != null) {
+      // Legacy: migreer oude single category
+      final oldCat = ContactCategory.fromValue(map['contact_category'] as String?);
+      if (oldCat != null) cats = {oldCat};
+    }
+    
     return PersonModel(
       id: map['id'],
       dossierId: map['dossier_id'],
@@ -179,11 +223,7 @@ class PersonModel {
       relation: map['relation'],
       deathDate: map['death_date'],
       isContact: map['is_contact'] == 1,
-      contactCategory: ContactCategory.fromValue(map['contact_category']),
-      forChristmasCard: map['for_christmas_card'] == 1,
-      forNewsletter: map['for_newsletter'] == 1,
-      forParty: map['for_party'] == 1,
-      forFuneral: map['for_funeral'] == 1,
+      categories: cats,
     );
   }
 }

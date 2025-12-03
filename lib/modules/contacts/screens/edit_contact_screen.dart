@@ -26,11 +26,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
   final _cityController = TextEditingController();
   final _notesController = TextEditingController();
 
-  ContactCategory? _selectedCategory;
-  bool _forChristmasCard = false;
-  bool _forNewsletter = false;
-  bool _forParty = false;
-  bool _forFuneral = false;
+  final Set<ContactCategory> _selectedCategories = {};
   bool _loading = true;
   bool _isSaving = false;
   PersonModel? _contact;
@@ -62,11 +58,8 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
         _postalCodeController.text = contact.postalCode ?? '';
         _cityController.text = contact.city ?? '';
         _notesController.text = contact.notes ?? '';
-        _selectedCategory = contact.contactCategory;
-        _forChristmasCard = contact.forChristmasCard;
-        _forNewsletter = contact.forNewsletter;
-        _forParty = contact.forParty;
-        _forFuneral = contact.forFuneral;
+        _selectedCategories.clear();
+        _selectedCategories.addAll(contact.categories);
         _loading = false;
       });
     }
@@ -119,11 +112,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
         notes: _notesController.text.trim().isEmpty 
             ? null 
             : _notesController.text.trim(),
-        contactCategory: _selectedCategory,
-        forChristmasCard: _forChristmasCard,
-        forNewsletter: _forNewsletter,
-        forParty: _forParty,
-        forFuneral: _forFuneral,
+        categories: _selectedCategories,
       );
 
       await db.update(
@@ -245,11 +234,18 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
             
             const SizedBox(height: 24),
             
-            // Categorie sectie
+            // Categorieën sectie (meerdere selecteerbaar)
             Text(
-              'Categorie',
+              'Categorieën',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Selecteer één of meerdere categorieën',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Colors.grey[600],
               ),
             ),
             const SizedBox(height: 12),
@@ -258,16 +254,22 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
               spacing: 8,
               runSpacing: 8,
               children: ContactCategory.values.map((category) {
-                final isSelected = _selectedCategory == category;
-                return ChoiceChip(
+                final isSelected = _selectedCategories.contains(category);
+                return FilterChip(
+                  avatar: Text(category.emoji, style: const TextStyle(fontSize: 16)),
                   label: Text(category.displayName),
                   selected: isSelected,
                   onSelected: (selected) {
                     setState(() {
-                      _selectedCategory = selected ? category : null;
+                      if (selected) {
+                        _selectedCategories.add(category);
+                      } else {
+                        _selectedCategories.remove(category);
+                      }
                     });
                   },
                   selectedColor: theme.primaryColor.withOpacity(0.2),
+                  checkmarkColor: theme.primaryColor,
                 );
               }).toList(),
             ),
@@ -356,66 +358,6 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
             
             const SizedBox(height: 24),
             
-            // Mailings sectie
-            Text(
-              'Mailings',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Selecteer waarvoor dit contact post mag ontvangen',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(height: 12),
-            
-            Card(
-              child: Column(
-                children: [
-                  SwitchListTile(
-                    title: const Text('🎄 Kerstkaarten'),
-                    subtitle: const Text('Kerstkaart versturen'),
-                    value: _forChristmasCard,
-                    onChanged: (value) {
-                      setState(() => _forChristmasCard = value);
-                    },
-                  ),
-                  const Divider(height: 1),
-                  SwitchListTile(
-                    title: const Text('📧 Nieuwsbrief'),
-                    subtitle: const Text('Mag nieuwsbrief ontvangen'),
-                    value: _forNewsletter,
-                    onChanged: (value) {
-                      setState(() => _forNewsletter = value);
-                    },
-                  ),
-                  const Divider(height: 1),
-                  SwitchListTile(
-                    title: const Text('🎉 Feesten'),
-                    subtitle: const Text('Uitnodigen voor feesten/partijen'),
-                    value: _forParty,
-                    onChanged: (value) {
-                      setState(() => _forParty = value);
-                    },
-                  ),
-                  const Divider(height: 1),
-                  SwitchListTile(
-                    title: const Text('🕯️ Rouwkaarten'),
-                    subtitle: const Text('Rouwkaart versturen bij overlijden'),
-                    value: _forFuneral,
-                    onChanged: (value) {
-                      setState(() => _forFuneral = value);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 24),
-            
             // Notities
             Text(
               'Notities',
@@ -460,4 +402,3 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
     );
   }
 }
-

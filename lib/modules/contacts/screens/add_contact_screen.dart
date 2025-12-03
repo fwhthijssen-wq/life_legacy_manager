@@ -27,11 +27,7 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
   final _cityController = TextEditingController();
   final _notesController = TextEditingController();
 
-  ContactCategory? _selectedCategory;
-  bool _forChristmasCard = false;
-  bool _forNewsletter = false;
-  bool _forParty = false;
-  bool _forFuneral = false;
+  final Set<ContactCategory> _selectedCategories = {};
   bool _isSaving = false;
 
   @override
@@ -119,11 +115,18 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
             
             const SizedBox(height: 24),
             
-            // Categorie sectie
+            // Categorieën sectie (meerdere selecteerbaar)
             Text(
-              'Categorie',
+              'Categorieën',
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Selecteer één of meerdere categorieën',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: Colors.grey[600],
               ),
             ),
             const SizedBox(height: 12),
@@ -132,16 +135,22 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
               spacing: 8,
               runSpacing: 8,
               children: ContactCategory.values.map((category) {
-                final isSelected = _selectedCategory == category;
-                return ChoiceChip(
+                final isSelected = _selectedCategories.contains(category);
+                return FilterChip(
+                  avatar: Text(category.emoji, style: const TextStyle(fontSize: 16)),
                   label: Text(category.displayName),
                   selected: isSelected,
                   onSelected: (selected) {
                     setState(() {
-                      _selectedCategory = selected ? category : null;
+                      if (selected) {
+                        _selectedCategories.add(category);
+                      } else {
+                        _selectedCategories.remove(category);
+                      }
                     });
                   },
                   selectedColor: theme.primaryColor.withOpacity(0.2),
+                  checkmarkColor: theme.primaryColor,
                 );
               }).toList(),
             ),
@@ -233,66 +242,6 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
             
             const SizedBox(height: 24),
             
-            // Gebruik voor... sectie
-            Text(
-              'Uitnodigen voor',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Selecteer waarvoor dit contact uitgenodigd mag worden',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(height: 12),
-            
-            Card(
-              child: Column(
-                children: [
-                  SwitchListTile(
-                    title: const Text('🎄 Kerstkaarten'),
-                    subtitle: const Text('Kerstkaart versturen'),
-                    value: _forChristmasCard,
-                    onChanged: (value) {
-                      setState(() => _forChristmasCard = value);
-                    },
-                  ),
-                  const Divider(height: 1),
-                  SwitchListTile(
-                    title: const Text('📧 Nieuwsbrief'),
-                    subtitle: const Text('Mag nieuwsbrief ontvangen'),
-                    value: _forNewsletter,
-                    onChanged: (value) {
-                      setState(() => _forNewsletter = value);
-                    },
-                  ),
-                  const Divider(height: 1),
-                  SwitchListTile(
-                    title: const Text('🎉 Feesten'),
-                    subtitle: const Text('Uitnodigen voor feesten/partijen'),
-                    value: _forParty,
-                    onChanged: (value) {
-                      setState(() => _forParty = value);
-                    },
-                  ),
-                  const Divider(height: 1),
-                  SwitchListTile(
-                    title: const Text('🕯️ Rouwkaarten'),
-                    subtitle: const Text('Rouwkaart versturen bij overlijden'),
-                    value: _forFuneral,
-                    onChanged: (value) {
-                      setState(() => _forFuneral = value);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            
-            const SizedBox(height: 24),
-            
             // Notities
             TextFormField(
               controller: _notesController,
@@ -364,11 +313,7 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
             ? null 
             : _notesController.text.trim(),
         isContact: true,
-        contactCategory: _selectedCategory,
-        forChristmasCard: _forChristmasCard,
-        forNewsletter: _forNewsletter,
-        forParty: _forParty,
-        forFuneral: _forFuneral,
+        categories: _selectedCategories,
       );
 
       await db.insert('persons', person.toMap());
