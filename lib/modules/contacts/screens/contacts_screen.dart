@@ -2190,7 +2190,6 @@ class _PostalLettersDialogState extends State<_PostalLettersDialog> {
             ),
             maxLines: 2,
             minLines: 2,
-            maxLines: 2,
           ),
           
           const SizedBox(height: 24),

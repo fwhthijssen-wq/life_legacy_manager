@@ -1,0 +1,751 @@
+FUNCTIONEEL ONTWERP - Geldzaken Module
+1. Doel & Uitgangspunten
+De Geldzaken module biedt een volledig overzicht van alle financiële zaken van een gezin echtpaar of persoon. Het doel is:
+* Overzicht creëren voor de gebruiker zelf en evt. partner en/of kinderen
+* Nabestaanden helpen met een compleet financieel overzicht bij overlijden
+* Opzegmogelijkheden bieden (welke rekeningen/verzekeringen moeten worden opgezegd)
+* Financiële verplichtingen inzichtelijk maken (vaste lasten, automatische incasso's)
+* Documenten centraliseren (polissen, contracten, jaaroverzichten)
+Belangrijke uitgangspunten:
+* Privacy first: gevoelige gegevens worden gemaskeerd
+* Meerdere personen: elke persoon in het systeem kan eigen geldzaken hebben
+* Documentgericht: veel nadruk op koppelen van documenten
+* Nabestaanden-focus: bij elk item duidelijk maken wat ermee moet gebeuren
+* Offline & lokaal: alle data blijft op het apparaat
+* Status per item: NOT_STARTED / PARTIAL / COMPLETE
+
+2. Hoofdcategorieën binnen Geldzaken
+De module bestaat uit 7 hoofdcategorieën:
+2.1 Bankrekeningen
+* Betaalrekeningen
+* Spaarrekeningen
+* Deposito's
+* Beleggingsrekeningen (depot)
+2.2 Verzekeringen
+* Levensverzekering
+* Overlijdensrisicoverzekering
+* Arbeidsongeschiktheidsverzekering (AOV)
+* Zorgverzekering
+* Autoverzekering
+* Woonhuisverzekering
+* Inboedelverzekering
+* Aansprakelijkheidsverzekering
+* Rechtsbijstandverzekering
+* Reisverzekering
+* Overige verzekeringen
+2.3 Pensioen
+* AOW (staatpensioen)
+* Werkgeverspensioen
+* Lijfrente
+* Particuliere pensioenregelingen
+* Derde pijler
+2.4 Inkomsten
+* Salaris
+* Pensioenuitkering
+* Uitkeringen (WW, WIA, bijstand, etc.)
+* Huurinkomsten
+* Dividenden/beleggingsinkomsten
+* Alimentatie (ontvangen)
+* Overige inkomsten
+2.5 Vaste Lasten & Uitgaven
+* Hypotheek (wordt later apart in Huis & Energie)
+* Huur
+* Energiekosten
+* Water
+* Gemeentelijke belastingen
+* Waterschapsbelasting
+* Verzekeringspremies (overzicht)
+* Abonnementen (TV, internet, telefoon)
+* Alimentatie (betaald)
+* Overige vaste lasten
+2.6 Beleggingen (optioneel, toekomstige fase)
+* Aandelen
+* Obligaties
+* Fondsen
+* Crypto
+* Edelmetalen
+2.7 Schulden & Leningen
+* Hypotheek (verwijzing)
+* Persoonlijke lening
+* Doorlopend krediet
+* Creditcard -Studieschuld
+* Schulden aan particulieren
+* Overige schulden
+
+3. Gebruikersflows
+3.1 Navigatie naar Geldzaken
+Startpunt: Home-scherm
+1. Gebruiker selecteert een persoon (of zichzelf)
+2. Komt op Persoon Detail scherm
+3. Selecteert module "Geldzaken"
+4. Komt op Geldzaken Overzichtsscherm
+Geldzaken Overzichtsscherm toont:
+* 7 categorieën (zie 2.1 - 2.7)
+* Per categorie: 
+o Aantal items (bijv. "3 bankrekeningen")
+o Status-indicator (?? leeg / ?? gedeeltelijk / ?? compleet)
+o Voortgangspercentage (optioneel)
+3.2 Bankrekening toevoegen
+Flow:
+1. Gebruiker opent categorie "Bankrekeningen"
+2. Ziet lijst van bestaande rekeningen (of leeg)
+3. Klikt op "+ Nieuwe bankrekening toevoegen"
+4. Komt op Bankrekening Detail scherm met tabs:
+Tab 1: Basisgegevens
+* Banknaam (dropdown of vrij invoerveld) 
+o Voorsuggesties: ING, Rabobank, ABN AMRO, SNS, Triodos, ASN, Bunq, etc.
+* Type rekening (dropdown) 
+o Betaalrekening
+o Spaarrekening
+o Deposito
+o Beleggingsrekening
+* IBAN (volledig invoeren) 
+o Validatie: NL-formaat (NL99 BANK 0123 4567 89)
+o Weergave in overzicht: alleen laatste 4 cijfers (••• 4567)
+* BIC/SWIFT (optioneel)
+* Rekeninghouder (standaard naam van persoon, kan afwijken)
+* Gezamenlijke rekening? (ja/nee toggle) 
+o Indien ja: naam tweede rekeninghouder (vrij veld of koppeling aan andere persoon)
+* Saldo (optioneel, wordt niet automatisch bijgewerkt)
+* Valuta (standaard EUR)
+Tab 2: Contactgegevens & Toegang
+* Klantenservice telefoonnummer
+* Klantenservice email
+* Website bank
+* Inlog-URL internetbankieren
+* Locatie inloggegevens (dropdown) 
+o In wachtwoordmanager (welke?)
+o Op papier (waar bewaard?)
+o Bij notaris
+o Anders (vrij invulveld)
+* Pas/kaart aanwezig? (ja/nee) 
+o Indien ja: locatie pas
+o Pincodes: NOOIT opslaan, alleen locatie noteren
+Tab 3: Automatische incasso's
+* Lijst van vaste lasten die hiervan afgaan
+* Per item: 
+o Omschrijving
+o Bedrag
+o Frequentie
+o Begunstigde
+* "+ Automatische incasso toevoegen"
+Tab 4: Voor nabestaanden
+* Wat moet er gebeuren bij overlijden? (dropdown + tekstveld) 
+o Rekening opheffen
+o Rekening overzetten naar erfgenamen
+o Rekening aanhouden (bijv. voor afwikkeling)
+o Speciale instructies (vrij tekstveld)
+* Belangrijke informatie 
+o Vrij tekstveld voor specifieke instructies
+o Bijv: "Deze rekening gebruikt voor automatische incasso hypotheek, eerst overzetten"
+* Begunstigden/erfgenamen 
+o Link naar personen in systeem
+o Of vrije invulvelden
+Tab 5: Documenten
+* Upload/foto functionaliteit
+* Documenttypes: 
+o Rekeningovereenkomst
+o Jaaroverzichten
+o Saldospecificaties
+o Correspondentie
+o Overig
+* Per document: 
+o Titel
+o Type
+o Datum
+o Bestand OF locatie fysiek document
+* "+ Document toevoegen" 
+o Upload bestand
+o Maak foto
+o Verwijs naar fysieke locatie
+Tab 6: Notities
+* Vrij tekstveld voor overige opmerkingen
+* Laatste update datum (automatisch)
+Onderaan scherm:
+* Status (dropdown) 
+o Niet begonnen
+o Bezig
+o Compleet
+* "Opslaan" knop
+* "Annuleren" knop
+3.3 Verzekering toevoegen
+Flow vergelijkbaar met bankrekening, maar specifieke velden:
+Tab 1: Basisgegevens
+* Verzekeringsmaatschappij (dropdown + vrij) 
+o Voorsuggesties: Nationale Nederlanden, Aegon, Centraal Beheer, OHRA, FBTO, etc.
+* Type verzekering (dropdown - zie lijst 2.2)
+* Polisnummer
+* Naam verzekerde (standaard persoon)
+* Medeverzekerden (indien van toepassing) 
+o Bijv. bij zorgverzekering: partner, kinderen
+o Links naar andere personen in systeem
+* Ingangsdatum
+* Einddatum (indien bekend)
+* Looptijd (bijv. 1 jaar, onbepaald)
+Tab 2: Financieel
+* Premie (bedrag)
+* Betalingsfrequentie (dropdown) 
+o Per maand
+o Per kwartaal
+o Per jaar
+* Betaalmethode 
+o Automatische incasso (vanaf welke bankrekening - link naar bankrekening)
+o Handmatig
+o Anders
+* Verzekerd bedrag (dekking)
+* Eigen risico (indien van toepassing)
+* Aanvullende dekkingen/clausules
+Tab 3: Voorwaarden & Opzegging
+* Opzegtermijn (bijv. 2 maanden voor einddatum)
+* Automatische verlenging? (ja/nee)
+* Hoe opzeggen? (dropdown) 
+o Per brief
+o Per email
+o Via online portaal
+o Telefonisch
+o Aangetekend
+* Datum laatst mogelijke opzegging (berekend of handmatig)
+* Herinnering instellen? (optioneel, toekomstige functie)
+Tab 4: Contactgegevens
+* Adviseur/tussenpersoon (indien van toepassing) 
+o Naam
+o Telefoonnummer
+o Email
+o Kantoor
+* Verzekeraar klantenservice 
+o Telefoonnummer
+o Email
+o Website
+o Schademelding URL
+Tab 5: Voor nabestaanten
+* Wat gebeurt bij overlijden verzekerde? 
+o Uitkering (bij overlijdensrisicoverzekering)
+o Opheffen
+o Overzetten naar nabestaande
+o Doorlopen (bijv. bij doorlopende volksverzekering)
+* Begunstigden (bij levensverzekering e.d.) 
+o Namen
+o Percentages
+o Links naar personen
+* Actie vereist? (dropdown) 
+o Ja, direct contact opnemen
+o Ja, claim indienen
+o Nee, loopt automatisch door
+o Nee, vervalt automatisch
+* Speciale instructies 
+o Vrij tekstveld
+Tab 6: Documenten
+* Polis
+* Voorwaarden
+* Bevestigingen
+* Jaaroverzichten
+* Correspondentie
+* Schadevragen/uitkeringen
+Tab 7: Notities
+
+3.4 Pensioen toevoegen
+Specifieke velden voor pensioenregelingen:
+Tab 1: Basisgegevens
+* Type pensioen (dropdown) 
+o AOW
+o Werkgeverspensioen (2e pijler)
+o Lijfrente (3e pijler)
+o Particulier opgebouwd pensioen
+o Buitenlands pensioen
+* Pensioenuitvoerder (bijv. ABP, PFZW, Nationale Nederlanden)
+* Deelnemersnummer / polisnummer
+* Naam deelnemer
+* Werkgever (indien van toepassing)
+* Opbouwperiode (van - tot)
+Tab 2: Pensioenopbouw
+* Huidig opgebouwd kapitaal (schatting)
+* Verwachte uitkering per maand (bruto)
+* Pensioeningangsdatum
+* Partnerpensioen inbegrepen? (ja/nee) 
+o Percentage
+o Partner naam (link)
+* Wezenpensioen inbegrepen?
+* Arbeidsongeschiktheidspensioen?
+Tab 3: Financieel
+* Maandelijkse inleg (indien nog opbouwend)
+* Betaald door werkgever / zelf
+* Fiscale behandeling
+* Vrijwillige extra stortingen mogelijk?
+Tab 4: Voor nabestaanden
+* Nabestaandenpensioen (ja/nee) 
+o Hoogte uitkering partner
+o Voorwaarden
+* Afkoopwaarde bij overlijden
+* Contact persoon voor claim
+Tab 5: Documenten
+* Pensioenovereenkomst
+* Jaaropgave (UPO - Uniform Pensioenoverzicht)
+* Correspondentie
+* Berekeningen
+
+3.5 Inkomsten toevoegen
+Eenvoudiger structuur:
+Tab 1: Basisgegevens
+* Type inkomsten (dropdown - zie 2.4)
+* Bron (bijv. werkgever naam, UWV, SVB, huurder)
+* Bedrag (bruto)
+* Bedrag (netto)
+* Frequentie (maand/jaar/kwartaal)
+* Ingangsdatum
+* Einddatum (indien bekend)
+* Op welke rekening? (link naar bankrekening)
+Tab 2: Voor nabestaanden
+* Stopt bij overlijden? (ja/nee)
+* Moet worden opgezegd/gemeld? (ja/nee)
+* Contactgegevens voor melding
+Tab 3: Documenten
+* Arbeidscontract
+* Loonstroken
+* Jaaropgaven
+* Uitkeringsbesluiten
+
+3.6 Vaste Lasten & Uitgaven
+Vergelijkbaar met Inkomsten, maar dan andersom:
+Tab 1: Basisgegevens
+* Type vaste last (dropdown)
+* Aan wie wordt betaald (bedrijfsnaam)
+* Bedrag
+* Frequentie
+* Vanaf welke rekening (link)
+* Automatische incasso? (ja/nee)
+* Contractnummer / klantnummer
+Tab 2: Contract
+* Looptijd contract
+* Einddatum
+* Opzegtermijn
+* Hoe opzeggen
+Tab 3: Voor nabestaanden
+* Moet worden opgezegd? (ja/nee)
+* Kan worden opgezegd? (bijv. niet bij hypotheek)
+* Priority (hoog/normaal/laag)
+Tab 4: Documenten
+
+3.7 Schulden & Leningen
+Tab 1: Basisgegevens
+* Type schuld (dropdown - zie 2.7)
+* Schuldeiser (naam instelling/persoon)
+* Contractnummer / dossiernummer
+* Oorspronkelijk bedrag
+* Huidig openstaand bedrag
+* Aflossingsschema (annuïteit/lineair/aflossingsvrij)
+* Looptijd
+* Ingangsdatum
+* Aflosdatum
+Tab 2: Financieel
+* Maandelijkse termijn
+* Rentepercentage
+* Rentevaste periode (tot datum)
+* Boeterente bij vervroegd aflossen
+* Betaald vanaf rekening (link)
+Tab 3: Onderpand
+* Is er onderpand? (ja/nee) 
+o Bijv. hypotheek: woning
+o Autolening: auto
+* Omschrijving onderpand
+Tab 4: Voor nabestaanden
+* Wat gebeurt bij overlijden? 
+o Schuld vervalt (bijv. bij overlijdensrisicoverzekering gekoppeld)
+o Schuld gaat over op erfgenamen
+o Schuld moet worden afgelost uit nalatenschap
+* Is er een gekoppelde verzekering? 
+o Link naar verzekering (overlijdensrisico)
+* Speciale afspraken
+Tab 5: Documenten
+* Leningovereenkomst
+* Aflossingsschema
+* Jaaroverzichten
+* Correspondentie
+
+4. Overzichtsschermen & Filters
+4.1 Geldzaken Dashboard
+Bovenaan:
+* Gekozen persoon naam
+* Totaaloverzicht: 
+o Aantal bankrekeningen
+o Aantal verzekeringen
+o Aantal pensioenregelingen
+o etc.
+Per categorie (7 tiles):
+* Titel
+* Aantal items
+* Status-indicator
+* "Bekijk details" knop
+Optioneel (toekomstige fase):
+* Grafiek maandelijkse cashflow
+* Totaal inkomsten vs uitgaven
+* Waarschuwingen (vervallende verzekeringen, opzegtermijnen)
+4.2 Bankrekeningen Overzicht
+Lijstweergave:
+* Per bankrekening: 
+o Banknaam + logo (optioneel)
+o Type rekening
+o IBAN laatste 4 cijfers (•••• 1234)
+o Saldo (indien ingevuld, met maskeren-optie)
+o Status-indicator
+o "Bewerk" / "Bekijk" knop
+Acties:
+* "+ Nieuwe rekening"
+* "Sorteer" (dropdown) 
+o Op banknaam
+o Op type
+o Op datum toegevoegd
+* "Filter" (optioneel) 
+o Alleen actieve rekeningen
+o Alleen gesloten rekeningen
+Onderaan:
+* Totaal aantal rekeningen
+* "Terug naar Geldzaken"
+4.3 Verzekeringen Overzicht
+Lijstweergave:
+* Per verzekering: 
+o Verzekeraar
+o Type verzekering
+o Polisnummer (gemaskeerd of volledig)
+o Vervaldatum / volgende verlengdatum
+o Premie per maand
+o Status
+Extra functies:
+* "Filter op type" (dropdown) 
+o Alle verzekeringen
+o Alleen zorg
+o Alleen schade
+o Alleen leven/overlijden
+o etc.
+* "Toon verlopende verzekeringen" 
+o Waarschuwing bij verzekeringen die binnen 3 maanden aflopen
+4.4 Totaaloverzicht "Maandelijkse lasten"
+Speciaal scherm (bereikbaar vanuit dashboard):
+* Berekent automatisch alle maandelijkse uitgaven: 
+o Hypotheek
+o Huur
+o Verzekeringspremies (opgeteld)
+o Vaste lasten
+o Automatische incasso's
+Weergave:
+* Tabel met kolommen: 
+o Categorie
+o Omschrijving
+o Bedrag
+o Vanaf rekening
+o Frequentie (indien niet maandelijks, omgerekend)
+Totaal:
+* Som van alle maandelijkse uitgaven
+* Export mogelijkheid (premium)
+
+5. Maskeren van gevoelige gegevens
+5.1 Wat wordt gemaskeerd?
+In overzichtschermen (niet in detail-edit schermen):
+* IBAN: alleen laatste 3-4 cijfers zichtbaar
+* Saldi: vervangen door "••••"
+* Polisnummers: optioneel maskeren
+* Bedragen: vervangen door "••••"
+5.2 Toggle functie
+In menu of instellingen:
+* "Toon gevoelige gegevens" (toggle) 
+o Uit (standaard): alles gemaskeerd
+o Aan: tijdelijk alle bedragen/nummers tonen
+o Blijft aan voor bijv. 5 minuten, daarna weer uit
+Alternatief per scherm:
+* ??? icoon rechtsboven
+* Klik = tonen
+* Nogmaals klik = verbergen
+5.3 Extra beveiliging (fase 2)
+* Bij toggle aan: vraag PIN/biometrie
+* Scherm timeout: na 1 minuut inactiviteit weer maskeren
+
+6. Export & Nabestaandenpakket (Premium)
+6.1 Export Geldzaken
+Functionaliteit:
+* Per persoon volledige geldzaken exporteren naar PDF
+* Bevat: 
+o Alle bankrekeningen (met volledige gegevens)
+o Alle verzekeringen
+o Alle pensioenregelingen
+o Alle inkomsten
+o Alle vaste lasten
+o Alle schulden
+o Gekoppelde documenten (embedded of als bijlage)
+Layout PDF:
+* Professionele opmaak
+* Per categorie apart hoofdstuk
+* Inhoudsopgave
+* Gegenereerd op datum
+6.2 Nabestaandenpakket
+Speciaal rapport specifiek voor nabestaanden:
+Inhoud:
+1. Direct opzeggen/beëindigen: 
+o Lijst van alle verzekeringen die vervallen
+o Abonnementen die opgezegd moeten
+o Bankrekeningen die opgeheven moeten
+2. Contact opnemen: 
+o Lijst van pensioenfondsen (nabestaandenpensioen)
+o Verzekeraars voor uitkering (overlijdensrisico)
+o Werkgever (laatste salaris, vakantiegeld)
+3. Doorlopen/overzetten: 
+o Hypotheek (wat gebeurt ermee)
+o Verzekeringen die doorlopen
+o Bankrekeningen overzetten
+4. Belangrijke contactgegevens: 
+o Per instelling: naam, telefoonnummer, email
+o Accountnummers/polisnummers
+5. Checklists: 
+o "Wat moet binnen 1 week"
+o "Wat moet binnen 1 maand"
+o "Wat kan later"
+Genereren:
+* Knop "Genereer Nabestaandenpakket" (premium)
+* Automatisch samengesteld op basis van ingevulde "Voor nabestaanden" velden
+* Exporteert naar PDF
+6.3 Opzegbrieven genereren (Premium)
+Functionaliteit:
+* Bij verzekeringen, abonnementen, bankrekeningen
+* Knop "Genereer opzegbrief"
+* Systeem vult template met: 
+o Naam gebruiker
+o Adres
+o Polisnummer/rekeningnummer
+o Datum
+o Handtekening-veld
+* Exporteert naar PDF of DOCX
+* Kan direct printen
+Templates voor:
+* Bankrekening opheffen
+* Verzekering opzeggen
+* Abonnement beëindigen
+Ook email-templates:
+* Opzeg-email voor digitale opzegging
+* Met alle benodigde gegevens ingevuld
+
+7. Specifieke features
+7.1 Waarschuwingen
+Automatische meldingen (toekomstige fase):
+* Verzekering verloopt over 3 maanden
+* Opzegtermijn van verzekering nadert
+* Contract loopt af
+* Rente vaste periode hypotheek verloopt
+7.2 Berekeningen
+Automatisch berekende velden:
+* Totaal maandelijkse lasten
+* Totaal maandelijkse inkomsten
+* Netto cashflow (inkomsten - uitgaven)
+* Totaal opgebouwd vermogen (saldi + beleggingen)
+* Totaal schulden
+7.3 Links tussen items
+Koppelingen:
+* Automatische incasso van rekening A ? link naar verzekering/vaste last
+* Overlijdensrisicoverzekering ? link naar hypotheekschuld
+* Inkomsten ? link naar bankrekening (waar het op binnenkomt)
+Weergave:
+* In detail-scherm: klikbare links naar gerelateerde items
+* "Gerelateerd" sectie onderaan tabs
+7.4 Geschiedenis & Archivering
+Gesloten/beëindigde items:
+* Bankrekening opgeheven ? status "Gesloten"
+* Blijft zichtbaar in lijst met filter "Toon gesloten rekeningen"
+* Bevat einddatum
+* Documenten blijven beschikbaar
+Waarom bewaren:
+* Historisch overzicht
+* Bewijs voor belastingaangifte (7 jaar)
+* Voor nabestaanden: overzicht oude zaken
+
+8. Validatie & Status
+8.1 Verplichte velden per item-type
+Bankrekening (minimaal voor status COMPLETE):
+* Banknaam
+* Type rekening
+* IBAN
+* Rekeninghouder
+* Minimaal 1 document OF fysieke locatie
+Verzekering (minimaal):
+* Verzekeraar
+* Type verzekering
+* Polisnummer
+* Premie
+* Ingangsdatum
+* Minimaal 1 document (polis)
+Pensioen (minimaal):
+* Type pensioen
+* Uitvoerder
+* Deelnemersnummer
+* Minimaal basis pensioenopgave document
+8.2 Status-logica
+NOT_STARTED:
+* Item is aangemaakt maar geen velden ingevuld
+PARTIAL:
+* Sommige verplichte velden ingevuld
+* Of nog geen documenten toegevoegd
+COMPLETE:
+* Alle verplichte velden ingevuld
+* Minimaal 1 document toegevoegd OF fysieke locatie opgegeven
+* "Voor nabestaanden" sectie ingevuld
+Gebruiker kan status handmatig aanpassen:
+* Dropdown onderaan elk detail-scherm
+* Met waarschuwing: "Let op: niet alle verplichte velden zijn ingevuld"
+
+9. Toekomstige uitbreidingen (buiten scope fase 1)
+9.1 Automatische data-import
+* Koppeling met PSD2 API's (banken)
+* Automatisch saldo ophalen
+* Transacties importeren
+9.2 Mijn Pensioen Overzicht koppeling
+* Importeren van alle pensioenregelingen via mijnpensioenoverzicht.nl
+9.3 OCR voor documenten
+* Polissen scannen en automatisch velden invullen
+* Bankafschriften herkennen
+9.4 Notaris-integratie
+* Directe koppeling voor testament-info
+* Automatisch doorgeven van erfgenamen-info
+9.5 Herinneringen
+* Push notifications voor verlopende verzekeringen
+* Jaarlijkse reminder om gegevens te controleren
+
+10. Wireframe-beschrijvingen
+10.1 Geldzaken Overzicht (Dashboard)
+???????????????????????????????????????
+? ? Terug    Geldzaken - [Persoon]    ?
+???????????????????????????????????????
+?                                     ?
+? ?? Overzicht                        ?
+? 5 Bankrekeningen                    ?
+? 12 Verzekeringen                    ?
+? 3 Pensioenregelingen               ?
+?                                     ?
+???????????????????????????????????????
+? Categorieën                         ?
+?                                     ?
+? ???????????????????                ?
+? ? ?? Bankrekeningen? ?? 100%        ?
+? ? 5 items         ? ?              ?
+? ???????????????????                ?
+?                                     ?
+? ???????????????????                ?
+? ? ??? Verzekeringen ? ?? 75%         ?
+? ? 12 items        ? ?              ?
+? ???????????????????                ?
+?                                     ?
+? ???????????????????                ?
+? ? ?? Pensioen     ? ?? 100%        ?
+? ? 3 items         ? ?              ?
+? ???????????????????                ?
+?                                     ?
+? ... (andere categorieën)           ?
+?                                     ?
+???????????????????????????????????????
+? [Export Nabestaandenpakket] ??     ?
+???????????????????????????????????????
+10.2 Bankrekening Lijst
+???????????????????????????????????????
+? ? Terug    Bankrekeningen           ?
+???????????????????????????????????????
+? Sorteer: [Banknaam ?] ??? [Toon]   ?
+???????????????????????????????????????
+?                                     ?
+? ????????????????????????????????????
+? ? ?? ING Bank                     ??
+? ? Betaalrekening                  ??
+? ? NL99 INGB •••• 1234            ??
+? ? Saldo: €••••• (of €5.234,56)   ??
+? ?                       [Bekijk ?]??
+? ????????????????????????????????????
+?                                     ?
+? ????????????????????????????????????
+? ? ?? Rabobank                     ??
+? ? Spaarrekening                   ??
+? ? NL45 RABO •••• 9876            ??
+? ? Saldo: €•••••                  ??
+? ?                       [Bekijk ?]??
+? ????????????????????????????????????
+?                                     ?
+???????????????????????????????????????
+? [+ Nieuwe Bankrekening]             ?
+???????????????????????????????????????
+10.3 Bankrekening Detail (Tab-weergave)
+???????????????????????????????????????
+? ? Terug    ING Betaalrekening       ?
+???????????????????????????????????????
+? [Basis] [Contact] [Incasso's]       ?
+? [Nabestaanden] [Documenten] [Notit.]?
+???????????????????????????????????????
+?                                     ?
+? Banknaam:        [ING Bank      ]   ?
+? Type rekening:   [Betaalrekening?]  ?
+? IBAN:            [NL99INGB0123... ] ?
+? BIC/SWIFT:       [INGBNL2A      ]   ?
+? Rekeninghouder:  [Jan Jansen    ]   ?
+?                                     ?
+? ? Gezamenlijke rekening             ?
+?   Tweede houder: [Partner naam  ]   ?
+?                                     ?
+? Saldo (optioneel): [€ 5.234,56 ]   ?
+? Valuta:           [EUR          ]   ?
+?                                     ?
+???????????????????????????????????????
+? Status: [Compleet ?]                ?
+? Laatste update: 15-11-2024          ?
+?                                     ?
+? [Annuleren]              [Opslaan]  ?
+???????????????????????????????????????
+
+11. Integratie met andere modules
+11.1 Met Personen-module
+* Elke persoon heeft eigen Geldzaken
+* Bij verwijderen persoon: waarschuwing voor gekoppelde financiële data
+* Bij partner: mogelijkheid om gezamenlijke rekeningen te koppelen
+11.2 Met Huis & Energie
+* Hypotheek verschijnt ook in Geldzaken onder "Schulden"
+* Energiecontracten als vaste lasten
+* Kruisverwijzingen
+11.3 Met Lidmaatschappen & Abonnementen
+* Abonnementen kunnen verschijnen als vaste lasten
+* Opzegfunctionaliteit is identiek
+11.4 Met Digitale Erfenis
+* Bankapps/internetbankieren als online account
+* Wachtwoordmanager verwijzing
+
+12. Premiumfuncties specifiek voor Geldzaken
+Gratis:
+* Alle data invoeren
+* Alle items toevoegen
+* Documenten uploaden
+* Basis overzichten bekijken
+Premium (??):
+* Export naar PDF (per categorie of alles)
+* Nabestaandenpakket genereren
+* Opzegbrieven genereren (auto-invullen)
+* Opzeg-emails genereren
+* Maandelijkse lasten rapport met grafieken
+* Print labels met contactgegevens instellingen
+* Versleutelde backup maken
+* Batch-acties (meerdere opzeggingen tegelijk)
+
+13. Samenvatting & Prioritering Fase 1
+Prio 1 - Must have:
+* Bankrekeningen (volledig)
+* Verzekeringen (volledig)
+* Basis overzichtsschermen
+* Documenten koppelen
+* Status per item
+* Voor nabestaanden velden
+Prio 2 - Should have:
+* Pensioen
+* Inkomsten
+* Vaste lasten
+* Maskeren gevoelige data
+* Maandelijkse lasten overzicht
+Prio 3 - Nice to have:
+* Schulden & Leningen
+* Beleggingen
+* Geavanceerde filters
+* Waarschuwingen
+Fase 2 (Premium):
+* Export functies
+* Nabestaandenpakket
+* Opzegbrieven
+* Grafieken & rapportages
+

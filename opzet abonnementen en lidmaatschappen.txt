@@ -1,0 +1,821 @@
+FUNCTIONEEL ONTWERP - Module
+Lidmaatschappen & Abonnementen 
+1. Doel & Uitgangspunten
+De Lidmaatschappen & Abonnementen module biedt een volledig overzicht van alle terugkerende (financiële) verplichtingen en lidmaatschappen. Het doel is:
+* Overzicht van alle abonnementen: geen abonnement vergeten of dubbel betalen
+* Opzegmogelijkheden: automatisch opzegbrieven en emails genereren (premium)
+* Kosten inzichtelijk: totaal maandelijkse/jaarlijkse kosten
+* Nabestaanden helpen: welke abonnementen moeten worden opgezegd bij overlijden
+* Verloop tracking: geen automatische verlengingen missen
+* Contractvoorwaarden: opzegtermijnen, minimale looptijd, boetes
+Belangrijke uitgangspunten:
+* Breed spectrum: van Netflix tot sportschool, van vakbond tot streamingdiensten
+* Opzeg-centraal: focus op gemakkelijk opzeggen (bij leven én na overlijden)
+* Kostenbewustzijn: totaaloverzicht maandelijkse lasten
+* Automatische verlengingen: waarschuwen als verlengingsdatum nadert
+* Template-gebaseerd opzeggen: standaard opzegbrieven en emails (premium)
+* Meerdere personen: elk gezinslid heeft eigen abonnementen (maar ook gezamenlijke)
+
+2. Hoofdcategorieën binnen Lidmaatschappen & Abonnementen
+De module bestaat uit 12 hoofdcategorieën:
+2.1 Streaming & Media
+* Netflix, Disney+, Amazon Prime, Videoland
+* Spotify, Apple Music, YouTube Premium, Deezer
+* Podcasts (premium abonnementen)
+* Kranten digitaal (Telegraaf, NRC, Volkskrant)
+* Tijdschriften digitaal
+2.2 Kranten & Tijdschriften (fysiek)
+* Dagbladen (thuisbezorging)
+* Weekbladen
+* Maandbladen
+* Vakbladen
+2.3 Sport & Fitness
+* Sportschool
+* Zwembad (abonnement)
+* Tennis/padel
+* Golf (lidmaatschap)
+* Yoga studio
+* Sportverenigingen
+2.4 Verenigingen & Organisaties
+* Vakbond (FNV, CNV, etc.)
+* Beroepsverenigingen
+* Brancheverenigingen
+* ANWB
+* Consumentenbond
+* Politieke partij
+2.5 Verzekeringen (lichte overlap met Geldzaken)
+* Aanvullende verzekeringen die niet in Geldzaken staan
+* Pechhulp (ANWB, Eurocross)
+* Reisverzekering doorlopend
+* Rechtsbijstand
+2.6 Software & Apps
+* Microsoft 365
+* Adobe Creative Cloud
+* Dropbox, Google One, iCloud
+* Antivirus (Norton, McAfee)
+* VPN-diensten
+* Productiviteitsapps (Notion, Evernote)
+* Wachtwoordmanagers (1Password, LastPass)
+2.7 Gaming
+* PlayStation Plus, Xbox Game Pass
+* Nintendo Online
+* Steam, Epic Games
+* World of Warcraft, Final Fantasy XIV (MMO's)
+2.8 Lidmaatschap Winkels & Services
+* Amazon Prime (voor verzending)
+* Bol.com Select
+* Albert Heijn Premium
+* Makro/Sligro
+* Costco
+2.9 Maaltijd & Kook
+* HelloFresh, Marley Spoon
+* Koffie/thee abonnement
+* Wijnabonnement
+* Boerengroente/fruitbox
+2.10 Educatie & Ontwikkeling
+* Online cursussen (Udemy, Coursera, LinkedIn Learning)
+* Taalcursussen (Duolingo Plus, Babbel)
+* Masterclass
+* Blinkist
+2.11 Mobiliteit
+* OV-abonnement (NS Flex, Traject Vrij)
+* Parkeerabonnement
+* Deelauto (Greenwheels, MyWheels)
+* Deelfiets (Swapfiets, BAQME)
+* Laadpas elektrisch rijden (verschillende aanbieders)
+2.12 Overige
+* Donaties (goede doelen)
+* Patreon (creators ondersteunen)
+* OnlyFans (content creators)
+* Dating apps (Tinder Plus, Bumble)
+* Cloud backup (Backblaze)
+* Webhosting/domeinnaam
+
+3. Gebruikersflows
+3.1 Navigatie naar Lidmaatschappen & Abonnementen
+Startpunt: Home-scherm
+1. Gebruiker selecteert een persoon
+2. Komt op Persoon Detail scherm
+3. Selecteert module "Lidmaatschappen & Abonnementen"
+4. Komt op Lidmaatschappen Overzichtsscherm
+Lidmaatschappen Overzichtsscherm toont:
+* Dashboard bovenaan: 
+o Totaal aantal actieve abonnementen: [25]
+o Totale kosten per maand: € [245,50]
+o Totale kosten per jaar: € [2.946,00]
+o Abonnementen die binnenkort aflopen: [3] ??
+* 12 categorieën (zie 2.1 - 2.12)
+* Per categorie: 
+o Aantal items
+o Maandelijkse kosten (totaal van categorie)
+o Status-indicator (??/??/??)
+Quick actions:
+* ?? "Zoek abonnement" (zoekbalk)
+* ?? "Kostenoverzicht" (grafiek/rapport)
+* ?? "Opzeggen" ?? (batch-opzegging, premium)
+
+3.2 Abonnement/Lidmaatschap toevoegen
+Flow:
+1. Gebruiker opent een categorie (bijv. "Streaming & Media")
+2. Ziet lijst van bestaande abonnementen
+3. Klikt op "+ Nieuw abonnement toevoegen"
+4. Komt op Abonnement Detail scherm met tabs:
+Tab 1: Basisgegevens
+* Naam abonnement/lidmaatschap: [bijv. "Netflix"]
+* Provider/Aanbieder: [Netflix Inc.]
+* Categorie (dropdown - automatisch ingevuld op basis van waar je vandaan komt) 
+o Streaming & Media
+o Sport & Fitness
+o etc.
+* Type (dropdown): 
+o Digitale dienst
+o Fysiek product (levering)
+o Toegang/lidmaatschap (sportschool, vereniging)
+o Software
+o Overig
+* Account/klantnummer: [ ]
+* Ingangsdatum abonnement: [DD-MM-JJJJ]
+* Status (dropdown): 
+o ? Actief
+o ? Gepauzeerd
+o ? Opgezegd (einddatum: [ ])
+o ? Beëindigd
+Tab 2: Financieel
+* Kosten: € [ , ]
+* Betalingsfrequentie (dropdown): 
+o Per maand
+o Per kwartaal
+o Per half jaar
+o Per jaar
+o Eenmalig (geen abonnement, toch handig om vast te leggen)
+o Overig: elke [ ] maanden
+* Maandelijkse kosten (automatisch berekend): 
+o Bijv. bij jaarabonnement €120: toont "€10,00 per maand"
+* Betaalmethode (dropdown): 
+o Automatische incasso
+o Creditcard
+o iDEAL (handmatig per factuur)
+o PayPal
+o App Store / Google Play (via telefoonrekening)
+o Contant
+o Anders
+* Betaling vanaf rekening / creditcard: 
+o Link naar bankrekening (uit Geldzaken module)
+o Of: creditcard laatste 4 cijfers
+* Betalingsdatum: [ ] (dag van de maand, indien relevant)
+* Laatste betaling: [DD-MM-JJJJ]
+* Volgende betaling: [DD-MM-JJJJ] (automatisch berekend)
+Tab 3: Contract & Looptijd
+* Type contract (dropdown): 
+o Doorlopend (geen einddatum)
+o Vaste looptijd (bijv. 1 jaar, daarna doorlopend)
+o Tijdelijk (met vaste einddatum)
+o Proefabonnement (gratis periode, daarna betaald)
+* Minimale looptijd (indien van toepassing): 
+o [ ] maanden / jaar
+o Minimale looptijd tot: [DD-MM-JJJJ] (automatisch berekend)
+* Einddatum contract (indien vaste looptijd): 
+o [DD-MM-JJJJ]
+o ? Automatische verlenging met [ ] jaar/maanden
+o ? Stopt automatisch (geen verlenging)
+* Proefperiode (indien van toepassing): 
+o ? Gratis proefperiode gehad
+o Duur: [ ] dagen/maanden
+o Einddatum proefperiode: [DD-MM-JJJJ]
+o ?? "Vergeet niet op te zeggen voor einde proefperiode!"
+Tab 4: Opzegging
+Dit is een cruciale tab!
+* Opzegtermijn: [ ] maanden / weken / dagen voor einddatum 
+o Bijv. "1 maand voor einddatum"
+o Bijv. "tot 1 dag voor automatische verlenging"
+* Laatste opzegdatum (automatisch berekend): 
+o [DD-MM-JJJJ]
+o ?? Waarschuwing tonen [ ] dagen van tevoren
+* Hoe opzeggen (dropdown + tekstveld): 
+o ? Per email naar: [opzeg@provider.nl]
+o ? Via online account/portal: [URL]
+o ? Per brief (aangetekend): [adres]
+o ? Telefonisch: [telefoonnummer]
+o ? Via app
+o ? Automatisch bij nieuwe aanbieder (bijv. energie)
+* Bevestiging opzegging vereist?: ? Ja (bijv. per email)
+* Opzegkosten / Boete bij vervroegd opzeggen: 
+o Geen
+o € [ ] vast bedrag
+o Resterende maanden afbetalen
+o Anders: [vrij tekstveld]
+* Speciale voorwaarden: 
+o Vrij tekstveld
+o Bijv. "Kan alleen opgezegd in laatste maand voor verlenging"
+o Bijv. "Moet 3x per jaar opgezegd worden (tacit reconduction)"
+Opzeg-templates (Premium):
+* ?? [Genereer opzegbrief] ??
+* ?? [Genereer opzeg-email] ??
+Tab 5: Inloggegevens & Toegang
+Belangrijk: wachtwoorden NOOIT opslaan, alleen locatie
+* Website/App: [https://www.netflix.com]
+* Inloggegevens locatie (dropdown): 
+o In wachtwoordmanager ([welke: 1Password/LastPass/etc.])
+o Op papier (waar bewaard: [bijv. "bureau la 1"])
+o In browser opgeslagen
+o Bij partner/gezinslid
+o Anders: [vrij tekstveld]
+* Gebruikersnaam / Email: [optioneel, alleen als niet gevoelig]
+* Account type (indien van toepassing): 
+o Individueel
+o Gezinsabonnement (meerdere profielen)
+o Gedeeld met: [Namen andere gebruikers]
+* Meervoudige authenticatie (2FA) actief?: ? Ja 
+o Via: [Authenticator app / SMS / Email]
+Tab 6: Details & Gebruik
+Specifieke velden afhankelijk van type abonnement
+Voor Streaming:
+* Pakket: [Basis / Standaard / Premium]
+* Aantal schermen tegelijk: [ ]
+* Max resolutie: [HD / 4K]
+* Aantal gebruikers/profielen: [ ]
+Voor Sportschool:
+* Vestiging: [Naam + adres]
+* Openingstijden: [ ]
+* Toegangspas: ? Ontvangen 
+o Locatie pas: [bijv. "in portemonnee"]
+* Inschrijfgeld betaald: € [ ] (eenmalig)
+Voor Vereniging:
+* Lidnummer: [ ]
+* Soort lidmaatschap: [Jeugdlid / Aspirant / Regulier / Donateur / Erelid]
+* Voordelen: [Vrij tekstveld, bijv. "Korting bij partners, gratis magazine"]
+Voor OV-abonnement:
+* OV-chipkaartnummer: [ ]
+* Type abonnement: [Traject Vrij / Altijd Voordeel / Dal Voordeel]
+* Traject: [van Station A naar Station B]
+* Weekendkorting: ? Ja
+Voor Software:
+* Licentie type: [Persoonlijk / Zakelijk / Student]
+* Aantal apparaten: [ ]
+* Cloud opslag: [ ] GB/TB (indien relevant)
+* Versie: [bijv. "Microsoft 365 Family"]
+Voor Maaltijdbox:
+* Aantal maaltijden per week: [ ]
+* Aantal personen: [ ]
+* Voorkeur: [Vegetarisch / Vega / Vlees+vis / etc.]
+* Bezorgdag: [Maandag / Dinsdag / etc.]
+* Leveradres: [automatisch uit persoonsgegevens, of afwijkend]
+Voor Donatie:
+* Goede doel: [Naam organisatie]
+* RSIN/ANBI: [ ] (voor belastingaftrek)
+* Type donatie: [Structureel / Eenmalig terugkerend]
+* Begunstigde: [Projectnaam, indien specifiek]
+Tab 7: Voor nabestaanden
+Wat moet er gebeuren bij overlijden?
+* Actie bij overlijden (dropdown): 
+o ? Direct opzeggen
+o ? Kan doorlopen (bijv. gezinsabonnement)
+o ? Overzetten op partner/gezinslid
+o ? Afwachten (bijv. donatie kan blijven lopen)
+* Prioriteit opzegging (dropdown): 
+o Hoog (binnen 1 week)
+o Normaal (binnen 1 maand)
+o Laag (kan wachten)
+* Reden opzegging: 
+o ? Automatisch invullen in opzegbrief: "In verband met overlijden van [naam]"
+* Restitutie mogelijk? (bij vooruitbetaald jaarabonnement): 
+o ? Ja, pro-rata
+o ? Nee
+o ? Onbekend
+* Speciale instructies: 
+o Vrij tekstveld
+o Bijv. "Netflix kan nog gebruikt worden door gezin, kan later opgezegd"
+o Bijv. "Sportschool vraagt overlijdensakte voor opzegging zonder boete"
+Tab 8: Contactgegevens
+* Klantenservice: 
+o Telefoonnummer: [ ]
+o Email: [ ]
+o Website: [ ]
+o Chat: ? Beschikbaar (URL)
+* Openingstijden klantenservice: [ ]
+* Mijn account URL: [https://account.provider.com]
+* Opzeggen URL (indien specifieke pagina): [URL]
+Tab 9: Kortingen & Acties
+Handig om bij te houden
+* Korting actief?: ? Ja 
+o Type: [Introductievoordeel / Loyaliteitskorting / Groepskorting / Studentenkorting]
+o Kortingspercentage: [ ] %
+o Normale prijs: € [ ]
+o Kortingsprijs: € [ ]
+o Korting geldig tot: [DD-MM-JJJJ]
+o ?? "Let op: na deze datum gaat prijs omhoog naar € [ ]"
+* Actiecode gebruikt: [CODE123]
+* Cashback/punten: 
+o ? Ontvangen via [Bijv. ING Rentepunten, Airmiles, etc.]
+o Bedrag/punten: [ ]
+Tab 10: Documenten
+* Upload/foto functionaliteit
+* Documenttypes: 
+o Bevestigingsmail abonnement
+o Contract / Algemene voorwaarden
+o Facturen
+o Opzegbevestiging (indien al opgezegd)
+o Correspondentie
+o Toegangspas (foto van pas)
+o Overig
+Tab 11: Geschiedenis
+Automatisch bijgehouden door systeem
+* Aangemaakt op: [DD-MM-JJJJ]
+* Laatste wijziging: [DD-MM-JJJJ]
+* Statuswijzigingen: 
+o [DD-MM-JJJJ] Actief ? Opgezegd
+o [DD-MM-JJJJ] Kosten gewijzigd: €10 ? €12
+* Betalingsgeschiedenis (laatste 12 maanden): 
+o [DD-MM-JJJJ] € 10,00 betaald
+o [DD-MM-JJJJ] € 10,00 betaald
+o etc.
+Tab 12: Notities
+* Vrij tekstveld
+* Bijv. "Gezinsabonnement, ook gebruikt door kinderen"
+* Bijv. "Overwegen om op te zeggen na proefperiode"
+* Bijv. "Prijsverhoging doorgevoerd in dec 2024 van €8 naar €10"
+Status & Opslaan:
+* Status: [Niet begonnen / Bezig / Compleet ?]
+* [Annuleren] [Opslaan]
+
+3.3 Opzeggen - Workflow
+Scenario: Gebruiker wil een abonnement opzeggen
+Optie 1: Handmatig opzeggen
+1. Open abonnement detail
+2. Tab "Opzegging"
+3. Zie opzegmethode (email / online / brief / telefoon)
+4. Zie opzegtermijn en laatste opzegdatum
+5. Gebruiker voert opzegging zelf uit
+6. Na opzegging: wijzig status naar "Opgezegd"
+7. Upload opzegbevestiging in Documenten
+Optie 2: Opzegbrief genereren (Premium) ??
+1. Open abonnement detail
+2. Tab "Opzegging"
+3. Klik [Genereer opzegbrief] ??
+4. Systeem genereert PDF met: 
+o Naam + adres gebruiker (uit persoonsgegevens)
+o Datum
+o Naam + adres provider
+o Klantnummer
+o Onderwerp: "Opzegging abonnement [naam]"
+o Standaard opzegtekst: 
+o Geachte heer/mevrouw,Hierbij zeg ik mijn abonnement op [naam abonnement] met klantnummer [nummer] op per [einddatum contract] / zo spoedig mogelijk.Ik verzoek u mij een schriftelijke bevestiging van deze opzegging te sturen.Met vriendelijke groet,[Naam gebruiker]
+o Handtekeningveld
+5. PDF downloaden
+6. Printen, ondertekenen, versturen
+7. In app: status wijzigen naar "Opgezegd"
+Optie 3: Opzeg-email genereren (Premium) ??
+1. Open abonnement detail
+2. Tab "Opzegging"
+3. Klik [Genereer opzeg-email] ??
+4. Systeem genereert email-template: 
+o Naar: [opzeg@provider.nl]
+o Onderwerp: "Opzegging abonnement [naam]"
+o Body: [Standaard opzegtekst zoals hierboven]
+5. Kopieer naar email-client of open direct in email-app
+6. Verstuur
+7. In app: status wijzigen naar "Opgezegd"
+Optie 4: Batch-opzegging (Premium) ??
+Voor nabestaanden: meerdere abonnementen tegelijk opzeggen
+1. Ga naar Lidmaatschappen Overzicht
+2. Klik [Batch-opzegging] ??
+3. Selecteer meerdere abonnementen (checkboxes)
+4. Filter: "Toon alleen 'Direct opzeggen bij overlijden'"
+5. Klik [Genereer opzegbrieven voor geselecteerde]
+6. Systeem genereert: 
+o 1 PDF met alle opzegbrieven (elk abonnement 1 pagina)
+o OF meerdere losse PDF's
+7. Print alle brieven in één keer
+8. Onderteken
+9. Verstuur
+10. In app: alle geselecteerde items status "Opgezegd"
+
+3.4 Speciaal scherm: "Kosten Overzicht"
+Toegankelijk vanaf hoofdmenu Lidmaatschappen
+Scherm layout:
+Sectie 1: Totalen
+* Totaal per maand: € 245,50
+* Totaal per jaar: € 2.946,00
+* Aantal actieve abonnementen: 25
+Sectie 2: Per categorie (taartdiagram)
+Streaming & Media:    € 45,00  (18%)
+Sport & Fitness:      € 65,00  (27%)
+Software & Apps:      € 30,00  (12%)
+Kranten & Tijdschriften: € 25,00 (10%)
+Verenigingen:         € 40,00  (16%)
+Overig:              € 40,50  (17%)
+Sectie 3: Top 10 duurste abonnementen
+NaamCategorieKosten/maandSportschoolSport & Fitness€ 55,00Adobe Creative CloudSoftware€ 24,99Vakbond FNVVerenigingen€ 20,00.........Sectie 4: Verlopende abonnementen (komende 3 maanden)
+NaamEinddatumLaatste opzegdatumDisney+15-01-202515-12-2024Fitness First01-03-202501-02-2025.........Acties:
+* ?? [Export rapport] ?? (Excel of PDF)
+* ?? [Email overzicht] (naar jezelf)
+* ??? [Print] ??
+
+3.5 Speciaal scherm: "Nabestaanden - Opzeglijst"
+Bereikbaar vanaf Lidmaatschappen module
+Dit is een van de belangrijkste schermen voor nabestaanden!
+Filter: "Toon alleen items met 'Direct opzeggen bij overlijden'"
+Overzicht:
+Prioriteit HOOG (binnen 1 week):
+* Sportschool Basic Fit
+o Opzeggen via: Online portal
+o Opzegtermijn: Direct
+o Kosten: € 20,00/maand
+o [Genereer opzegbrief] [Details ?]
+* Maaltijdbox HelloFresh
+o Opzeggen via: Email naar service@hellofresh.nl
+o Opzegtermijn: 7 dagen voor levering
+o Kosten: € 60,00/week
+o [Genereer opzeg-email] [Details ?]
+Prioriteit NORMAAL (binnen 1 maand):
+* Netflix
+* Spotify
+* Adobe Creative Cloud
+* etc.
+Prioriteit LAAG (kan wachten):
+* Donatie Rode Kruis (kan blijven doorlopen)
+* etc.
+Totaal te besparen per maand bij opzegging alles: € 245,50
+Batch-acties:
+* ? Selecteer alle HOOG-prioriteit items
+* [Genereer opzegbrieven] ??
+* [Genereer opzeg-emails] ??
+
+4. Overzichtsschermen & Filters
+4.1 Lidmaatschappen Dashboard
+???????????????????????????????????????????????
+? ? Terug  Lidmaatschappen - Jan Jansen       ?
+???????????????????????????????????????????????
+? ?? Overzicht                                ?
+? Actieve abonnementen: 25                    ?
+? Totaal per maand: € 245,50                  ?
+? Totaal per jaar: € 2.946,00                 ?
+? ?? Verlopen binnenkort: 3                   ?
+???????????????????????????????????????????????
+? [Kostenoverzicht] [Nabestaanden-opzeglijst] ?
+???????????????????????????????????????????????
+? ?? [Zoek abonnement...              ]       ?
+???????????????????????????????????????????????
+? Categorieën                                 ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Streaming & Media    ? € 45/mnd  ?   ?
+? ? 8 items                 ? ?? 100%       ?
+? ???????????????????????????                ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Sport & Fitness      ? € 65/mnd  ?   ?
+? ? 3 items                 ? ?? 100%       ?
+? ???????????????????????????                ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Software & Apps      ? € 30/mnd  ?   ?
+? ? 6 items                 ? ?? 75%        ?
+? ???????????????????????????                ?
+?                                             ?
+? ... (andere categorieën)                    ?
+?                                             ?
+???????????????????????????????????????????????
+? [+ Nieuw abonnement]                        ?
+???????????????????????????????????????????????
+4.2 Streaming & Media - Lijst
+???????????????????????????????????????????????
+? ? Terug    Streaming & Media                ?
+???????????????????????????????????????????????
+? Sorteer: [Naam ?]  Filter: [Actief ?]      ?
+???????????????????????????????????????????????
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? ?? Netflix                            ?  ?
+? ? Premium abonnement                    ?  ?
+? ? € 15,99/maand                         ?  ?
+? ? Verlengt: 15-01-2025                  ?  ?
+? ? Status: Actief         [Bekijk ?]    ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? ?? Spotify                            ?  ?
+? ? Family abonnement                     ?  ?
+? ? € 17,99/maand                         ?  ?
+? ? ?? Verlengt: 01-01-2025 (binnenkort!)?  ?
+? ? Status: Actief         [Bekijk ?]    ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? ?? Disney+                            ?  ?
+? ? Basis abonnement                      ?  ?
+? ? € 8,99/maand                          ?  ?
+? ? Status: Opgezegd (eindigt 15-12-24)   ?  ?
+? ?                        [Bekijk ?]    ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+???????????????????????????????????????????????
+? Totaal kosten deze categorie: € 42,97/mnd  ?
+?                                             ?
+? [+ Nieuw abonnement]                        ?
+???????????????????????????????????????????????
+4.3 Abonnement Detail (Tab-weergave)
+???????????????????????????????????????????????
+? ? Terug    Netflix Premium                  ?
+???????????????????????????????????????????????
+? [Basis] [Financieel] [Contract] [Opzegging] ?
+? [Inloggegevens] [Details] [Nabestaanden]    ?
+? [Contact] [Documenten] [Notities]           ?
+???????????????????????????????????????????????
+? TAB: Opzegging                              ?
+?                                             ?
+? Opzegtermijn: 1 dag voor verlenging        ?
+?                                             ?
+? Volgende verlenging: 15-01-2025             ?
+? Laatste opzegdatum: 14-01-2025              ?
+? ?? Let op: nog 12 dagen!                   ?
+?                                             ?
+? Hoe opzeggen:                               ?
+? ? Via online account                       ?
+?   URL: https://netflix.com/account         ?
+?                                             ?
+? Geen opzegkosten                            ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+?                                             ?
+? Wil je dit abonnement opzeggen?            ?
+?                                             ?
+? [Genereer opzeg-email] ??                  ?
+?                                             ?
+? Of: zelf online opzeggen via bovenstaande  ?
+? link en daarna status wijzigen naar         ?
+? "Opgezegd"                                  ?
+?                                             ?
+???????????????????????????????????????????????
+? Status: [Compleet ?]                        ?
+?                                             ?
+? [Annuleren]              [Opslaan]          ?
+???????????????????????????????????????????????
+
+5. Waarschuwingen & Notificaties
+5.1 Automatische waarschuwingen (toekomstige fase)
+Systeem controleert dagelijks:
+* Abonnementen die binnen [X] dagen verlopen
+* Proefperiodes die bijna aflopen
+* Laatste opzegdatum die nadert
+* Prijswijzigingen (indien providers dit communiceren via email die je uploadt)
+Notificaties:
+* In-app badge op Lidmaatschappen module
+* Push notification (indien ingeschakeld)
+* Email (indien ingeschakeld)
+Waarschuwing-momenten:
+* 30 dagen voor einddatum
+* 14 dagen voor einddatum
+* 7 dagen voor laatste opzegdatum
+* 1 dag voor laatste opzegdatum
+5.2 Dashboard waarschuwingen
+Op hoofdscherm Lidmaatschappen:
+?? LET OP: 3 abonnementen vereisen aandacht
+
+1. Disney+ ? Laatste opzegdatum: 15-12-2024 (over 2 dagen!)
+2. Spotify ? Verlengt automatisch op 01-01-2025
+3. Adobe CC ? Proefperiode eindigt 20-12-2024
+
+6. Export & Nabestaandenpakket (Premium)
+6.1 Export Abonnementen-overzicht
+Functionaliteit:
+* Exporteer naar Excel of PDF
+* Bevat: 
+o Alle actieve abonnementen
+o Kosten per maand/jaar
+o Opzegtermijnen
+o Contactgegevens
+Excel-structuur:
+* Kolommen: Naam | Categorie | Kosten/mnd | Betalingsfrequentie | Volgende betaling | Opzegtermijn | Status
+6.2 Nabestaandenpakket - Abonnementen
+Speciaal PDF-rapport:
+Hoofdstuk 1: Direct opzeggen (prioriteit HOOG)
+* Lijst van alle abonnementen met prioriteit HOOG
+* Per item: 
+o Naam
+o Kosten
+o Hoe opzeggen (email/online/brief/telefoon)
+o Contactgegevens
+o Opzegtermijn
+o Klantnummer
+Hoofdstuk 2: Binnen 1 maand opzeggen (prioriteit NORMAAL)
+* (idem)
+Hoofdstuk 3: Kan blijven doorlopen / Later opzeggen
+* Bijv. Netflix (kan gebruikt worden door gezin)
+* Bijv. Donaties (kunnen doorlopen)
+Hoofdstuk 4: Totaal overzicht kosten
+* Totaal per maand
+* Besparingsmogelijkheid
+Appendix:
+* Voorbeeldbrief opzegging
+* Checklist: "Heb ik alle opzeggingen verstuurd?"
+6.3 Opzegbundel (Premium)
+Functionaliteit:
+* Genereer in één keer alle opzegbrieven voor geselecteerde abonnementen
+* 1 PDF met meerdere pagina's (elk abonnement 1 pagina)
+* Printen, ondertekenen, versturen
+* Handig bij overlijden of bij "schoonmaak" van abonnementen
+
+7. Specifieke Features
+7.1 Abonnement dupliceren
+Use case: Gezinsleden hebben soms hetzelfde abonnement
+Functionaliteit:
+* Open abonnement detail
+* Klik [Dupliceren]
+* Systeem maakt kopie met alle gegevens
+* Wijzig wat nodig is (bijv. andere naam, ander klantnummer)
+* Opslaan
+7.2 Abonnement pauzeren
+Voor abonnementen die tijdelijk gepauzeerd kunnen worden
+Functionaliteit:
+* Status wijzigen naar "Gepauzeerd"
+* Pauze van [DD-MM-JJJJ] tot [DD-MM-JJJJ]
+* Kosten worden niet meer meegeteld in totaaloverzicht
+* Herinnering instellen voor hervatten
+7.3 Gezinsabonnementen delen
+Voor abonnementen die door meerdere gezinsleden worden gebruikt
+Veld in Tab "Details":
+* Gedeeld met: [Links naar andere personen in systeem]
+* Bijv. "Netflix wordt gedeeld door Jan, Maria en kinderen"
+* Bij kosten: optie om te verdelen 
+o "€15,99 totaal, €4,00 per persoon (4 personen)"
+7.4 Import vanuit email
+Toekomstige fase:
+* Scan mailbox naar bevestigingsmails van abonnementen
+* Herken standaard templates (Netflix, Spotify, etc.)
+* Bied aan om automatisch toe te voegen
+* Vul velden automatisch in
+7.5 Template-bibliotheek opzegbrieven
+Premium:
+* Uitgebreide bibliotheek met opzegbrieven
+* Per type abonnement geoptimaliseerd
+* Bijv. "Opzegging sportschool bij overlijden (zonder boete)"
+* Bijv. "Opzegging tijdens proefperiode"
+* Bijv. "Opzegging met klacht over service"
+
+8. Validatie & Status
+8.1 Verplichte velden voor status COMPLETE
+Minimum:
+* Naam abonnement
+* Categorie
+* Kosten + betalingsfrequentie
+* Ingangsdatum
+* Status (Actief/Opgezegd/Beëindigd)
+* Opzegtermijn
+* Hoe opzeggen (methode)
+Optioneel maar aanbevolen:
+* Voor nabestaanden: actie bij overlijden
+* Contactgegevens klantenservice
+* Minimaal 1 document (bevestigingsmail)
+
+9. Integratie met andere modules
+9.1 Met Geldzaken
+* Abonnementen kunnen ook verschijnen als "Vaste lasten"
+* Keuze: invoeren in Lidmaatschappen OF Geldzaken
+* Of: link leggen (bijv. "Zie ook in Geldzaken")
+* Kosten worden meegeteld in "Totale maandelijkse uitgaven"
+9.2 Met Wonen & Energie
+* Internet/TV-abonnement kan in beide modules
+* Energie-contract staat normaal in Wonen & Energie
+* Maar: kan ook hier voor overzicht
+9.3 Met Digitale Erfenis
+* Streaming accounts zijn ook online accounts
+* Software abonnementen (wachtwoordmanagers) ook in Digitale Erfenis
+* Kruisverwijzingen
+
+10. Premiumfuncties specifiek voor Lidmaatschappen
+Gratis:
+* Alle abonnementen invoeren
+* Overzicht bekijken
+* Kostenoverzicht
+* Notities maken
+* Status wijzigen
+Premium (??):
+* Opzegbrieven genereren (per stuk)
+* Opzeg-emails genereren
+* Batch-opzegging (meerdere tegelijk)
+* Opzegbundel voor nabestaanden
+* Export naar Excel/PDF
+* Nabestaandenpakket Abonnementen
+* Waarschuwingen/notificaties (push + email)
+* Import vanuit email (toekomst)
+
+11. Samenvatting & Prioritering Fase 1
+Prio 1 - Must have:
+* Basis CRUD (Create, Read, Update, Delete)
+* Alle 12 categorieën
+* Belangrijkste velden: 
+o Naam, kosten, betalingsfrequentie
+o Opzegtermijn, hoe opzeggen
+o Status (Actief/Opgezegd)
+o Voor nabestaanden (actie bij overlijden)
+* Overzichtsschermen
+* Kostenoverzicht (totaal per maand/jaar)
+* Nabestaanden-opzeglijst
+Prio 2 - Should have:
+* Alle tabs volledig uitwerken
+* Documenten uploaden
+* Waarschuwingen (binnen app)
+* Opzeg-instructies per abonnement
+Prio 3 - Nice to have:
+* Grafieken (taartdiagram kosten per categorie)
+* Geschiedenis tracking
+* Dupliceren functie
+* Pauzeren functie
+Premium (Fase 2):
+* Opzegbrieven genereren
+* Opzeg-emails genereren
+* Batch-opzegging
+* Export functies
+* Nabestaandenpakket
+* Push notificaties
+* Email import
+
+12. Wireframes
+12.1 Kostenoverzicht
+???????????????????????????????????????????????
+? ? Terug    Kostenoverzicht                  ?
+???????????????????????????????????????????????
+?                                             ?
+? ?? TOTALEN                                  ?
+?                                             ?
+? Per maand:  € 245,50                        ?
+? Per jaar:   € 2.946,00                      ?
+?                                             ?
+? Aantal actieve abonnementen: 25            ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+?                                             ?
+? ?? PER CATEGORIE                            ?
+?                                             ?
+? ?????????????????????????????????????      ?
+? ?    Streaming        18%  € 45,00  ?      ?
+? ?    Sport            27%  € 65,00  ?      ?
+? ?    Software         12%  € 30,00  ?      ?
+? ?    Kranten          10%  € 25,00  ?      ?
+? ?    Verenigingen     16%  € 40,00  ?      ?
+? ?    Overig           17%  € 40,50  ?      ?
+? ?????????????????????????????????????      ?
+?                                             ?
+? [Taartdiagram visualisatie]                ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+?                                             ?
+? ?? TOP 10 DUURSTE                           ?
+?                                             ?
+? 1. Sportschool      € 55,00/mnd            ?
+? 2. Adobe CC         € 24,99/mnd            ?
+? 3. Vakbond          € 20,00/mnd            ?
+? 4. Spotify Family   € 17,99/mnd            ?
+? 5. Netflix          € 15,99/mnd            ?
+? ...                                         ?
+?                                             ?
+???????????????????????????????????????????????
+? [Export Excel] ??  [Export PDF] ??         ?
+???????????????????????????????????????????????
+12.2 Nabestaanden Opzeglijst
+???????????????????????????????????????????????
+? ? Terug    Opzeglijst voor Nabestaanden     ?
+???????????????????????????????????????????????
+?                                             ?
+? ?? PRIORITEIT HOOG (binnen 1 week)         ?
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? ? Sportschool Basic Fit               ?  ?
+? ?    € 20/mnd                            ?  ?
+? ?    Opzeggen: Online portal             ?  ?
+? ?    [Genereer brief] [Details]          ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? ? HelloFresh Maaltijdbox              ?  ?
+? ?    € 60/week                           ?  ?
+? ?    Opzeggen: Email                     ?  ?
+? ?    [Genereer email] [Details]          ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+? [? Selecteer alle]                         ?
+? [Genereer brieven voor geselecteerde] ??  ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+?                                             ?
+? ?? PRIORITEIT NORMAAL (binnen 1 maand)     ?
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? ? Netflix Premium                     ?  ?
+? ?    € 15,99/mnd                         ?  ?
+? ?    Opzeggen: Online                    ?  ?
+? ?    [Details]                           ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+? ... (meer items)                            ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+?                                             ?
+? ?? Totaal te besparen: € 245,50/mnd        ?
+?                                             ?
+???????????????????????????????????????????????
+? [Export als PDF] ??                        ?
+???????????????????????????????????????????????
+
+

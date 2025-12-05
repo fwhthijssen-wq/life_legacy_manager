@@ -709,4 +709,358 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notes => 'Notes';
+
+  @override
+  String get authenticity => 'Authenticity';
+
+  @override
+  String get specifications => 'Specifications';
+
+  @override
+  String get contacts => 'Contacts';
+
+  @override
+  String get documents => 'Documents';
+
+  @override
+  String get story => 'Story';
+
+  @override
+  String get storyHint => 'Tell the story behind this item...';
+
+  @override
+  String get itemName => 'Item name';
+
+  @override
+  String get itemNameHint => 'e.g. Grandma\'s ring, Vintage watch';
+
+  @override
+  String get fieldRequired => 'This field is required';
+
+  @override
+  String get subcategory => 'Subcategory';
+
+  @override
+  String get brand => 'Brand';
+
+  @override
+  String get model => 'Model';
+
+  @override
+  String get year => 'Year';
+
+  @override
+  String get serialNumber => 'Serial number';
+
+  @override
+  String get condition => 'Condition';
+
+  @override
+  String get color => 'Color';
+
+  @override
+  String get material => 'Material';
+
+  @override
+  String get photos => 'Photos';
+
+  @override
+  String get addPhoto => 'Add photo';
+
+  @override
+  String get purchaseDetails => 'Purchase details';
+
+  @override
+  String get purchaseDate => 'Purchase date';
+
+  @override
+  String get purchasedFrom => 'Purchased from';
+
+  @override
+  String get purchasedFromHint => 'e.g. Store, Online, Auction';
+
+  @override
+  String get purchasePrice => 'Purchase price';
+
+  @override
+  String get origin => 'Origin';
+
+  @override
+  String get inheritedFrom => 'Inherited from';
+
+  @override
+  String get giftFrom => 'Gift from';
+
+  @override
+  String get receivedDate => 'Received date';
+
+  @override
+  String get currentValue => 'Current value';
+
+  @override
+  String get estimatedValue => 'Estimated value';
+
+  @override
+  String get valuationBasis => 'Valuation basis';
+
+  @override
+  String get lastValuationDate => 'Last valuation date';
+
+  @override
+  String get appraisal => 'Appraisal';
+
+  @override
+  String get appraiserName => 'Appraiser name';
+
+  @override
+  String get appraisalDate => 'Appraisal date';
+
+  @override
+  String get appraisedValue => 'Appraised value';
+
+  @override
+  String get isInsured => 'Insured';
+
+  @override
+  String get insuranceType => 'Insurance type';
+
+  @override
+  String get insurerName => 'Insurer name';
+
+  @override
+  String get policyNumber => 'Policy number';
+
+  @override
+  String get insuredAmount => 'Insured amount';
+
+  @override
+  String get locationType => 'Location type';
+
+  @override
+  String get locationDetails => 'Location details';
+
+  @override
+  String get locationDetailsHint => 'e.g. Home, Safe, Storage unit';
+
+  @override
+  String get specificLocation => 'Specific location';
+
+  @override
+  String get specificLocationHint => 'e.g. Bedroom, Cabinet 2';
+
+  @override
+  String get accessibility => 'Accessibility';
+
+  @override
+  String get keyLocation => 'Key location';
+
+  @override
+  String get codeLocation => 'Code location';
+
+  @override
+  String get accessViaPerson => 'Access via person';
+
+  @override
+  String get warranty => 'Warranty';
+
+  @override
+  String get hasWarranty => 'Has warranty';
+
+  @override
+  String get warrantyYears => 'Warranty years';
+
+  @override
+  String get warrantyExpiry => 'Warranty expiry';
+
+  @override
+  String get warrantyProvider => 'Warranty provider';
+
+  @override
+  String get maintenance => 'Maintenance';
+
+  @override
+  String get maintenanceInterval => 'Maintenance interval';
+
+  @override
+  String get maintenanceIntervalHint => 'e.g. Yearly, Every 6 months';
+
+  @override
+  String get lastMaintenance => 'Last maintenance';
+
+  @override
+  String get nextMaintenance => 'Next maintenance';
+
+  @override
+  String get maintenanceReminder => 'Maintenance reminder';
+
+  @override
+  String get whoGetsThis => 'Who gets this?';
+
+  @override
+  String get heirAssigned => 'Heir assigned';
+
+  @override
+  String get inheritanceDestination => 'Inheritance destination';
+
+  @override
+  String get heirName => 'Heir name';
+
+  @override
+  String get inheritanceReason => 'Assignment reason';
+
+  @override
+  String get inheritanceReasonHint => 'Why does this go to this person?';
+
+  @override
+  String get sentimentalValue => 'Sentimental value';
+
+  @override
+  String get mentionedInWill => 'Mentioned in will';
+
+  @override
+  String get survivorInstructions => 'Instructions for survivors';
+
+  @override
+  String get survivorInstructionsHint => 'What should survivors know/do?';
+
+  @override
+  String get sellingInfo => 'Selling information';
+
+  @override
+  String get whereToSell => 'Where to sell';
+
+  @override
+  String get whereToSellHint => 'e.g. Auction, Dealer, Online';
+
+  @override
+  String get estimatedSellingPrice => 'Estimated selling price';
+
+  @override
+  String get estimatedSellingTime => 'Estimated selling time';
+
+  @override
+  String get estimatedSellingTimeHint => 'e.g. 1-3 months';
+
+  @override
+  String get hasCertificate => 'Has certificate';
+
+  @override
+  String get hasProvenance => 'Has provenance';
+
+  @override
+  String get expertName => 'Expert name';
+
+  @override
+  String get registrationNumber => 'Registration number';
+
+  @override
+  String get registrationNumberHint => 'e.g. License plate, Serial number';
+
+  @override
+  String get specificationsFor => 'Specifications for';
+
+  @override
+  String get specificationsComingSoon => 'Specifications coming soon';
+
+  @override
+  String get maintenanceContact => 'Maintenance contact';
+
+  @override
+  String get company => 'Company';
+
+  @override
+  String get website => 'Website';
+
+  @override
+  String get dealerContact => 'Dealer contact';
+
+  @override
+  String get contactPerson => 'Contact person';
+
+  @override
+  String get auctionAccounts => 'Auction accounts';
+
+  @override
+  String get auctionAccountsLabel => 'Auction accounts';
+
+  @override
+  String get auctionAccountsHint => 'e.g. Catawiki, eBay accounts';
+
+  @override
+  String get documentsComingSoon => 'Documents coming soon';
+
+  @override
+  String get storyBehindItem => 'The story behind this item';
+
+  @override
+  String get specialMemories => 'Special memories';
+
+  @override
+  String get specialMemoriesHint => 'Share special memories...';
+
+  @override
+  String get whyValuable => 'Why is this valuable?';
+
+  @override
+  String get whyValuableHint => 'Emotional or historical value...';
+
+  @override
+  String get notesHint => 'Additional notes...';
+
+  @override
+  String get pleaseFixErrors => 'Please fix the errors';
+
+  @override
+  String get savedSuccessfully => 'Saved successfully';
+
+  @override
+  String get confirmDelete => 'Confirm delete';
+
+  @override
+  String get confirmDeleteMessage => 'Are you sure you want to delete this?';
+
+  @override
+  String get sortByName => 'By name';
+
+  @override
+  String get sortByValue => 'By value';
+
+  @override
+  String get sortByDate => 'By date';
+
+  @override
+  String get addItem => 'Add item';
+
+  @override
+  String get editItem => 'Edit item';
+
+  @override
+  String get noItemsInCategory => 'No items in this category';
+
+  @override
+  String get addFirstItemHint => 'Add the first item';
+
+  @override
+  String get items => 'items';
+
+  @override
+  String get totalValue => 'Total value';
+
+  @override
+  String get basicInfo => 'Basic information';
+
+  @override
+  String get purchaseValue => 'Purchase & Value';
+
+  @override
+  String get insurance => 'Insurance';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get maintenanceWarranty => 'Maintenance & Warranty';
+
+  @override
+  String get inheritance => 'Inheritance';
 }

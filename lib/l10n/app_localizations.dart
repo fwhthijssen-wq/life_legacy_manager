@@ -1411,6 +1411,714 @@ abstract class AppLocalizations {
   /// In nl, this message translates to:
   /// **'Notities'**
   String get notes;
+
+  /// No description provided for @authenticity.
+  ///
+  /// In nl, this message translates to:
+  /// **'Echtheid'**
+  String get authenticity;
+
+  /// No description provided for @specifications.
+  ///
+  /// In nl, this message translates to:
+  /// **'Specificaties'**
+  String get specifications;
+
+  /// No description provided for @contacts.
+  ///
+  /// In nl, this message translates to:
+  /// **'Contacten'**
+  String get contacts;
+
+  /// No description provided for @documents.
+  ///
+  /// In nl, this message translates to:
+  /// **'Documenten'**
+  String get documents;
+
+  /// No description provided for @story.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verhaal'**
+  String get story;
+
+  /// No description provided for @storyHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Vertel het verhaal achter dit item...'**
+  String get storyHint;
+
+  /// No description provided for @itemName.
+  ///
+  /// In nl, this message translates to:
+  /// **'Naam item'**
+  String get itemName;
+
+  /// No description provided for @itemNameHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Oma\'s ring, Vintage horloge'**
+  String get itemNameHint;
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dit veld is verplicht'**
+  String get fieldRequired;
+
+  /// No description provided for @subcategory.
+  ///
+  /// In nl, this message translates to:
+  /// **'Subcategorie'**
+  String get subcategory;
+
+  /// No description provided for @brand.
+  ///
+  /// In nl, this message translates to:
+  /// **'Merk'**
+  String get brand;
+
+  /// No description provided for @model.
+  ///
+  /// In nl, this message translates to:
+  /// **'Model'**
+  String get model;
+
+  /// No description provided for @year.
+  ///
+  /// In nl, this message translates to:
+  /// **'Jaar'**
+  String get year;
+
+  /// No description provided for @serialNumber.
+  ///
+  /// In nl, this message translates to:
+  /// **'Serienummer'**
+  String get serialNumber;
+
+  /// No description provided for @condition.
+  ///
+  /// In nl, this message translates to:
+  /// **'Conditie'**
+  String get condition;
+
+  /// No description provided for @color.
+  ///
+  /// In nl, this message translates to:
+  /// **'Kleur'**
+  String get color;
+
+  /// No description provided for @material.
+  ///
+  /// In nl, this message translates to:
+  /// **'Materiaal'**
+  String get material;
+
+  /// No description provided for @photos.
+  ///
+  /// In nl, this message translates to:
+  /// **'Foto\'s'**
+  String get photos;
+
+  /// No description provided for @addPhoto.
+  ///
+  /// In nl, this message translates to:
+  /// **'Foto toevoegen'**
+  String get addPhoto;
+
+  /// No description provided for @purchaseDetails.
+  ///
+  /// In nl, this message translates to:
+  /// **'Aankoopgegevens'**
+  String get purchaseDetails;
+
+  /// No description provided for @purchaseDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Aankoopdatum'**
+  String get purchaseDate;
+
+  /// No description provided for @purchasedFrom.
+  ///
+  /// In nl, this message translates to:
+  /// **'Gekocht bij'**
+  String get purchasedFrom;
+
+  /// No description provided for @purchasedFromHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Winkel, Online, Veiling'**
+  String get purchasedFromHint;
+
+  /// No description provided for @purchasePrice.
+  ///
+  /// In nl, this message translates to:
+  /// **'Aankoopprijs'**
+  String get purchasePrice;
+
+  /// No description provided for @origin.
+  ///
+  /// In nl, this message translates to:
+  /// **'Herkomst'**
+  String get origin;
+
+  /// No description provided for @inheritedFrom.
+  ///
+  /// In nl, this message translates to:
+  /// **'Geërfd van'**
+  String get inheritedFrom;
+
+  /// No description provided for @giftFrom.
+  ///
+  /// In nl, this message translates to:
+  /// **'Gekregen van'**
+  String get giftFrom;
+
+  /// No description provided for @receivedDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Ontvangstdatum'**
+  String get receivedDate;
+
+  /// No description provided for @currentValue.
+  ///
+  /// In nl, this message translates to:
+  /// **'Huidige waarde'**
+  String get currentValue;
+
+  /// No description provided for @estimatedValue.
+  ///
+  /// In nl, this message translates to:
+  /// **'Geschatte waarde'**
+  String get estimatedValue;
+
+  /// No description provided for @valuationBasis.
+  ///
+  /// In nl, this message translates to:
+  /// **'Basis van taxatie'**
+  String get valuationBasis;
+
+  /// No description provided for @lastValuationDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Laatste taxatiedatum'**
+  String get lastValuationDate;
+
+  /// No description provided for @appraisal.
+  ///
+  /// In nl, this message translates to:
+  /// **'Taxatie'**
+  String get appraisal;
+
+  /// No description provided for @appraiserName.
+  ///
+  /// In nl, this message translates to:
+  /// **'Naam taxateur'**
+  String get appraiserName;
+
+  /// No description provided for @appraisalDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Taxatiedatum'**
+  String get appraisalDate;
+
+  /// No description provided for @appraisedValue.
+  ///
+  /// In nl, this message translates to:
+  /// **'Getaxeerde waarde'**
+  String get appraisedValue;
+
+  /// No description provided for @isInsured.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verzekerd'**
+  String get isInsured;
+
+  /// No description provided for @insuranceType.
+  ///
+  /// In nl, this message translates to:
+  /// **'Type verzekering'**
+  String get insuranceType;
+
+  /// No description provided for @insurerName.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verzekeraar'**
+  String get insurerName;
+
+  /// No description provided for @policyNumber.
+  ///
+  /// In nl, this message translates to:
+  /// **'Polisnummer'**
+  String get policyNumber;
+
+  /// No description provided for @insuredAmount.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verzekerd bedrag'**
+  String get insuredAmount;
+
+  /// No description provided for @locationType.
+  ///
+  /// In nl, this message translates to:
+  /// **'Type locatie'**
+  String get locationType;
+
+  /// No description provided for @locationDetails.
+  ///
+  /// In nl, this message translates to:
+  /// **'Locatiedetails'**
+  String get locationDetails;
+
+  /// No description provided for @locationDetailsHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Thuis, Kluis, Opslagruimte'**
+  String get locationDetailsHint;
+
+  /// No description provided for @specificLocation.
+  ///
+  /// In nl, this message translates to:
+  /// **'Specifieke locatie'**
+  String get specificLocation;
+
+  /// No description provided for @specificLocationHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Slaapkamer, Kast 2'**
+  String get specificLocationHint;
+
+  /// No description provided for @accessibility.
+  ///
+  /// In nl, this message translates to:
+  /// **'Toegankelijkheid'**
+  String get accessibility;
+
+  /// No description provided for @keyLocation.
+  ///
+  /// In nl, this message translates to:
+  /// **'Sleutellocatie'**
+  String get keyLocation;
+
+  /// No description provided for @codeLocation.
+  ///
+  /// In nl, this message translates to:
+  /// **'Code locatie'**
+  String get codeLocation;
+
+  /// No description provided for @accessViaPerson.
+  ///
+  /// In nl, this message translates to:
+  /// **'Toegang via persoon'**
+  String get accessViaPerson;
+
+  /// No description provided for @warranty.
+  ///
+  /// In nl, this message translates to:
+  /// **'Garantie'**
+  String get warranty;
+
+  /// No description provided for @hasWarranty.
+  ///
+  /// In nl, this message translates to:
+  /// **'Heeft garantie'**
+  String get hasWarranty;
+
+  /// No description provided for @warrantyYears.
+  ///
+  /// In nl, this message translates to:
+  /// **'Garantie jaren'**
+  String get warrantyYears;
+
+  /// No description provided for @warrantyExpiry.
+  ///
+  /// In nl, this message translates to:
+  /// **'Garantie vervaldatum'**
+  String get warrantyExpiry;
+
+  /// No description provided for @warrantyProvider.
+  ///
+  /// In nl, this message translates to:
+  /// **'Garantieverstrekker'**
+  String get warrantyProvider;
+
+  /// No description provided for @maintenance.
+  ///
+  /// In nl, this message translates to:
+  /// **'Onderhoud'**
+  String get maintenance;
+
+  /// No description provided for @maintenanceInterval.
+  ///
+  /// In nl, this message translates to:
+  /// **'Onderhoudsinterval'**
+  String get maintenanceInterval;
+
+  /// No description provided for @maintenanceIntervalHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Jaarlijks, Om de 6 maanden'**
+  String get maintenanceIntervalHint;
+
+  /// No description provided for @lastMaintenance.
+  ///
+  /// In nl, this message translates to:
+  /// **'Laatste onderhoud'**
+  String get lastMaintenance;
+
+  /// No description provided for @nextMaintenance.
+  ///
+  /// In nl, this message translates to:
+  /// **'Volgend onderhoud'**
+  String get nextMaintenance;
+
+  /// No description provided for @maintenanceReminder.
+  ///
+  /// In nl, this message translates to:
+  /// **'Onderhoudsherinnering'**
+  String get maintenanceReminder;
+
+  /// No description provided for @whoGetsThis.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wie krijgt dit?'**
+  String get whoGetsThis;
+
+  /// No description provided for @heirAssigned.
+  ///
+  /// In nl, this message translates to:
+  /// **'Erfgenaam toegewezen'**
+  String get heirAssigned;
+
+  /// No description provided for @inheritanceDestination.
+  ///
+  /// In nl, this message translates to:
+  /// **'Erfenisbestemming'**
+  String get inheritanceDestination;
+
+  /// No description provided for @heirName.
+  ///
+  /// In nl, this message translates to:
+  /// **'Naam erfgenaam'**
+  String get heirName;
+
+  /// No description provided for @inheritanceReason.
+  ///
+  /// In nl, this message translates to:
+  /// **'Reden toewijzing'**
+  String get inheritanceReason;
+
+  /// No description provided for @inheritanceReasonHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Waarom gaat dit naar deze persoon?'**
+  String get inheritanceReasonHint;
+
+  /// No description provided for @sentimentalValue.
+  ///
+  /// In nl, this message translates to:
+  /// **'Emotionele waarde'**
+  String get sentimentalValue;
+
+  /// No description provided for @mentionedInWill.
+  ///
+  /// In nl, this message translates to:
+  /// **'Genoemd in testament'**
+  String get mentionedInWill;
+
+  /// No description provided for @survivorInstructions.
+  ///
+  /// In nl, this message translates to:
+  /// **'Instructies voor nabestaanden'**
+  String get survivorInstructions;
+
+  /// No description provided for @survivorInstructionsHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Wat moeten nabestaanden weten/doen?'**
+  String get survivorInstructionsHint;
+
+  /// No description provided for @sellingInfo.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verkoopinformatie'**
+  String get sellingInfo;
+
+  /// No description provided for @whereToSell.
+  ///
+  /// In nl, this message translates to:
+  /// **'Waar te verkopen'**
+  String get whereToSell;
+
+  /// No description provided for @whereToSellHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Veiling, Dealer, Online'**
+  String get whereToSellHint;
+
+  /// No description provided for @estimatedSellingPrice.
+  ///
+  /// In nl, this message translates to:
+  /// **'Geschatte verkoopprijs'**
+  String get estimatedSellingPrice;
+
+  /// No description provided for @estimatedSellingTime.
+  ///
+  /// In nl, this message translates to:
+  /// **'Geschatte verkooptijd'**
+  String get estimatedSellingTime;
+
+  /// No description provided for @estimatedSellingTimeHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. 1-3 maanden'**
+  String get estimatedSellingTimeHint;
+
+  /// No description provided for @hasCertificate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Heeft certificaat'**
+  String get hasCertificate;
+
+  /// No description provided for @hasProvenance.
+  ///
+  /// In nl, this message translates to:
+  /// **'Heeft herkomstbewijs'**
+  String get hasProvenance;
+
+  /// No description provided for @expertName.
+  ///
+  /// In nl, this message translates to:
+  /// **'Naam expert'**
+  String get expertName;
+
+  /// No description provided for @registrationNumber.
+  ///
+  /// In nl, this message translates to:
+  /// **'Registratienummer'**
+  String get registrationNumber;
+
+  /// No description provided for @registrationNumberHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Kenteken, Serienummer'**
+  String get registrationNumberHint;
+
+  /// No description provided for @specificationsFor.
+  ///
+  /// In nl, this message translates to:
+  /// **'Specificaties voor'**
+  String get specificationsFor;
+
+  /// No description provided for @specificationsComingSoon.
+  ///
+  /// In nl, this message translates to:
+  /// **'Specificaties binnenkort beschikbaar'**
+  String get specificationsComingSoon;
+
+  /// No description provided for @maintenanceContact.
+  ///
+  /// In nl, this message translates to:
+  /// **'Onderhoudscontact'**
+  String get maintenanceContact;
+
+  /// No description provided for @company.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bedrijf'**
+  String get company;
+
+  /// No description provided for @website.
+  ///
+  /// In nl, this message translates to:
+  /// **'Website'**
+  String get website;
+
+  /// No description provided for @dealerContact.
+  ///
+  /// In nl, this message translates to:
+  /// **'Dealercontact'**
+  String get dealerContact;
+
+  /// No description provided for @contactPerson.
+  ///
+  /// In nl, this message translates to:
+  /// **'Contactpersoon'**
+  String get contactPerson;
+
+  /// No description provided for @auctionAccounts.
+  ///
+  /// In nl, this message translates to:
+  /// **'Veilingaccounts'**
+  String get auctionAccounts;
+
+  /// No description provided for @auctionAccountsLabel.
+  ///
+  /// In nl, this message translates to:
+  /// **'Veilingaccounts'**
+  String get auctionAccountsLabel;
+
+  /// No description provided for @auctionAccountsHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'bijv. Catawiki, eBay accounts'**
+  String get auctionAccountsHint;
+
+  /// No description provided for @documentsComingSoon.
+  ///
+  /// In nl, this message translates to:
+  /// **'Documenten binnenkort beschikbaar'**
+  String get documentsComingSoon;
+
+  /// No description provided for @storyBehindItem.
+  ///
+  /// In nl, this message translates to:
+  /// **'Het verhaal achter dit item'**
+  String get storyBehindItem;
+
+  /// No description provided for @specialMemories.
+  ///
+  /// In nl, this message translates to:
+  /// **'Bijzondere herinneringen'**
+  String get specialMemories;
+
+  /// No description provided for @specialMemoriesHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Deel bijzondere herinneringen...'**
+  String get specialMemoriesHint;
+
+  /// No description provided for @whyValuable.
+  ///
+  /// In nl, this message translates to:
+  /// **'Waarom is dit waardevol?'**
+  String get whyValuable;
+
+  /// No description provided for @whyValuableHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Emotionele of historische waarde...'**
+  String get whyValuableHint;
+
+  /// No description provided for @notesHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Aanvullende opmerkingen...'**
+  String get notesHint;
+
+  /// No description provided for @pleaseFixErrors.
+  ///
+  /// In nl, this message translates to:
+  /// **'Corrigeer de fouten'**
+  String get pleaseFixErrors;
+
+  /// No description provided for @savedSuccessfully.
+  ///
+  /// In nl, this message translates to:
+  /// **'Succesvol opgeslagen'**
+  String get savedSuccessfully;
+
+  /// No description provided for @confirmDelete.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verwijderen bevestigen'**
+  String get confirmDelete;
+
+  /// No description provided for @confirmDeleteMessage.
+  ///
+  /// In nl, this message translates to:
+  /// **'Weet u zeker dat u dit wilt verwijderen?'**
+  String get confirmDeleteMessage;
+
+  /// No description provided for @sortByName.
+  ///
+  /// In nl, this message translates to:
+  /// **'Op naam'**
+  String get sortByName;
+
+  /// No description provided for @sortByValue.
+  ///
+  /// In nl, this message translates to:
+  /// **'Op waarde'**
+  String get sortByValue;
+
+  /// No description provided for @sortByDate.
+  ///
+  /// In nl, this message translates to:
+  /// **'Op datum'**
+  String get sortByDate;
+
+  /// No description provided for @addItem.
+  ///
+  /// In nl, this message translates to:
+  /// **'Item toevoegen'**
+  String get addItem;
+
+  /// No description provided for @editItem.
+  ///
+  /// In nl, this message translates to:
+  /// **'Item bewerken'**
+  String get editItem;
+
+  /// No description provided for @noItemsInCategory.
+  ///
+  /// In nl, this message translates to:
+  /// **'Geen items in deze categorie'**
+  String get noItemsInCategory;
+
+  /// No description provided for @addFirstItemHint.
+  ///
+  /// In nl, this message translates to:
+  /// **'Voeg het eerste item toe'**
+  String get addFirstItemHint;
+
+  /// No description provided for @items.
+  ///
+  /// In nl, this message translates to:
+  /// **'items'**
+  String get items;
+
+  /// No description provided for @totalValue.
+  ///
+  /// In nl, this message translates to:
+  /// **'Totale waarde'**
+  String get totalValue;
+
+  /// No description provided for @basicInfo.
+  ///
+  /// In nl, this message translates to:
+  /// **'Basisinformatie'**
+  String get basicInfo;
+
+  /// No description provided for @purchaseValue.
+  ///
+  /// In nl, this message translates to:
+  /// **'Aankoop & Waarde'**
+  String get purchaseValue;
+
+  /// No description provided for @insurance.
+  ///
+  /// In nl, this message translates to:
+  /// **'Verzekering'**
+  String get insurance;
+
+  /// No description provided for @location.
+  ///
+  /// In nl, this message translates to:
+  /// **'Locatie'**
+  String get location;
+
+  /// No description provided for @maintenanceWarranty.
+  ///
+  /// In nl, this message translates to:
+  /// **'Onderhoud & Garantie'**
+  String get maintenanceWarranty;
+
+  /// No description provided for @inheritance.
+  ///
+  /// In nl, this message translates to:
+  /// **'Erfenis'**
+  String get inheritance;
 }
 
 class _AppLocalizationsDelegate

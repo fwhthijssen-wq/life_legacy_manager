@@ -1,0 +1,1404 @@
+FUNCTIONEEL ONTWERP – Module Wonen & Energie
+1. Doel & Uitgangspunten
+De Wonen & Energie module biedt een compleet overzicht van de woonsituatie, eigendom, contracten, technische installaties en energievoorzieningen. Het doel is:
+* Overzicht voor gebruiker: alle woning-gerelateerde zaken op één plek
+* Nabestaanden ondersteunen: weten wat er is, hoe het werkt, waar documenten liggen
+* Technisch inzicht: handleidingen, storingsinfo, onderhoud, garanties
+* Contractbeheer: hypotheek, energie, internet, verzekeringen
+* Energietransitie: zonnepanelen, warmtepomp, thuisbatterij, laadpaal
+* Opzegmogelijkheden: welke contracten moeten worden aangepast/opgezegd
+Belangrijke uitgangspunten:
+* Praktisch & toegankelijk: niet alleen financieel, ook "hoe werkt dit?"
+* Handleidingen centraal: PDF's, video's, links naar online handleidingen
+* Storing? Wat nu?: directe toegang tot storingsinformatie
+* Locatie fysieke documenten: waar ligt de hypotheekakte, waar is de meterkast
+* Garanties & onderhoud: wanneer is laatste onderhoud, wanneer verloopt garantie
+* Meerdere woningen mogelijk: hoofdwoning, vakantiewoning, verhuurpand
+
+2. Hoofdcategorieën binnen Wonen & Energie
+De module bestaat uit 8 hoofdcategorieën:
+2.1 Woning - Algemeen
+* Type woning (huur/koop)
+* Adresgegevens
+* Kadastrale gegevens
+* WOZ-waarde
+* Bouwjaar
+* Eigendomssituatie
+2.2 Hypotheek (indien gekocht)
+* Hypotheekverstrekker
+* Hypotheekvormen
+* Looptijd, rente, aflossing
+* Gekoppelde verzekeringen
+* Notaris/adviseur
+2.3 Huurcontract (indien gehuurd)
+* Verhuurder
+* Huurprijs
+* Servicekosten
+* Opzegtermijn
+* Huurcontract details
+2.4 Energie
+* Energiecontract (elektriciteit)
+* Gascontract
+* Warmtecontract (stadsverwarming)
+* Meterstanden
+* Jaarverbruik
+* Teruglevering (bij zonnepanelen)
+2.5 Nutsvoorzieningen
+* Water
+* Riolering
+* Afvalverwerking (diftar)
+* Internet & TV
+* Telefonie
+2.6 Technische Installaties
+* CV-ketel / verwarmingssysteem
+* Warmtepomp
+* Zonnepanelen
+* Thuisbatterij / accu
+* Laadpaal elektrische auto
+* Airconditioning
+* Mechanische ventilatie
+* Zonneboiler
+2.7 Huishoudelijke Apparaten & Systemen
+* Wasmachine, droger, vaatwasser
+* Koelkast, vriezer, oven
+* Smart home / domotica
+* Alarmsysteem
+* NAS / netwerk / WiFi
+* Camera's / videofoon
+2.8 Onderhoud & Diensten
+* Tuinonderhoud
+* Schoonmaak
+* Glazenwasser
+* Klusjesman
+* Onderhoudsbedrijven (CV, elektra, etc.)
+
+3. Gebruikersflows
+3.1 Navigatie naar Wonen & Energie
+Startpunt: Home-scherm
+1. Gebruiker selecteert een persoon
+2. Komt op Persoon Detail scherm
+3. Selecteert module "Wonen & Energie"
+4. Komt op Wonen & Energie Overzichtsscherm
+Wonen & Energie Overzichtsscherm toont:
+* Dropdown/keuze: Selecteer woning (indien meerdere woningen) 
+o Hoofdwoning (Straatnaam 1, Plaats)
+o Vakantiewoning (Locatie)
+o Verhuurpand (Adres)
+* 8 categorieën (zie 2.1 - 2.8)
+* Per categorie: 
+o Aantal items
+o Status-indicator (??/??/??)
+o Snelle toegang tot belangrijkste info
+Speciale quick-access sectie bovenaan:
+* ?? "Storing? Klik hier" ? Overzicht van alle storingsnummers
+* ?? "Belangrijke contacten" ? Energiebedrijf, CV-monteur, etc.
+* ?? "Waar liggen documenten?" ? Overzicht fysieke locaties
+
+3.2 Woning - Algemeen
+Doel: Basisgegevens van de woning vastleggen
+Flow:
+1. Gebruiker opent categorie "Woning - Algemeen"
+2. Komt op Woning Detail scherm met tabs:
+Tab 1: Basisgegevens
+* Woningnaam/identificatie (bijv. "Hoofdwoning", "Vakantiewoning")
+* Adres 
+o Straat + huisnummer
+o Postcode
+o Plaats
+o Land (standaard Nederland)
+* Type woning (dropdown) 
+o Eengezinswoning
+o Appartement
+o Rijtjeshuis
+o Twee-onder-één-kap
+o Vrijstaand
+o Bungalow
+o Vakantiehuis
+o Overig
+* Eigendom (dropdown) 
+o Eigen woning (gekocht)
+o Huurwoning
+o Erfpacht
+o Tijdelijk (bijv. bij ouders, bij vriend)
+* Bouwjaar: [ ]
+* Woonoppervlakte: [ ] m²
+* Perceeloppervlakte: [ ] m²
+* Aantal kamers: [ ]
+* Aantal slaapkamers: [ ]
+* Energielabel: [A++++ / A+++ / A++ / A+ / A / B / C / D / E / F / G]
+* Monument/beschermd: ? Ja
+Tab 2: Kadaster & WOZ
+* Kadastrale gemeente: [ ]
+* Sectie: [ ]
+* Perceelnummer: [ ]
+* Kadastraal nummer (voluit): [ ]
+* Link naar Kadaster: [https://www.kadaster.nl/...]
+* WOZ-waarde huidig: € [ ]
+* WOZ-peildatum: [DD-MM-JJJJ]
+* WOZ-beschikking: [Document uploaden/foto]
+* Taxatiewaarde (indien recent getaxeerd): € [ ]
+* Taxatiedatum: [DD-MM-JJJJ]
+Tab 3: Eigendomssituatie
+* Eigenaar(s): 
+o Link naar persoon in systeem
+o Eigendomsverhouding (bijv. 50/50, 100/0)
+* Huwelijkse voorwaarden van toepassing?: ? Ja
+* Samenlevingscontract?: ? Ja
+* Testament verwijzing: [Link naar testament in Wilsbeschikkingen module]
+* Erfgenamen bij overlijden: [Wie erft de woning]
+Tab 4: Belastingen & Lasten
+* Gemeentelijke belastingen 
+o OZB (Onroerende Zaak Belasting)
+o Bedrag: € [ ] per jaar
+o Betaling: [Automatisch / Handmatig]
+o Vanaf rekening: [Link naar bankrekening]
+* Waterschapsbelasting 
+o Waterschap: [ ]
+o Bedrag: € [ ] per jaar
+* Erfpachtcanon (indien van toepassing) 
+o Bedrag: € [ ] per jaar
+o Einddatum erfpacht: [DD-MM-JJJJ]
+* VvE-bijdrage (bij appartement) 
+o Naam VvE: [ ]
+o Maandelijkse bijdrage: € [ ]
+o Contactpersoon VvE: [Naam, tel, email]
+Tab 5: Verzekeringen
+* Woonhuisverzekering 
+o Verzekeraar: [ ]
+o Polisnummer: [ ]
+o Verzekerd bedrag: € [ ]
+o Link naar verzekering in Geldzaken module
+* Inboedelverzekering 
+o (idem)
+* Opstalverzekering 
+o (idem)
+* Aansprakelijkheidsverzekering 
+o (idem)
+Tab 6: Voor nabestaanden
+* Wat gebeurt met woning bij overlijden? 
+o ? Blijft bij partner
+o ? Gaat naar erfgenamen (verdelen/verkopen)
+o ? Moet worden verkocht (schulden aflossen)
+o ? Testament bepaalt (verwijzing)
+* Belangrijke informatie: 
+o Vrij tekstveld: [bijv. "hypotheek heeft overlijdensrisicoverzekering"]
+* Sleutels & Toegang 
+o Aantal sets sleutels: [ ]
+o Locatie reservesleutels: [bijv. "bij buren op nr. 23", "bij ouders"]
+o Alarmcode: [NOOIT opslaan, wel locatie waar het staat]
+o Locatie alarmcode: [bijv. "in kluis", "in telefoon onder contacten"]
+Tab 7: Locatie belangrijke documenten
+* Hypotheekakte: 
+o ? Digitaal (upload)
+o ? Fysiek (locatie): [bijv. "rode map in bureau la 2"]
+o ? Bij notaris: [naam, adres notaris]
+* Koopakte / leveringsakte: 
+o (idem)
+* Bouwvergunningen: 
+o (idem)
+* Bouwtekeningen: 
+o (idem)
+* Garantiebewijzen aannemer: 
+o (idem)
+* Elektriciteitsschema's: 
+o (idem)
+* Leidingschema's (water, CV): 
+o (idem)
+Tab 8: Documenten
+* Upload/foto functionaliteit
+* Documenttypes: 
+o Koopakte
+o Hypotheekakte
+o Kadastrale kaart
+o Bouwtekeningen
+o Energielabel certificaat
+o WOZ-beschikking
+o Taxatierapport
+o Bouwvergunningen
+o Garantiebewijzen
+o Elektra/leidingschema's
+o VvE-notulen
+o Correspondentie
+o Foto's woning
+o Overig
+Tab 9: Notities
+* Vrij tekstveld
+Status & Opslaan:
+* Status: [Niet begonnen / Bezig / Compleet ?]
+* [Annuleren] [Opslaan]
+
+3.3 Hypotheek
+Let op: Deze categorie is alleen zichtbaar als bij "Woning - Algemeen" is gekozen voor "Eigen woning (gekocht)"
+Tab 1: Basisgegevens
+* Hypotheekverstrekker (dropdown + vrij veld) 
+o ING, Rabobank, ABN AMRO, SNS, Obvion, Florius, BLG Wonen, etc.
+* Adviseur/tussenpersoon 
+o Naam: [ ]
+o Bedrijf: [ ]
+o Telefoonnummer: [ ]
+o Email: [ ]
+* Notaris (die de akte heeft gepasseerd) 
+o Naam: [ ]
+o Kantoor: [ ]
+o Adres: [ ]
+o Telefoonnummer: [ ]
+* Hypotheeknummer / dossiernummer: [ ]
+* Datum afsluiting: [DD-MM-JJJJ]
+* Datum levering woning: [DD-MM-JJJJ]
+Tab 2: Hypotheekvormen & Bedragen
+De app moet meerdere hypotheekdelen ondersteunen (vaak heeft iemand bijv. annuïtair + aflossingsvrij gecombineerd)
+Hypotheekdeel 1:
+* Type: [Annuïtair / Lineair / Aflossingsvrij / Spaarhypotheek / Levenhypotheek ?]
+* Oorspronkelijk bedrag: € [ ]
+* Huidig openstaand bedrag: € [ ]
+* Maandlast: € [ ]
+* Rentepercentage: [ , ] %
+* Rentevaste periode tot: [DD-MM-JJJJ]
+* Einddatum hypotheek: [DD-MM-JJJJ]
+* Looptijd: [ ] jaar
+[+ Hypotheekdeel toevoegen] (voor tweede deel)
+Totalen (automatisch berekend):
+* Totaal oorspronkelijk bedrag: € [ ]
+* Totaal huidig openstaand: € [ ]
+* Totale maandlast: € [ ]
+Tab 3: Gekoppelde Producten
+* Overlijdensrisicoverzekering 
+o ? Aanwezig
+o Verzekeraar: [ ]
+o Polisnummer: [ ]
+o Verzekerd bedrag: € [ ]
+o Link naar verzekering in Geldzaken
+* Arbeidsongeschiktheidsverzekering (WIA-hiaat) 
+o (idem)
+* Spaarhypotheek gekoppelde polis 
+o (indien van toepassing)
+* Nationale Hypotheek Garantie (NHG) 
+o ? Van toepassing
+o NHG-nummer: [ ]
+Tab 4: Betaling
+* Automatische incasso vanaf rekening: 
+o [Link naar bankrekening in Geldzaken]
+* Betalingsdatum: [ ] (dag van de maand)
+* Jaarlijkse hypotheeklasten opgave: 
+o Laatste opgave: [Upload document]
+Tab 5: Boetes & Voorwaarden
+* Boeterente bij vervroegd aflossen: [ , ] % 
+o Of: [bedrag € ]
+* Maximaal vervroegd aflossen per jaar zonder boete: € [ ]
+* Renteherziening mogelijk: ? Ja, vanaf [DD-MM-JJJJ]
+* Oversluiten overweging: 
+o ? Binnen [ ] maanden aflopen rentevaste periode
+o Notitie: [bijv. "vergelijk tarieven 3 maanden voor einde rentevaste periode"]
+Tab 6: Voor nabestaanden
+* Wat gebeurt bij overlijden hypotheeknemer? 
+o ? Overlijdensrisicoverzekering dekt volledige hypotheek
+o ? Gedeeltelijk gedekt (bedrag: € [ ])
+o ? Niet gedekt - erfgenamen nemen over
+o ? Partner neemt volledig over
+* Actie bij overlijden: 
+o Direct contact opnemen met: [Hypotheekverstrekker naam + tel]
+o Claim indienen bij: [Verzekeraar naam + tel]
+* Speciale afspraken: 
+o Vrij tekstveld [bijv. "Bij overlijden kan partner 6 maanden hypotheekvrij"]
+Tab 7: Contactgegevens
+* Hypotheekverstrekker klantenservice 
+o Telefoonnummer: [ ]
+o Email: [ ]
+o Website: [ ]
+o Mijn omgeving (inlog-URL): [ ]
+* Adviseur/tussenpersoon 
+o (al ingevuld bij Tab 1, hier herhalen voor gemak)
+Tab 8: Documenten
+* Hypotheekakte
+* Offerte hypotheek
+* Acceptatiebrief
+* Jaarlijkse opgaven
+* Rentevastperiode bevestiging
+* Correspondentie
+* Berekeningen (Excel)
+* Adviesrapport
+* Taxatierapport (vaak ook bij Woning - Algemeen)
+Tab 9: Notities
+
+3.4 Huurcontract
+Let op: Alleen zichtbaar als bij "Woning - Algemeen" is gekozen voor "Huurwoning"
+Tab 1: Basisgegevens
+* Verhuurder 
+o Type: [Particulier / Woningcorporatie / Vastgoedbeheerder ?]
+o Naam verhuurder / organisatie: [ ]
+o Adres verhuurder: [ ]
+o Telefoonnummer: [ ]
+o Email: [ ]
+o Website: [ ]
+* Contactpersoon (indien organisatie) 
+o Naam: [ ]
+o Functie: [beheerder / huismeester]
+o Telefoonnummer: [ ]
+o Email: [ ]
+* Huurcontract nummer / dossiernummer: [ ]
+* Ingangsdatum huur: [DD-MM-JJJJ]
+* Type contract: 
+o ? Onbepaalde tijd
+o ? Bepaalde tijd, einddatum: [DD-MM-JJJJ]
+o ? Tijdelijk (studenten, anti-kraak)
+Tab 2: Huurprijs & Kosten
+* Maandelijkse huurprijs (kale huur): € [ ]
+* Servicekosten: € [ ]
+* Totale maandlast: € [ ] (automatisch berekend)
+* Betaling 
+o Betalingsdatum: [ ] (dag van de maand)
+o Automatische incasso: ? Ja
+o Vanaf rekening: [Link naar bankrekening]
+* Borg/waarborgsom 
+o Bedrag: € [ ]
+o Betaald op: [DD-MM-JJJJ]
+o Gestort bij: [Verhuurder / Derdengeldrekening notaris / Anders]
+o Rekeningnummer borgrekening: [ ]
+* Jaarlijkse huurverhoging 
+o Gekoppeld aan inflatie (CPI): ? Ja
+o Vast percentage: [ , ] %
+o Laatste verhoging: [DD-MM-JJJJ]
+Tab 3: Opzegging & Voorwaarden
+* Opzegtermijn huurder: [ ] maand(en)
+* Opzegtermijn verhuurder: [ ] maand(en)
+* Hoe opzeggen: 
+o ? Aangetekend per post
+o ? Per email
+o ? Via online portaal
+o Opzegadres: [ ]
+* Minimale huurtermijn: [ ] maand(en) (indien van toepassing)
+* Huurbescherming: 
+o ? Sociale huur (gereguleerd)
+o ? Vrije sector
+Tab 4: Wat is inbegrepen
+* Energie: 
+o ? Gas inbegrepen
+o ? Elektriciteit inbegrepen
+o ? Stadsverwarming inbegrepen
+* Water: ? Inbegrepen
+* Internet: ? Inbegrepen
+* TV-pakket: ? Inbegrepen
+* Parkeerplaats: ? Inbegrepen 
+o Aantal: [ ]
+o Locatie: [ ]
+* Berging: ? Inbegrepen
+* Tuin: ? Inbegrepen 
+o Onderhoud: [Door huurder / Door verhuurder ?]
+Tab 5: Onderhoud & Verantwoordelijkheden
+* Klein onderhoud: [Door huurder / Door verhuurder ?]
+* Groot onderhoud: [Door huurder / Door verhuurder ?]
+* Schilderwerk: [Door huurder / Door verhuurder ?]
+* Tuinonderhoud: [Door huurder / Door verhuurder ?]
+* CV-onderhoud: [Door huurder / Door verhuurder ?]
+* Storing/reparatie melden bij: 
+o Telefoonnummer: [ ]
+o Email: [ ]
+o Online: [ ]
+Tab 6: Voor nabestaanden
+* Wat gebeurt bij overlijden huurder? 
+o ? Contract gaat over op partner/medebewoner
+o ? Contract moet worden opgezegd
+o ? Verhuurder moet binnen [ ] dagen worden geïnformeerd
+* Opzegprocedure: 
+o Contactgegevens: [zie Tab 1]
+o Opzegtermijn: [zie Tab 3]
+* Borgsom terugvraag: 
+o Instructies: [bijv. "Na oplevering, binnen 2 maanden terug"]
+Tab 7: Documenten
+* Huurcontract
+* Algemene voorwaarden
+* Oplevering/inspectierapport (bij aanvang)
+* Huurverhogingsbrieven
+* Correspondentie
+* Servicekosten specificaties
+* Energielabel
+Tab 8: Notities
+
+3.5 Energie
+Doel: Overzicht van energiecontracten, leveranciers, meterstanden en verbruik
+Let op: Er kunnen meerdere contracten zijn (elektriciteit + gas, of alleen elektriciteit, of stadsverwarming)
+Structuur: Lijst met energie-items, elk item is een apart contract
+Energie-item Detail:
+Tab 1: Contract Algemeen
+* Type energie (dropdown) 
+o Elektriciteit
+o Gas (aardgas)
+o Stadsverwarming / warmtenet
+o Combinatie (elektra + gas bij 1 leverancier)
+* Energieleverancier (dropdown + vrij veld) 
+o Vattenfall, Essent, Eneco, Greenchoice, Engie, Pure Energie, Budget Energie, etc.
+* Klantnummer: [ ]
+* Contractnummer: [ ]
+* EAN-code elektriciteit (18 cijfers): [ ]
+* EAN-code gas (18 cijfers, indien van toepassing): [ ]
+* Ingangsdatum contract: [DD-MM-JJJJ]
+* Einddatum contract: 
+o ? Onbepaald (lopend contract)
+o Einddatum: [DD-MM-JJJJ]
+* Type contract: 
+o ? Vast tarief (looptijd [ ] jaar)
+o ? Variabel tarief
+o ? Dynamisch tarief (uur-tarieven)
+Tab 2: Tarieven & Kosten
+Elektriciteit:
+* Tarief normaal (leveringskosten): € [ , ] per kWh
+* Tarief dal (indien van toepassing): € [ , ] per kWh
+* Teruglevertarief (bij zonnepanelen): € [ , ] per kWh
+* Vastrecht per maand: € [ ]
+Gas:
+* Tarief gas: € [ , ] per m³
+* Vastrecht per maand: € [ ]
+Totaal:
+* Geschat jaarverbruik elektriciteit: [ ] kWh
+* Geschat jaarverbruik gas: [ ] m³
+* Maandelijkse voorschotbedrag: € [ ]
+* Jaarlijkse eindafrekening (upload laatste afrekening)
+Betaling:
+* Automatische incasso vanaf rekening: [Link naar bankrekening]
+* Betalingsdatum: [ ] (dag van maand)
+Tab 3: Meterstanden & Verbruik
+Elektriciteit:
+* Metertype: 
+o ? Slimme meter
+o ? Analoge meter (handmatig opnemen)
+* Laatste meterstand normaal (181): [ ] kWh op [DD-MM-JJJJ]
+* Laatste meterstand dal (182): [ ] kWh op [DD-MM-JJJJ]
+* Teruglevering normaal (281): [ ] kWh op [DD-MM-JJJJ] (bij zonnepanelen)
+* Teruglevering dal (282): [ ] kWh op [DD-MM-JJJJ]
+* Locatie meter: [bijv. "meterkast in gang", "berging"]
+Gas:
+* Laatste meterstand gas: [ ] m³ op [DD-MM-JJJJ]
+* Locatie meter: [bijv. "meterkast in gang"]
+Salderen (bij zonnepanelen):
+* Salderingsregeling van toepassing: ? Ja (tot 2027)
+Jaarverbruik historisch:
+* Mogelijkheid om meerdere jaren toe te voegen: 
+o 2024: [ ] kWh elektra, [ ] m³ gas
+o 2023: [ ] kWh elektra, [ ] m³ gas
+o etc.
+Tab 4: Slimme Meter & Online Toegang
+* Slimme meter: ? Ja 
+o P1-poort aanwezig: ? Ja (voor uitlezen via domotica)
+* Mijn-omgeving (online inlog) 
+o URL: [https://mijn.leverancier.nl]
+o Locatie inloggegevens: [In wachtwoordmanager / Op papier / etc.]
+* App leverancier: [Naam app]
+Tab 5: Opzegging & Overstap
+* Opzegtermijn: [ ] maand(en)
+* Hoe opzeggen: 
+o ? Automatisch bij overstap (nieuwe leverancier regelt)
+o ? Zelf opzeggen per email: [opzeg-email]
+o ? Telefonisch: [telefoonnummer]
+o ? Via online portaal
+* Laatste datum opzeggen voor verlenging: [DD-MM-JJJJ] (automatisch berekend)
+* Boete bij vervroegd opzeggen: € [ ] (indien vast contract)
+Tab 6: Voor nabestaanden
+* Wat gebeurt bij overlijden? 
+o ? Contract loopt door, overzetten op nabestaande
+o ? Contract opzeggen
+o ? Nieuwe bewoner / koper regelt zelf
+* Contact opnemen met leverancier: 
+o Klantenservice: [Telefoonnummer + email]
+o Doorgeven meterstand op datum overlijden
+* Eindafrekening: 
+o Naar: [Bankrekening erfgenamen/executeur]
+Tab 7: Contactgegevens
+* Klantenservice 
+o Telefoonnummer: [ ]
+o Email: [ ]
+o Website: [ ]
+o Storingsnummer**: [ ]
+* Netbeheerder (voor meterstoring, niet leverancier) 
+o Naam: [Liander / Enexis / Stedin / etc.]
+o Storingsnummer: [0800 - ...]
+o Website: [ ]
+Tab 8: Documenten
+* Energiecontract / bevestiging
+* Jaarlijkse eindafrekeningen
+* Meterstandopnames
+* Correspondentie
+* Tariefwijzigingen
+Tab 9: Notities
+
+3.6 Nutsvoorzieningen
+Items die hier onder vallen:
+1. Water
+2. Internet & TV
+3. Telefonie (vast/mobiel)
+4. Riolering (heffing, meestal samen met gemeentelijke belastingen)
+5. Afvalverwerking (diftar, indien van toepassing)
+Per item vergelijkbare structuur:
+3.6.1 Water
+Tab 1: Basisgegevens
+* Waterleidingbedrijf (automatisch op basis van regio) 
+o Vitens, Evides, Waternet, PWN, Dunea, WML, Brabant Water, etc.
+* Klantnummer: [ ]
+* Aansluiting adres: [automatisch uit Woning - Algemeen]
+* Aansluitnummer water: [ ]
+* Metertype: 
+o ? Individuele meter
+o ? Collectieve meter (bij appartement)
+Tab 2: Verbruik & Kosten
+* Laatste meterstand: [ ] m³ op [DD-MM-JJJJ]
+* Locatie watermeter: [bijv. "meterkast", "kruipruimte", "bij voordeur"]
+* Jaarverbruik: [ ] m³
+* Vastrecht per jaar: € [ ]
+* Tarief per m³: € [ , ]
+* Totale jaarkosten: € [ ]
+* Betalingsregeling: 
+o Maandelijks voorschot: € [ ]
+o Jaarlijkse afrekening: [Upload document]
+o Betaling via: [Automatisch / Factuur]
+o Vanaf rekening: [Link]
+Tab 3: Afsluiting & Noodkraan
+* Hoofdkraan water locatie: [bijv. "meterkast, onderste rechts"]
+* Foto hoofdkraan: [Upload foto voor nabestaanden]
+* Afsluiten bij langere afwezigheid: ? Aan te raden
+* Stoppingskraan CV: [Locatie]
+Tab 4: Voor nabestaanden
+* Naam doorgeven bij overlijden: ? Ja
+* Contact: [Klantenservice waterleidingbedrijf]
+* Eindafrekening naar: [Bankrekening]
+Tab 5: Contactgegevens
+* Klantenservice: [Tel + email + website]
+* Storingsnummer: [Tel]
+Tab 6: Documenten
+* Jaarafrekeningen
+* Meterstanden
+* Correspondentie
+
+3.6.2 Internet & TV
+Tab 1: Basisgegevens
+* Provider (dropdown + vrij) 
+o KPN, Ziggo, Odido, T-Mobile Thuis, Youfone, Budget Thuis, etc.
+* Type aansluiting: 
+o ? Kabel (Coax)
+o ? Glasvezel (FTTH)
+o ? DSL / VDSL (koper)
+o ? Mobiel (4G/5G)
+* Klantnummer: [ ]
+* Contractnummer: [ ]
+* Ingangsdatum: [DD-MM-JJJJ]
+* Einddatum: [DD-MM-JJJJ] of ? Onbepaald
+* Looptijd contract: [ ] maanden
+Tab 2: Producten & Snelheid
+* Internet: 
+o ? Inbegrepen
+o Downloadsnelheid: [ ] Mbit/s
+o Uploadsnelheid: [ ] Mbit/s
+* Televisie: 
+o ? Inbegrepen
+o Pakket: [Basis / Compleet / Premium]
+o Aantal TV-boxen: [ ]
+o Extra zenders: [Ziggo Sport / Film1 / etc.]
+* Telefonie (vast): 
+o ? Inbegrepen
+o Vast nummer: [ ]
+o Belminuten: [Onbeperkt / ... minuten]
+* Modem/router: 
+o Merk/type: [ ]
+o Eigendom: [Gehuurd / Gekocht]
+o Locatie: [bijv. "woonkamer, bij tv"]
+Tab 3: Kosten
+* Maandelijkse kosten: € [ ]
+* Eenmalige kosten (aansluitkosten): € [ ] (al betaald)
+* Betaling: 
+o Automatische incasso: ? Ja
+o Vanaf rekening: [Link]
+Tab 4: WiFi & Netwerk
+* WiFi-netwerknaam (SSID): [ ]
+* Locatie WiFi-wachtwoord: [Onder router / In wachtwoordmanager / Op papier in la]
+* Extra WiFi-extenders / mesh: ? Ja 
+o Aantal: [ ]
+o Locaties: [bijv. "1e verdieping gang, zolder"]
+Tab 5: Opzegging
+* Opzegtermijn: [ ] maand(en)
+* Hoe opzeggen: [Telefonisch / Online / Email]
+* Laatste opzegdatum voor automatische verlenging: [DD-MM-JJJJ]
+* Modem inleveren bij opzegging: ? Ja (indien gehuurd)
+Tab 6: Voor nabestaanden
+* Opzeggen of overzetten: [Instructie]
+* Modem locatie: [zie Tab 2]
+* WiFi-wachtwoord: [zie Tab 4]
+Tab 7: Contactgegevens
+* Klantenservice: [Tel + email]
+* Storingsnummer: [Tel]
+* Online omgeving: [URL + locatie inloggegevens]
+Tab 8: Documenten
+* Contract
+* Facturen
+* Correspondentie
+
+3.6.3 Telefonie (mobiel)
+Vergelijkbare structuur, specifieke velden:
+* Provider (KPN, Vodafone, Odido, Simyo, etc.)
+* Telefoonnummer(s)
+* Type abonnement (postpaid / prepaid / sim-only)
+* Databundel (GB per maand)
+* Belminuten/sms
+* Toestel gekocht/geleased
+* IMEI-nummer toestel (voor blokkeren bij diefstal)
+
+3.7 Technische Installaties
+Dit is een uitgebreide categorie. Per installatie een apart item.
+Voorbeeldstructuur voor: CV-ketel / Verwarmingssysteem
+Tab 1: Basisgegevens
+* Type installatie: [CV-ketel / HR-ketel / Combiketel ?]
+* Merk: [Nefit / Remeha / Intergas / Vaillant / Atag / etc.]
+* Model: [ ]
+* Bouwjaar / Installatiejaar: [JJJJ]
+* Serienummer: [ ]
+* Vermogen: [ ] kW
+* Energielabel: [A++ / A+ / A / etc.]
+* Locatie in woning: [bijv. "meterkast", "bijkeuken", "zolder"]
+* Foto installatie: [Upload, handig voor nabestaanden]
+Tab 2: Installateur & Garantie
+* Geïnstalleerd door: 
+o Bedrijfsnaam: [ ]
+o Contactpersoon: [ ]
+o Telefoonnummer: [ ]
+o Email: [ ]
+* Installatiedatum: [DD-MM-JJJJ]
+* Garantie: 
+o Garantieperiode: [ ] jaar
+o Geldig tot: [DD-MM-JJJJ]
+o Fabrieksgarantie: ? Ja
+o Installateurgarantie: ? Ja
+Tab 3: Onderhoud
+* Onderhoudscontract: ? Ja 
+o Bij bedrijf: [ ]
+o Contractnummer: [ ]
+o Kosten per jaar: € [ ]
+o Wat is inbegrepen: [Jaarlijkse inspectie / Reparaties / etc.]
+o Automatische incasso vanaf: [Bankrekening link]
+* Laatste onderhoud: [DD-MM-JJJJ]
+* Volgende onderhoud gepland: [DD-MM-JJJJ]
+* Onderhoudsbedrijf: 
+o Naam: [ ]
+o Contactpersoon: [ ]
+o Telefoonnummer: [ ]
+o Email: [ ]
+o 24/7 Storingsdienst: [Tel]
+Tab 4: Bediening & Thermostaat
+* Thermostaat type: [Handmatig / Digitaal / Smart (Nest/Tado/Honeywell)]
+* Locatie thermostaat: [bijv. "woonkamer, naast deur"]
+* Smart thermostaat: 
+o Merk/model: [ ]
+o App: [Naam app]
+o Locatie inloggegevens: [Wachtwoordmanager / etc.]
+* Bediening ketel: 
+o Aan/uit knop: [Locatie op ketel]
+o Reset knop: [Locatie]
+o Druk watermeter: [Waar af te lezen, normale druk: 1-2 bar]
+Tab 5: Storing - Wat te doen?
+Dit is een van de belangrijkste secties voor nabestaanden!
+* Veelvoorkomende storingen:
+Storing 1: Ketel slaat af / geen verwarming
+o Stap 1: [Controleer of ketel aan staat (lampje brandt)]
+o Stap 2: [Check waterdruk (moet tussen 1-2 bar zijn)]
+o Stap 3: [Kijk of foutcode op display staat]
+o Stap 4: [Probeer reset-knop (locatie: ..., 3 sec inhouden)]
+o Als dit niet helpt: [Bel storingsdienst: 088-...]
+Storing 2: Lage waterdruk
+o Stap 1: [Vul-/bijvulkraan locatie: onder ketel, links]
+o Stap 2: [Open beide kranen tot druk 1,5 bar is]
+o Stap 3: [Sluit kranen weer]
+o Video-instructie: [Link naar YouTube]
+Storing 3: Geen warm water
+o [Instructie...]
+* Foutcodes (indien bekend):
+o Code E01: [Betekenis + oplossing]
+o Code E04: [Betekenis + oplossing]
+o etc.
+* Storingsnummer:
+o 24/7 bereikbaar: [088 - ...]
+o Klantnummer/adres gereed houden bij bellen
+Tab 6: Handleiding & Instructies
+Zeer belangrijk voor nabestaanden die niet technisch zijn!
+* Handleiding ketel: 
+o ? Digitaal (upload PDF)
+o ? Fysiek (locatie): [bijv. "in de keukenla", "bij ketel"]
+o ? Online (link): [https://www.merk.nl/handleidingen/model-x]
+* Installatiehandleiding (voor monteur): [Upload]
+* Video-instructies: 
+o Waterdruk bijvullen: [YouTube link]
+o Ketel resetten: [Link]
+o Thermostaat instellen: [Link]
+* QR-code op ketel: [Foto maken, kan link naar handleiding bevatten]
+Tab 7: Voor nabestaanden
+* Belangrijke informatie: 
+o "Bij overlijden en huis verkoop: onderhoudscontract opzeggen"
+o "Ketel moet jaarlijks onderhouden worden (verplichting huurwoning)"
+o "Garantie loopt tot [datum], bewaar facturen"
+* Direct na overlijden: 
+o Ketel blijft normaal doorwerken
+o Zorg dat er voldoende verwarming is
+o Bij problemen: bel [storingsnummer]
+* Bij verkoop woning: 
+o Onderhoudsboekje meegeven aan koper
+o Garantiebewijzen overdragen
+o Onderhoudscontract: [Opzegbaar / Overdraagbaar]
+Tab 8: Kosten & Verbruik
+* Aanschafprijs: € [ ] (betaald op [DD-MM-JJJJ])
+* Installatiekosten: € [ ]
+* Jaarlijkse onderhoudskosten: € [ ]
+* Geschat verbruik per jaar: [ ] m³ gas
+* Link naar energiecontract: [Link naar Energie module]
+Tab 9: Documenten
+* Aankoopfactuur
+* Installatiebewijzen
+* Garantiebewijzen
+* Keuringsrapporten
+* Onderhoudsrapporten (per jaar)
+* Handleidingen
+* Certificaten (bijv. CE-keur)
+* Correspondentie
+Tab 10: Notities
+
+Vergelijkbare structuur voor andere installaties:
+3.7.2 Warmtepomp
+* Type (lucht/water, bodem, hybride)
+* COP (Coefficient of Performance)
+* Buitenunit locatie
+* Binnenunit locatie
+* Geluidsproductie
+* Subsidie ontvangen (ISDE)
+* Storing-wat-te-doen (specifiek voor warmtepomp)
+3.7.3 Zonnepanelen
+* Aantal panelen: [ ]
+* Vermogen per paneel: [ ] Wp
+* Totaal piekvermogen: [ ] Wp (automatisch berekend)
+* Merk/type panelen: [ ]
+* Omvormer: 
+o Merk/model: [ ]
+o Locatie: [bijv. "zolder", "meterkast"]
+o Serienummer: [ ]
+* Installatiedatum: [DD-MM-JJJJ]
+* Garantie panelen: [ ] jaar (meestal 25 jaar)
+* Garantie omvormer: [ ] jaar (meestal 10-15 jaar)
+* Monitoring: 
+o Monitoringsysteem: [Enphase / SolarEdge / Growatt / etc.]
+o Toegang via app: [App naam]
+o Online portal: [URL]
+o Locatie inloggegevens: [...]
+* Opbrengst: 
+o Geschatte jaaropbrengst: [ ] kWh
+o Werkelijke opbrengst 2024: [ ] kWh
+o Werkelijke opbrengst 2023: [ ] kWh
+* Salderen: Tot 2027 mogelijk, daarna terugleversubsidie
+* Onderhoud: 
+o Panelen schoonmaken: [1x per 2 jaar aanbevolen]
+o Laatste inspectie: [DD-MM-JJJJ]
+* Storing: 
+o Omvormer uit: [Reset via knop op omvormer]
+o Lage opbrengst: [Check monitoring app]
+o Storingsdienst installateur: [Tel]
+* Subsidie: 
+o ISDE subsidie ontvangen: € [ ]
+o Beschikking: [Upload]
+* Voor nabestaanden: 
+o Monitoring-toegang doorgeven
+o Bij verkoop: garanties overdragen
+o Schoonmaakbedrijf contact: [indien contract]
+3.7.4 Thuisbatterij / Accu
+* Merk/model (Tesla Powerwall, LG Chem, Sonnen, etc.)
+* Capaciteit: [ ] kWh
+* Locatie: [bijv. "garage", "bijkeuken"]
+* Koppeling met zonnepanelen
+* Software/app voor monitoring
+* Garantie cyclussen (bijv. 10 jaar of 10.000 cycli)
+3.7.5 Laadpaal elektrische auto
+* Merk/model
+* Vermogen: [ ] kW (bijv. 11 kW of 22 kW)
+* Type: [Vaste kabel / Socket]
+* Locatie: [bijv. "oprit", "garage"]
+* Smart charging: ? Ja
+* App: [...]
+* Kosten: gesubsidieerd? SEEH-subsidie?
+* Storing: installateur contact
+3.7.6 Airconditioning
+* Type: [Mobiel / Split-unit / VRV-systeem]
+* Merk/model
+* Aantal units (binnen/buiten)
+* BTU/vermogen
+* Energielabel
+* Koelmiddel type (voor onderhoud)
+* Onderhoud: jaarlijks aanbevolen
+3.7.7 Mechanische ventilatie (WTW)
+* Type: [Balansventilatie / WTW (Warmte Terugwin) / Afzuiging]
+* Merk/model
+* Locatie unit: [meestal zolder/vliering]
+* Filters: 
+o Type filters: [ ]
+o Vervangen elke [ ] maanden
+o Laatste vervanging: [DD-MM-JJJJ]
+o Waar te koop: [Bouwmarkt / Online / Via installateur]
+* Bediening: 
+o Schakelaar locatie: [bijv. "bij keuken"]
+o Standen: [1-2-3 / Laag-Hoog / Auto]
+* Onderhoud: jaarlijkse inspectie + filtervervanging
+* Storing: [Geluid / Weinig luchtverplaatsing ? check filters]
+3.7.8 Zonneboiler
+* Aantal panelen
+* Boiler capaciteit: [ ] liter
+* Locatie panelen (dak)
+* Locatie boiler (bijkeuken/zolder)
+* Antivries-mengsel vervangen: elke [ ] jaar
+
+3.8 Huishoudelijke Apparaten & Systemen
+Dit zijn de dagelijkse apparaten in huis. Voor nabestaanden belangrijk om te weten waar handleidingen zijn en garanties.
+Structuur per apparaat:
+Tab 1: Basisgegevens
+* Type apparaat: [Wasmachine / Droger / Vaatwasser / etc. ?]
+* Merk: [Bosch / Miele / Siemens / Samsung / etc.]
+* Model: [ ]
+* Serienummer: [ ]
+* Aankoopdatum: [DD-MM-JJJJ]
+* Aankoopprijs: € [ ]
+* Gekocht bij: [MediaMarkt / Coolblue / Bol.com / etc.]
+* Garantie: 
+o Fabrieksgarantie: [ ] jaar, tot [DD-MM-JJJJ]
+o Verlengde garantie: ? Ja, [ ] jaar extra, tot [DD-MM-JJJJ]
+o Garantiebewijs: [Upload]
+Tab 2: Locatie & Bediening
+* Locatie: [bijv. "bijkeuken", "keuken", "badkamer"]
+* Foto apparaat: [Upload]
+* Belangrijkste functies: 
+o Bijv. wasmachine: [Eco-programma, snelwas, wol-programma]
+* Handleiding: 
+o ? Digitaal (upload PDF)
+o ? Fysiek (locatie): [bijv. "la in keuken"]
+o ? Online: [Link naar website fabrikant]
+* QR-code op apparaat: [Foto, kan link bevatten naar online handleiding]
+Tab 3: Onderhoud
+* Onderhoudsfrequentie: [bijv. "filter schoonmaken 1x per maand"]
+* Laatste onderhoud: [DD-MM-JJJJ]
+* Onderhoudsinstructies: 
+o Bijv. wasmachine: "Rubber afdichten schoonmaken, trommel op 90°C draaien"
+o Bijv. droger: "Pluisfilter na elk gebruik legen"
+o Bijv. vaatwasser: "Zoutreservoir bijvullen, filter spoelen"
+Tab 4: Storing - Wat te doen?
+* Veelvoorkomende problemen: 
+o Probleem 1: [Bijv. "Wasmachine trekt geen water"] 
+* Oplossing: [Check waterkraan open, filter in toevoerslang schoonmaken]
+o Probleem 2: [...]
+* Reparateur/servicebedrijf: 
+o Naam: [ ]
+o Telefoonnummer: [ ]
+o Via garantie: ? Ja / ? Nee (garantie verlopen)
+Tab 5: Voor nabestaanden
+* Bij verkoop woning/inboedel: 
+o Handleiding meegeven
+o Garantiebewijzen overdragen (indien nog geldig)
+* Belangrijke info: 
+o Bijv. "Let op: wasmachine heeft een speciaal antikalkprogramma, gebruik 1x per maand"
+Tab 6: Documenten
+* Aankoopbewijs / factuur
+* Garantiebewijs
+* Handleiding
+* Onderhoudsrapporten (bij reparaties)
+* Foto's
+Tab 7: Notities
+
+Lijst van apparaten die onder deze categorie vallen:
+* Wasmachine
+* Wasdroger
+* Vaatwasser
+* Koelkast
+* Vriezer
+* Koel-vriescombinatie
+* Oven (inbouw)
+* Magnetron
+* Kookplaat (inductie/keramisch/gas)
+* Afzuigkap
+* Koffiezetapparaat (duur model, bijv. Jura)
+* Stofzuiger (robot)
+* Overige dure apparaten
+
+Specifiek voor: Smart Home / Domotica
+Tab 1: Systeem
+* Type systeem: [Google Home / Apple HomeKit / Amazon Alexa / Homey / Fibaro / etc.]
+* Hub/centrale: 
+o Merk/model: [ ]
+o Locatie: [bijv. "woonkamer, bij TV"]
+* Aantal gekoppelde apparaten: [ ]
+* App: [Naam app]
+* Locatie inloggegevens: [Wachtwoordmanager / etc.]
+Tab 2: Gekoppelde apparaten
+* Lijst van alle smart devices: 
+o Slimme verlichting (Philips Hue, etc.) 
+* Aantal lampen: [ ]
+* Hue Bridge locatie: [...]
+o Slimme thermostaat (zie ook bij CV-ketel)
+o Slimme stekkers
+o Slimme deurbel (Ring, Nest)
+o Slimme camera's
+o Slimme rookmelders
+o Slimme slot
+o Slimme gordijnen/rolluiken
+o Slimme speakers
+Tab 3: Automatiseringen & Schema's
+* Overzicht van ingestelde automatiseringen: 
+o Bijv. "Lichten aan bij zonsondergang"
+o Bijv. "Verwarming omlaag bij vertrek (GPS)"
+o Bijv. "Alarm aan om 23:00 uur"
+Tab 4: Voor nabestaanden
+* Toegang tot systeem: 
+o App installeren: [Naam app]
+o Inloggen met: [Email + wachtwoord-locatie]
+* Hoe apparaten handmatig bedienen: 
+o "Als de app niet werkt, kunnen alle lampen ook handmatig via lichtknop"
+o "Thermostaat heeft ook handmatige bediening op apparaat zelf"
+* Uitschakelen: 
+o "Om alles uit te schakelen: hub uit stopcontact halen"
+o "Apparaten werken dan nog steeds handmatig"
+Tab 5: Abonnementen
+* Sommige systemen hebben abonnement (bijv. Nest Aware, Ring Protect)
+* Kosten per maand: € [ ]
+* Opzegbaar: [Hoe + waar]
+
+Specifiek voor: Alarmsysteem
+Tab 1: Basisgegevens
+* Type: [Bedraad / Draadloos / Smart alarmsysteem]
+* Merk/model: [Verisure / Sector Alarm / Ajax / etc.]
+* Centrale locatie: [bijv. "meterkast", "gang"]
+* Aantal sensoren: 
+o Bewegingssensoren: [ ]
+o Deur/raamsensoren: [ ]
+o Glasbreuksensoren: [ ]
+o Rookmelders: [ ]
+* Sirene locatie: [Binnen + buiten]
+Tab 2: Bediening
+* Bedieningspaneel locatie: [bijv. "bij voordeur"]
+* Alarmcode: 
+o NOOIT de code zelf opslaan
+o Locatie waar code staat: [bijv. "in kluis", "op papier in bureau", "in telefoon onder contacten (vermomd)"]
+* App: [Naam] 
+o Inloggegevens locatie: [...]
+* Keyfobs / tags: [Aantal, waar bewaard]
+Tab 3: Abonnement & Meldkamer
+* Alarmbewaking: ? Ja, meldkamer gekoppeld 
+o Bedrijf: [Verisure / G4S / etc.]
+o Abonnement kosten: € [ ] per maand
+o Contractnummer: [ ]
+o Bij alarm: [Meldkamer belt, komt ter plaatse, belt politie]
+* Geen meldkamer: ? Alleen lokale sirene
+Tab 4: Voor nabestaanden
+* In geval van alarm: 
+o Stap 1: [Voer code in op paneel binnen 30 seconden]
+o Stap 2: [Als meldkamer belt: geef doorgavewoord "..."]
+o Stap 3: [Bij problemen: bel storingsnummer]
+* Opzeggen abonnement: 
+o Bij: [Bedrijf contact]
+o Opzegtermijn: [ ] maanden
+Tab 5: Documenten
+* Contract alarmbewaking
+* Handleiding systeem
+* Plattegrond (waar welke sensor)
+
+Specifiek voor: NAS / Netwerk / Server
+Veel IT-savvy mensen hebben een NAS (Network Attached Storage) thuis draaien
+Tab 1: Basisgegevens
+* Type: [Synology / QNAP / Zelfgebouwd / etc.]
+* Model: [bijv. Synology DS920+]
+* Locatie: [bijv. "kantoor", "meterkast", "zolder"]
+* IP-adres lokaal netwerk: [192.168.1.x]
+* Capaciteit: 
+o Aantal schijven: [ ]
+o Totale capaciteit: [ ] TB
+o RAID-configuratie: [RAID 1 / RAID 5 / RAID 6 / SHR]
+Tab 2: Toegang
+* Lokale toegang: [http://192.168.1.x:5000]
+* Externe toegang (QuickConnect / VPN / DynDNS): 
+o URL: [https://quickconnect.to/...]
+o VPN-configuratie: [...]
+* Inloggegevens: 
+o Admin gebruikersnaam: [...]
+o Locatie wachtwoord: [Wachtwoordmanager / etc.]
+Tab 3: Wat staat erop?
+* Overzicht van belangrijke mappen: 
+o Foto's / video's gezin
+o Backups computers
+o Documenten
+o Media (films/muziek)
+o Andere
+Tab 4: Back-ups
+* Backup-schema: 
+o Lokale backup van computers: [Dagelijks / Wekelijks]
+o Cloud backup van NAS: ? Ja, naar [Backblaze / etc.]
+o Externe schijf backup: ? Ja, [Maandelijks naar externe HDD]
+Tab 5: Voor nabestaanden
+Dit is ZEER belangrijk als er waardevolle foto's/data op staan
+* Toegang krijgen tot NAS: 
+o Stap 1: [Zorg dat NAS aanstaat (lampjes branden)]
+o Stap 2: [Open browser, ga naar http://192.168.1.x:5000]
+o Stap 3: [Log in met admin account (wachtwoord: zie locatie)]
+o Stap 4: [Open File Station om bestanden te zien]
+* Data redden bij defecte NAS: 
+o "Schijven kunnen in een andere NAS van zelfde merk worden geplaatst"
+o "RAID-configuratie zorgt dat data veilig is bij 1 defecte schijf"
+o "Neem bij twijfel contact op met: [IT-vriend / specialist]"
+* Belangrijk: 
+o "Haal NOOIT zomaar de stroom eraf, altijd netjes afsluiten via software"
+o "Alle familiefoto's staan hierop, maak regelmatig extra backup"
+Tab 6: Documenten
+* Handleiding NAS
+* Configuratie-notities
+* Backup-schema
+
+3.9 Onderhoud & Diensten
+Dit zijn diensten/bedrijven die regelmatig langskomen of op afroep
+Lijst van items:
+* Tuinman
+* Schoonmaak
+* Glazenwasser
+* Klusjesman
+* CV-onderhoudsbedrijf (al onder CV behandeld, maar kan hier ook)
+* Elektricien (vaste)
+* Loodgieter (vaste)
+* Ongediertebestrijding
+* Schoorsteenveger (bij open haard)
+Per dienst:
+Tab 1: Basisgegevens
+* Type dienst: [Tuinonderhoud / Schoonmaak / etc. ?]
+* Bedrijfsnaam of Naam persoon: [ ]
+* Contactpersoon: [ ]
+* Telefoonnummer: [ ]
+* Email: [ ]
+* Website: [ ]
+Tab 2: Afspraak & Frequentie
+* Frequentie: [Wekelijks / 2-wekelijks / Maandelijks / Op afroep ?]
+* Vaste dag/tijd: [bijv. "Elke dinsdag om 9:00"]
+* Laatste bezoek: [DD-MM-JJJJ]
+* Volgend bezoek gepland: [DD-MM-JJJJ]
+Tab 3: Werkzaamheden
+* Wat wordt er gedaan: 
+o Vrij tekstveld
+o Bijv. tuinman: "Gazon maaien, heg knippen, onkruid wieden"
+o Bijv. schoonmaak: "Stofzuigen, dweilen, badkamer, keuken"
+* Speciale instructies: 
+o Bijv. "Sleutel ligt onder mat", "Code tuinpoort: 1234"
+Tab 4: Kosten
+* Tarief: € [ ] per uur / per beurt / per maand
+* Betaling: 
+o [Contant / Pin / Factuur / Automatische incasso]
+o Vanaf rekening: [Link]
+* Jaarlijkse kosten: € [ ]
+Tab 5: Voor nabestaanden
+* Bij overlijden: 
+o ? Contract opzeggen (hoe + opzegtermijn)
+o ? Voortzetten (bijv. tuinman blijft komen voor nabestaande)
+* Sleutels / Toegang: 
+o "Tuinman heeft eigen sleutel tuinpoort"
+o "Schoonmaak heeft sleutel huis (inleveren bij opzeggen)"
+Tab 6: Documenten
+* Contract (indien van toepassing)
+* Facturen
+* Correspondentie
+
+4. Overzichtsschermen & Filters
+4.1 Wonen & Energie Dashboard
+Bovenaan:
+* Dropdown: Selecteer woning (indien meerdere) 
+o Hoofdwoning (Straatnaam 1, Plaats)
+o Vakantiewoning (...)
+* Quick Access sectie: 
+o ?? Storing? [Knop ? lijst van alle storingsnummers]
+o ?? Belangrijke contacten [Knop ? lijst van alle contacten]
+o ?? Documenten locaties [Knop ? overzicht fysieke locaties]
+8 Categorieën (tiles):
+1. ?? Woning - Algemeen (?? Compleet)
+2. ?? Hypotheek (?? Compleet) - alleen bij eigen woning
+3. ?? Huurcontract (?? 75%) - alleen bij huurwoning
+4. ? Energie (?? Compleet) - 2 contracten
+5. ?? Nutsvoorzieningen (?? 60%) - 4 items
+6. ?? Technische Installaties (?? 70%) - 8 items
+7. ?? Apparaten & Systemen (?? 30%) - 12 items
+8. ??? Onderhoud & Diensten (?? Compleet) - 5 diensten
+Onderaan:
+* [Export Woning-dossier] ?? (Premium)
+* [Terug naar Persoon]
+
+4.2 Storingen - Quick Access
+Scherm: "Storing? Direct contact"
+Dit scherm is direct bereikbaar vanaf hoofdmenu
+Sectie: Energie
+* ? Elektriciteit / Gas storing 
+o Netbeheerder: [Liander]
+o Storingsnummer: 0800 - 0520
+o Website: [liander.nl/storing]
+Sectie: Verwarming
+* ?? CV-ketel 
+o Storingsdienst: [Bedrijf naam]
+o 24/7 nummer: 088 - 123 4567
+o Klantnummer: [...]
+Sectie: Water
+* ?? Waterleiding 
+o Waterleidingbedrijf: [Vitens]
+o Storingsnummer: 0800 - 0200
+Sectie: Internet
+* ?? Internet / TV 
+o Provider: [KPN]
+o Storingsnummer: 0800 - 0402
+Sectie: Alarm
+* ?? Alarmsysteem 
+o Bedrijf: [Verisure]
+o Storingsnummer: 088 - 789 0123
+Alle nummers direct klikbaar om te bellen
+
+4.3 Belangrijke Contacten
+Scherm: "Belangrijke Contacten Woning"
+Gecategoriseerd overzicht:
+Financieel:
+* Hypotheekverstrekker
+* Energiebedrijf
+* Waterbedrijf
+Installateurs:
+* CV-monteur
+* Elektricien
+* Loodgieter
+* Zonnepanelen-installateur
+Diensten:
+* Tuinman
+* Schoonmaak
+* Glazenwasser
+Overig:
+* Notaris
+* VvE-beheerder (bij appartement)
+Elk contact met: naam, tel, email (klikbaar)
+
+4.4 Documentenlocaties Overzicht
+Scherm: "Waar liggen fysieke documenten?"
+Tabel:
+DocumentLocatieHypotheekakteRode map in bureau, la 2KoopakteBij notaris JansenBouwtekeningenZolder, in kartonnen kokerEnergiecontractKeukenkast, bovenste laCV-ketel handleidingBij ketel, in plastic hoesWater stopkraanMeterkast, onderste rechtsetc....Handig om snel te printen voor nabestaanden
+
+5. Maskeren van gevoelige gegevens
+In overzichten:
+* IBAN (hypotheek): laatste 4 cijfers
+* Alarmcodes: nooit tonen, alleen locatie waar het staat
+* Wachtwoorden: nooit opslaan
+Toggle:
+* ??? Icoon om tijdelijk te tonen
+* Na 5 min inactiviteit weer verbergen
+
+6. Export & Nabestaandenpakket (Premium)
+6.1 Export Woning-dossier
+Bevat:
+* Alle data uit alle 8 categorieën
+* Alle documenten (embedded of als bijlagen)
+* Overzicht contacten
+* Storingsnummers
+* Documentenlocaties fysiek
+PDF-structuur:
+* Inhoudsopgave
+* Per categorie een hoofdstuk
+* Appendix met documenten
+6.2 Nabestaandenpakket - Woning
+Speciaal overzicht met:
+1. Kritieke informatie eerste week:
+* Waar zijn de sleutels
+* Alarmcode locatie
+* Hoofdkraan water locatie
+* Stopkraan gas locatie
+* Meterkast locatie
+* Belangrijkste storingsnummers
+2. Contracten & Opzeggingen:
+* Welke contracten moeten worden opgezegd
+* Welke kunnen doorlopen
+* Opzegtermijnen
+* Contactgegevens
+3. Onderhoud & Garanties:
+* Wat moet onderhouden worden
+* Welke garanties lopen nog
+* Contacten onderhoudsbedrijven
+4. Handleidingen & Instructies:
+* Belangrijkste apparaten
+* "Hoe werkt...?" instructies
+* Storingen oplossen
+6.3 Handleiding "Hoe werkt ons huis?"
+Premium-functie: Genereer een simpele "Hoe werkt ons huis?"-gids
+Inhoud:
+* CV-ketel bedienen
+* Thermostaat instellen
+* Zonnepanelen monitoren
+* WiFi-wachtwoord
+* Alarmsysteem in/uitschakelen
+* Smart home basics
+* Belangrijkste storingen oplossen
+Voor: Partner, kinderen, of oppas die tijdelijk in huis zijn
+
+7. Speciale Features
+7.1 Energie-advies (toekomstige fase)
+Op basis van ingevulde gegevens:
+* "Je hebt zonnepanelen maar geen thuisbatterij. Overweeg een accu voor hogere zelfconsumptie"
+* "Je CV-ketel is ouder dan 15 jaar. Overweeg vervanging door hybride warmtepomp"
+* "Geen isolatie informatie ingevuld. Controleer spouwmuur en dakisolatie"
+7.2 Onderhoudsherinneringen (toekomstige fase)
+Automatische reminders:
+* CV-ketel onderhoud over 2 weken
+* Filters ventilatie vervangen (om de 6 maanden)
+* Zonnepanelen schoonmaken (jaarlijks)
+* Rookmelders testen (elk half jaar)
+7.3 Garantie-tracking
+Overzicht:
+* Welke garanties lopen nog
+* Welke garanties verlopen binnenkort
+* Per apparaat/installatie
+7.4 Energieverbruik tracking (toekomstige fase)
+Grafieken:
+* Jaarverbruik elektriciteit/gas
+* Opbrengst zonnepanelen
+* Kosten per jaar
+* Vergelijking met vorig jaar
+
+8. Validatie & Status
+8.1 Verplichte velden voor status COMPLETE
+Woning - Algemeen:
+* Adres
+* Type woning
+* Eigendom
+* Minimaal 1 verzekering ingevoerd
+* Minimaal 1 document (koopakte OF huurcontract)
+Hypotheek:
+* Verstrekker
+* Alle hypotheekdelen ingevuld
+* Minimaal 1 document (hypotheekakte)
+Energie:
+* Leverancier
+* Klantnummer
+* EAN-codes
+* Tarieven
+Technische installaties:
+* Type, merk, model
+* Locatie
+* Minimaal "Storing - Wat te doen?" ingevuld
+* Handleiding (digitaal OF locatie fysiek)
+
+9. Integratie met andere modules
+9.1 Met Geldzaken
+* Hypotheek verschijnt ook in Geldzaken als "Schuld"
+* Verzekeringen (woonhuis, opstal) staan in Geldzaken
+* Energiecontracten als vaste lasten
+* Onderhoudscontracten als vaste lasten
+9.2 Met Lidmaatschappen
+* Internet/TV-abonnementen kunnen ook onder Lidmaatschappen
+* Keuze aan gebruiker
+9.3 Met Eigendommen
+* NAS/computers kunnen ook onder Eigendommen
+* Dure apparaten als waardevolle spullen
+
+10. Wireframes
+10.1 Wonen & Energie Dashboard
+???????????????????????????????????????????
+? ? Terug  Wonen & Energie - Jan Jansen   ?
+???????????????????????????????????????????
+? Woning: [Hoofdwoning - Straat 1, Plaats?]?
+???????????????????????????????????????????
+? ?? Storing?  ?? Contacten  ?? Documenten?
+???????????????????????????????????????????
+?                                         ?
+? ????????????????????????????           ?
+? ? ?? Woning - Algemeen     ? ?? 100%   ?
+? ?                          ? ?         ?
+? ????????????????????????????           ?
+?                                         ?
+? ????????????????????????????           ?
+? ? ?? Hypotheek             ? ?? 100%   ?
+? ?                          ? ?         ?
+? ????????????????????????????           ?
+?                                         ?
+? ????????????????????????????           ?
+? ? ? Energie               ? ?? 100%   ?
+? ? 2 contracten             ? ?         ?
+? ????????????????????????????           ?
+?                                         ?
+? ????????????????????????????           ?
+? ? ?? Technische Install.   ? ?? 70%    ?
+? ? 8 items                  ? ?         ?
+? ????????????????????????????           ?
+?                                         ?
+? ... (andere categorieën)                ?
+?                                         ?
+???????????????????????????????????????????
+? [Export Woning-dossier] ??             ?
+???????????????????????????????????????????
+10.2 CV-ketel Detail (Tab: Storing)
+???????????????????????????????????????????
+? ? Terug    Nefit HR-ketel                ?
+???????????????????????????????????????????
+? [Basis] [Installateur] [Onderhoud]      ?
+? [Bediening] [STORING] [Handleiding]     ?
+? [Nabestaanden] [Documenten] [Notities]  ?
+???????????????????????????????????????????
+?                                         ?
+? ?? STORING - WAT TE DOEN?               ?
+?                                         ?
+? ?? Ketel slaat af / geen verwarming    ?
+?                                         ?
+? Stap 1: Controleer of ketel aan staat  ?
+?         (groen lampje moet branden)     ?
+?                                         ?
+? Stap 2: Check waterdruk op display     ?
+?         Moet tussen 1-2 bar zijn        ?
+?         [Foto display ?]                ?
+?                                         ?
+? Stap 3: Staat er een foutcode?         ?
+?         ? Zie foutcodes lijst hieronder ?
+?                                         ?
+? Stap 4: Probeer reset-knop              ?
+?         Locatie: rechts op ketel        ?
+?         [Foto reset-knop ?]             ?
+?         3 seconden ingedrukt houden     ?
+?                                         ?
+? ? Lukt dit niet?                       ?
+?                                         ?
+? ?? Bel storingsdienst 24/7:            ?
+?     [BEL 088-1234567]                   ?
+?                                         ?
+? Houd gereed: klantnummer XYZ123        ?
+?                                         ?
+? ?????????????????????????????????????   ?
+?                                         ?
+? ?? Veelvoorkomende foutcodes:          ?
+?                                         ?
+? E01: Geen ontsteking                   ?
+? ? Reset ketel, blijft het? Bel monteur ?
+?                                         ?
+? E04: Lage waterdruk                    ?
+? ? Water bijvullen (zie instructie)     ?
+?   [Video: water bijvullen ?]           ?
+?                                         ?
+? ... (meer codes)                        ?
+?                                         ?
+???????????????????????????????????????????
+
+11. Samenvatting & Prioritering
+Fase 1 - Must have:
+* Woning - Algemeen (volledig)
+* Hypotheek OF Huurcontract
+* Energie (elektriciteit + gas)
+* CV-ketel (met storing-sectie!)
+* Belangrijkste apparaten (wasmachine, etc.)
+* Storingen quick-access scherm
+Fase 2 - Should have:
+* Nutsvoorzieningen (water, internet)
+* Overige technische installaties (zonnepanelen, warmtepomp)
+* Smart home / domotica
+* Alarmsysteem
+* Onderhoud & Diensten
+Fase 3 - Nice to have:
+* NAS / netwerk
+* Energie-advies
+* Onderhoudsherinneringen
+* Garantie-tracking
+Premium functies:
+* Export Woning-dossier
+* Nabestaandenpakket Woning
+* "Hoe werkt ons huis?"-gids
+* Print storingsnummers-kaart
+
+Wil je nu:
+1. Het Technisch Ontwerp voor Wonen & Energie?
+2. Eerst een specifieke subcategorie verder uitwerken?
+3. Of direct beginnen met bouwen en samen de structuur opzetten?
+

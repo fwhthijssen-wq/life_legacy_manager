@@ -1,0 +1,177 @@
+// lib/modules/housing/screens/properties/property_list_screen.dart
+// Lijst van woningen
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../models/property_model.dart';
+import '../../providers/housing_providers.dart';
+import 'property_detail_screen.dart';
+
+class PropertyListScreen extends ConsumerWidget {
+  final String dossierId;
+  final String personId;
+
+  const PropertyListScreen({
+    super.key,
+    required this.dossierId,
+    required this.personId,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final propertiesAsync = ref.watch(propertiesProvider(dossierId));
+    final theme = Theme.of(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Woningen'),
+      ),
+      body: propertiesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Fout: $err')),
+        data: (properties) {
+          if (properties.isEmpty) {
+            return _buildEmptyState(context, theme, ref);
+          }
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: properties.length,
+            itemBuilder: (context, index) {
+              final property = properties[index];
+              return _buildPropertyCard(context, property, ref);
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _addProperty(context, ref),
+        icon: const Icon(Icons.add),
+        label: const Text('Woning toevoegen'),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context, ThemeData theme, WidgetRef ref) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.home_outlined, size: 80, color: Colors.grey[300]),
+            const SizedBox(height: 24),
+            Text(
+              'Nog geen woningen',
+              style: theme.textTheme.titleLarge?.copyWith(color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Voeg je eerste woning toe',
+              style: TextStyle(color: Colors.grey[500]),
+            ),
+            const SizedBox(height: 32),
+            FilledButton.icon(
+              onPressed: () => _addProperty(context, ref),
+              icon: const Icon(Icons.add),
+              label: const Text('Woning toevoegen'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPropertyCard(BuildContext context, PropertyModel property, WidgetRef ref) {
+    final percentage = property.completenessPercentage;
+    final progressColor = percentage >= 80 ? Colors.green : percentage >= 50 ? Colors.orange : Colors.red;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        leading: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+            color: Colors.blue.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Center(
+            child: Text(
+              property.propertyType.emoji,
+              style: const TextStyle(fontSize: 24),
+            ),
+          ),
+        ),
+        title: Text(
+          property.displayName,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          property.fullAddress.isNotEmpty ? property.fullAddress : property.ownershipType.label,
+          style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: progressColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                '$percentage%',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(Icons.chevron_right, color: Colors.blue),
+          ],
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PropertyDetailScreen(
+                dossierId: dossierId,
+                propertyId: property.id,
+              ),
+            ),
+          ).then((_) => ref.invalidate(propertiesProvider(dossierId)));
+        },
+      ),
+    );
+  }
+
+  Future<void> _addProperty(BuildContext context, WidgetRef ref) async {
+    final repo = ref.read(housingRepositoryProvider);
+    
+    final propertyId = await repo.createProperty(
+      dossierId: dossierId,
+      personId: personId,
+      name: 'Nieuwe woning',
+    );
+
+    if (!context.mounted) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PropertyDetailScreen(
+          dossierId: dossierId,
+          propertyId: propertyId,
+          isNew: true,
+        ),
+      ),
+    ).then((_) => ref.invalidate(propertiesProvider(dossierId)));
+  }
+}
+
+
+
+
+

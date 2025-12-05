@@ -1,0 +1,912 @@
+FUNCTIONEEL ONTWERP - Module
+Eigendommen 
+1. Doel & Uitgangspunten
+De Eigendommen module biedt een volledig overzicht van alle waardevolle bezittingen, voertuigen, verzamelingen en inboedel. Het doel is:
+* Inventarisatie: compleet overzicht van wat je bezit
+* Waarderegistratie: geschatte waarde voor verzekering en erfenis
+* Erfenis-planning: wie krijgt wat bij overlijden
+* Verzekeringsbasis: juiste verzekerde bedragen instellen
+* Bewijs van eigendom: aankoopbewijzen, garanties, certificaten
+* Locatie-tracking: waar staat/ligt wat
+* Onderhoud & garanties: wanneer verloopt garantie, onderhoudshistorie
+* Nabestaanden helpen: wat heeft waarde, waar ligt het, hoe te verkopen
+Belangrijke uitgangspunten:
+* Foto-centraal: veel nadruk op foto's van items (voor herkenning en verzekering)
+* Waarde-schatting: hulp bij waarderen (aankoopprijs, huidige waarde, taxatie)
+* Toewijzing erfgenamen: wie krijgt wat (koppeling aan personen)
+* Sentimentele vs financiële waarde: beide vastleggen
+* Categorisering: van sieraden tot auto's tot kunstcollecties
+* Export voor verzekering: lijst voor inboedel/kunstvoorwerpen verzekering
+* Meerdere locaties: thuis, kluis, bij familie, opslag
+
+2. Hoofdcategorieën binnen Eigendommen
+De module bestaat uit 10 hoofdcategorieën:
+2.1 Voertuigen
+* Auto
+* Motor
+* Scooter/bromfiets
+* Fiets (dure e-bikes, racefietsen)
+* Caravan/camper
+* Boot/jacht
+* Oldtimer/youngtimer
+* Aanhangwagen
+2.2 Sieraden & Horloges
+* Ringen (trouw/verloofd/erfstukken)
+* Kettingen
+* Armbanden
+* Oorbellen
+* Horloges (dure/verzameling)
+* Manchetknopen
+* Brosches
+2.3 Kunst & Antiek
+* Schilderijen
+* Sculpturen/beelden
+* Prenten/litho's
+* Antieke meubels
+* Antiek serviesgoed/porselein
+* Antieke klokken
+* Vintage items
+2.4 Verzamelingen
+* Postzegels
+* Munten
+* Wijnen
+* Whisky/gedistilleerd
+* Boeken (eerste drukken, zeldzaam)
+* Stripboeken/comics
+* Vinyl/platen
+* Speelgoed (Lego, vintage)
+* Sportmemorabilia
+* Militaria
+2.5 Elektronica & Apparatuur
+* Computers/laptops (dure modellen)
+* Camera's/fotoapparatuur
+* Drones
+* Gaming consoles (verzameling/limited edition)
+* Audio apparatuur (hifi/versterkers)
+* Muziekinstrumenten
+* Telefoons/tablets (dure modellen)
+2.6 Mode & Accessoires
+* Designerkleding
+* Designertassen (Hermès, Louis Vuitton, etc.)
+* Designerschoenen
+* Vintage kleding
+* Bontjassen
+* Luxe zonnebrillen
+2.7 Sport & Hobby
+* Dure fietsen (racefiets, mountainbike)
+* Golfclubs
+* Surfboards/kitesurf
+* Duikuitrusting
+* Kampeeruitrusting (duur)
+* Skispullen
+* Fitness apparatuur (duur)
+2.8 Woninginrichting & Meubels
+* Designmeubels
+* Designlampen
+* Tapijten (Perzisch, antiek)
+* Kristal/glas (Leerdam, Baccarat)
+* Zilverwerk
+* Vazen (Delfts blauw, etc.)
+2.9 Gereedschap & Machines
+* Professioneel gereedschap
+* Elektrisch gereedschap (duur)
+* Tuinmachines (zitmaaier, etc.)
+* Bouwmachines
+2.10 Overige Waardevolle Spullen
+* Diploma's/certificaten
+* Handtekeningen beroemdheden
+* Erfstukken zonder specifieke categorie -Edelstenen (los)
+* Goud/zilver (baren, munten)
+* Crypto hardware wallets
+* Domeinnamen (waardevolle)
+
+3. Gebruikersflows
+3.1 Navigatie naar Eigendommen
+Startpunt: Home-scherm
+1. Gebruiker selecteert een persoon
+2. Komt op Persoon Detail scherm
+3. Selecteert module "Eigendommen"
+4. Komt op Eigendommen Overzichtsscherm
+Eigendommen Overzichtsscherm toont:
+* Dashboard bovenaan: 
+o Totaal aantal items: [156]
+o Totale geschatte waarde: € [125.450,00]
+o Totale aankoopwaarde: € [98.200,00]
+o Aantal items met erfgenaam toegewezen: [45/156]
+o Aantal items verzekerd: [89/156] ??
+* 10 categorieën (zie 2.1 - 2.10)
+* Per categorie: 
+o Aantal items
+o Totale waarde
+o Status-indicator (??/??/??)
+Quick actions:
+* ?? "Zoek item" (zoekbalk)
+* ?? "Waardeoverzicht" (totale waarde per categorie)
+* ?? "Verzekeringsdocument genereren" ?? (Premium)
+* ?? "Erfenis-verdeling" (wie krijgt wat)
+
+3.2 Item toevoegen (Algemene structuur)
+Flow:
+1. Gebruiker opent een categorie (bijv. "Sieraden & Horloges")
+2. Ziet lijst van bestaande items
+3. Klikt op "+ Nieuw item toevoegen"
+4. Komt op Item Detail scherm met tabs:
+Tab 1: Basisgegevens
+* Naam/Omschrijving: [bijv. "Rolex Submariner horloge"]
+* Categorie (dropdown - automatisch ingevuld): 
+o Voertuigen
+o Sieraden & Horloges
+o etc.
+* Subcategorie (dropdown, afhankelijk van categorie): 
+o Bijv. bij Sieraden: Ring / Ketting / Horloge / Armband / etc.
+o Bijv. bij Voertuigen: Auto / Motor / Fiets / etc.
+* Merk (vrij veld of dropdown bij bekende merken): 
+o Bijv. Rolex, Omega, Mercedes, BMW, etc.
+* Model: [bijv. "Submariner Date"]
+* Jaar/Bouwjaar: [JJJJ]
+* Serienummer / Identificatienummer: [ ]
+* Staat (dropdown): 
+o Nieuw
+o Als nieuw
+o Goed
+o Redelijk
+o Matig
+o Voor onderdelen
+* Kleur: [ ]
+* Materiaal (indien relevant): 
+o Bijv. "Roestvrij staal", "18k Goud", "Leer", "Hout", etc.
+Foto's uploaden:
+* Hoofdfoto: [Upload of maak foto] ?
+* Extra foto's: [Upload meerdere foto's] 
+o Detail foto's (serienummer, krasjes, onderkant, etc.)
+o Maximaal 10 foto's per item
+Tab 2: Aankoop & Waarde
+Aankoopgegevens:
+* Aangeschaft op: [DD-MM-JJJJ]
+* Aangeschaft bij: [Naam winkel/verkoper/veiling]
+* Aankoopprijs: € [ ]
+* Aankoopbewijs: [Upload factuur/bon]
+* Betaalmethode: [Contant / Bankrekening / Creditcard / Erfenis / Cadeau]
+* Herkomst (indien relevant): 
+o Gekocht nieuw
+o Gekocht tweedehands
+o Geërfd van: [naam]
+o Gekregen van: [naam] op [datum]
+Huidige waarde:
+* Geschatte huidige waarde: € [ ]
+* Waardering gebaseerd op (dropdown): 
+o Aankoopprijs
+o Online marktplaatsen (Marktplaats, Catawiki, eBay)
+o Taxatie door specialist
+o Schatting eigenaar
+o Verzekerde waarde
+* Datum laatste waardering: [DD-MM-JJJJ]
+* Waardeontwikkeling (automatisch berekend): 
+o Verschil: € [+2.500] (+25%)
+o Status: ?? Gestegen / ?? Gedaald / ?? Gelijk
+Taxatie (indien uitgevoerd):
+* Getaxeerd door: [Naam taxateur/bedrijf]
+* Taxatiedatum: [DD-MM-JJJJ]
+* Getaxeerde waarde: € [ ]
+* Taxatierapport: [Upload document]
+* Doel taxatie: [Verzekering / Erfenis / Verkoop / Nieuwsgierigheid]
+Tab 3: Verzekering
+* Verzekerd: ? Ja / ? Nee
+* Type verzekering (dropdown): 
+o Inboedelverzekering (onderdeel van)
+o Apart verzekerd (kunstvoorwerpen/kostbaarheden)
+o Niet verzekerd
+* Verzekeraar: [ ]
+* Polisnummer: [ ]
+* Verzekerd bedrag: € [ ]
+* Link naar verzekering: [Link naar Geldzaken module, Verzekeringen]
+* Foto's voor verzekering: 
+o ?? "Tip: maak duidelijke foto's voor eventuele schade-claim"
+o [Upload foto's apart voor verzekeringsdossier]
+Tab 4: Locatie & Opslag
+Zeer belangrijk voor nabestaanden!
+* Huidige locatie (dropdown + vrij veld): 
+o Thuis
+o In kluis (thuis)
+o Bij bank (kluisje)
+o Bij familie: [naam + adres]
+o Opslag/opslagbedrijf: [naam + adres]
+o Garage/schuur/zolder
+o Anders: [vrij veld]
+* Specifieke locatie (detailbeschrijving): 
+o Vrij tekstveld
+o Bijv. "Slaapkamer, ladekast, onderste la, rechts achter"
+o Bijv. "Garage, werkbank, gereedschapskist, bovenste lade"
+o Bijv. "Kluis code: zie apart document"
+* Foto van locatie: [Upload, zodat nabestaanden exact weten waar het ligt]
+* Toegankelijkheid (dropdown): 
+o Direct toegankelijk
+o Met sleutel (locatie sleutel: [ ])
+o Met code (locatie code: [ ])
+o Alleen toegankelijk via: [naam persoon]
+Meerdere locaties mogelijk:
+* Bijv. zomerband auto's: "Winter in garage, zomer bij bandenmonteur"
+Tab 5: Onderhoud & Garantie
+Garantie:
+* Garantie actief: ? Ja
+* Garantieperiode: [ ] jaar
+* Garantie geldig tot: [DD-MM-JJJJ]
+* Garantiebewijs: [Upload]
+* Waar gekocht / garantieverstrekker: [ ]
+Onderhoud:
+* Onderhoudshistorie: 
+o Mogelijkheid om meerdere onderhoudsbeurten toe te voegen
+o Per onderhoudsbeurt: 
+* Datum: [DD-MM-JJJJ]
+* Uitgevoerd door: [Naam bedrijf/persoon]
+* Werkzaamheden: [Omschrijving]
+* Kosten: € [ ]
+* Document: [Upload factuur]
+Onderhoudsschema (indien relevant):
+* Onderhoud vereist elke: [ ] maanden / jaar / km
+* Laatste onderhoud: [DD-MM-JJJJ]
+* Volgend onderhoud gepland: [DD-MM-JJJJ]
+* Herinnering instellen: ? Ja
+Tab 6: Voor nabestaanden - Erfenis
+Wie krijgt dit item?
+* Toegewezen aan erfgenaam: ? Ja / ? Nog niet beslist
+* Erfgenaam (dropdown, link naar personen in systeem): 
+o [Selecteer persoon: Partner / Kind 1 / Kind 2 / etc.]
+o Of: [Verkopen en opbrengst verdelen]
+o Of: [Doneren aan goede doel: naam]
+* Reden toewijzing (optioneel): 
+o Vrij tekstveld
+o Bijv. "Dit horloge was van opa, gaat naar kleinzoon"
+o Bijv. "Verzameling postzegels naar zoon, die hier interesse in heeft"
+* Sentimentele waarde (dropdown): 
+o Zeer hoog (erfstuk, emotionele waarde)
+o Hoog
+o Gemiddeld
+o Laag (alleen financiële waarde)
+* Testament vermelding: ? Staat in testament genoemd
+* Instructies voor nabestaanden: 
+o Vrij tekstveld
+o Bijv. "Laat taxeren voor verkoop, kan veel waard zijn"
+o Bijv. "Niet verkopen, is erfstuk van overgrootmoeder"
+o Bijv. "Kan verkocht worden via Catawiki, zie account-inloggegevens"
+Verkoop-informatie (indien relevant):
+* Waar te verkopen (suggesties): 
+o Marktplaats
+o Catawiki
+o eBay
+o Veilinghuis: [naam]
+o Gespecialiseerde dealer: [naam + contact]
+* Geschatte verkoopwaarde: € [ ]
+* Geschatte verkooptijd: [ ] weken/maanden
+Tab 7: Authenticiteit & Certificaten
+Belangrijk bij dure/waardevolle items
+* Authenticiteit: 
+o ? Echt / authentiek
+o ? Replica
+o ? Onbekend
+* Certificaat van echtheid: ? Aanwezig 
+o [Upload certificaat]
+* Herkomstbewijs / Provenance: ? Aanwezig 
+o Vooral belangrijk bij kunst/antiek
+o [Upload documenten]
+* Expertise uitgevoerd door: [Naam expert]
+* Registratienummer (bij kunst/antiek): 
+o Bijv. RKD-nummer (voor kunst)
+o Bijv. serienummer bij limited editions
+Tab 8: Specificaties (afhankelijk van categorie)
+Dit tabblad past zich aan op basis van categorie
+Voor Voertuigen (Auto):
+* Kenteken: [XX-XXX-X]
+* Merk: [Mercedes-Benz]
+* Model: [E-Klasse]
+* Type: [E200]
+* Bouwjaar: [2020]
+* Kilometerstand: [45.000 km]
+* Brandstof: [Benzine / Diesel / Elektrisch / Hybride]
+* Transmissie: [Automaat / Handmatig]
+* Kleur: [Zwart metallic]
+* Chassisnummer: [ ]
+* APK geldig tot: [DD-MM-JJJJ]
+* Kentekenbewijs deel 1: [Upload]
+* Kentekenbewijs deel 2: [Upload]
+* Verzekering: [Link naar Geldzaken]
+* Wegenbelasting: [€ ... per kwartaal]
+Voor Sieraden (Horloge):
+* Mechanisme: [Automatisch / Quartz / Handopwind]
+* Kastmateriaal: [RVS / Goud / Titanium]
+* Bandmateriaal: [Leer / Metaal / Rubber]
+* Waterdichtheid: [ ] meter
+* Diameter kast: [ ] mm
+* Functies: [Datum / Chronograaf / GMT / etc.]
+* Garantiekaart: [Upload]
+* Originele doos: ? Aanwezig
+Voor Kunst (Schilderij):
+* Kunstenaar: [Naam]
+* Titel: [Titel werk]
+* Jaar: [JJJJ]
+* Techniek: [Olie op doek / Aquarel / Acryl / etc.]
+* Afmetingen: [ ] x [ ] cm (h x b)
+* Gesigneerd: ? Ja (locatie: rechtsonder)
+* Genummerd: ? Ja ( / ) - bijv. 5/100 bij litho
+* Lijst: ? Aanwezig, [beschrijving]
+* Herkomst: [Galerie naam / Veiling / etc.]
+* Tentoonstellingsgeschiedenis: [Indien bekend]
+Voor Verzamelingen (Wijn):
+* Wijnhuis/Château: [ ]
+* Druivensoort: [ ]
+* Appellatie/Regio: [ ]
+* Jaargang: [JJJJ]
+* Aantal flessen: [ ]
+* Flesgrootte: [75cl / Magnum / etc.]
+* Drinkvenster: [JJJJ - JJJJ]
+* Opslagcondities: [Wijnkoelkast / Kelder / etc.]
+* Temperatuur: [ ] °C
+* Liggend bewaard: ? Ja
+Voor Muziekinstrumenten:
+* Type: [Gitaar / Piano / Viool / etc.]
+* Aantal snaren (gitaar): [6 / 12]
+* Houtsoort: [Mahonie / Esdoorn / Sparren]
+* Pickup type (elektrisch): [Humbucker / Single coil]
+* Akoestisch/Elektrisch: [ ]
+* Meegeleverde accessoires: [Koffer / Gigbag / Stemapparaat / etc.]
+Tab 9: Contactgegevens (indien relevant)
+Voor onderhoud, reparatie, verkoop
+* Onderhoud/Reparatie:
+o Bedrijf/Persoon: [ ]
+o Telefoonnummer: [ ]
+o Email: [ ]
+o Website: [ ]
+o Adres: [ ]
+* Dealer/Verkoper (voor evt. terugverkopen):
+o Bedrijf: [ ]
+o Contactpersoon: [ ]
+o Telefoonnummer: [ ]
+* Veiling/Marktplaats accounts:
+o Catawiki account: [Gebruikersnaam, inloggegevens locatie]
+o eBay account: [Gebruikersnaam]
+Tab 10: Documenten
+* Upload/foto functionaliteit
+* Documenttypes: 
+o Aankoopbewijs / Factuur
+o Garantiebewijs
+o Certificaat van echtheid
+o Taxatierapport
+o Onderhoudsboekje
+o Handleiding
+o Verzekeringsdocumenten
+o Kentekenbewijs (voertuigen)
+o Foto's (meerdere)
+o Overig
+Tab 11: Geschiedenis & Verhaal
+Voor persoonlijke verhalen en achtergrond
+* Verhaal achter dit item: 
+o Vrij tekstveld (uitgebreid)
+o Bijv. "Dit horloge heb ik gekregen van mijn vader toen ik 21 werd. Hij had het zelf gekregen van zijn vader. Het is dus een echt familiestuk dat al drie generaties meegaat."
+o Bijv. "Deze auto hebben we gekocht toen de kinderen geboren werden. Hebben hier veel mooie vakanties mee gemaakt."
+* Speciale herinneringen: 
+o Vrij tekstveld
+* Waarom waardevol voor mij: 
+o Vrij tekstveld
+Wijzigingsgeschiedenis (automatisch):
+* Aangemaakt op: [DD-MM-JJJJ]
+* Laatste wijziging: [DD-MM-JJJJ]
+* Waarde-updates: 
+o [DD-MM-JJJJ] € 5.000 ? € 6.500 (+30%)
+o [DD-MM-JJJJ] € 6.500 ? € 7.200 (+10,7%)
+Tab 12: Notities
+* Vrij tekstveld voor overige opmerkingen
+Status & Opslaan:
+* Status: [Niet begonnen / Bezig / Compleet ?]
+* [Annuleren] [Opslaan]
+
+3.3 Specifieke workflows per categorie
+3.3.1 Voertuig (Auto) toevoegen - Extra workflow
+Snelle invoer via Kenteken (NL-specifiek, toekomstige fase):
+1. Gebruiker kiest "+ Auto toevoegen"
+2. Scherm: "Voer kenteken in: [XX-XXX-X]"
+3. Klik [Gegevens ophalen]
+4. Systeem haalt via RDW open data: 
+o Merk, model, type
+o Bouwjaar
+o Brandstof
+o APK-vervaldatum
+o Kleur
+5. Automatisch invullen in formulier
+6. Gebruiker vult aan: 
+o Foto's
+o Aankoopprijs
+o Kilometerstand
+o Locatie
+o etc.
+3.3.2 Sieraad/Horloge toevoegen - Barcode scan (toekomstige fase)
+* Scan barcode op garantiekaart
+* Herken merk/model
+* Automatisch invullen
+3.3.3 Kunst toevoegen - Foto herkenning (toekomstige fase)
+* Maak foto van kunstwerk
+* AI herkent mogelijk kunstenaar/stijl
+* Suggesties voor waarde o.b.v. vergelijkbare werken
+
+3.4 Collectie-weergave
+Voor verzamelaars met veel items van hetzelfde type
+Functionaliteit:
+* Groepeer items tot "Collectie"
+* Bijv. "Postzegelverzameling" met 500 items
+* Bijv. "Wijncollectie" met 120 flessen
+* Bijv. "Vinylcollectie" met 300 platen
+Collectie Detail:
+* Naam collectie: [bijv. "Mijn whisky collectie"]
+* Aantal items: [45]
+* Totale waarde: € [12.500]
+* Foto collectie (overzicht)
+* Per item in collectie: 
+o Vereenvoudigd formulier
+o Snelle invoer (bulk toevoegen mogelijk)
+Voordeel:
+* Overzichtelijker dan 500 losse items
+* Toch per item details bijhouden
+* Export "collectie-inventaris"
+
+4. Overzichtsschermen & Filters
+4.1 Eigendommen Dashboard
+???????????????????????????????????????????????
+? ? Terug  Eigendommen - Jan Jansen           ?
+???????????????????????????????????????????????
+? ?? OVERZICHT                                ?
+?                                             ?
+? Totaal items: 156                           ?
+? Totale waarde: € 125.450                    ?
+? Aankoopwaarde: € 98.200  (+27,8%)          ?
+?                                             ?
+? Erfgenaam toegewezen: 45/156 ??            ?
+? Verzekerd: 89/156 ??                       ?
+?                                             ?
+???????????????????????????????????????????????
+? [Waardeoverzicht] [Erfenis-verdeling]      ?
+? [Verzekeringsdocument] ??                  ?
+???????????????????????????????????????????????
+? ?? [Zoek item...                    ]       ?
+???????????????????????????????????????????????
+? Categorieën                                 ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Voertuigen           ? € 45.000  ?   ?
+? ? 3 items                 ? ?? 100%       ?
+? ???????????????????????????                ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Sieraden & Horloges  ? € 28.500  ?   ?
+? ? 12 items                ? ?? 75%        ?
+? ???????????????????????????                ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Kunst & Antiek       ? € 22.300  ?   ?
+? ? 8 items                 ? ?? 100%       ?
+? ???????????????????????????                ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Verzamelingen        ? € 15.200  ?   ?
+? ? 4 collecties (234 items)? ?? 60%        ?
+? ???????????????????????????                ?
+?                                             ?
+? ... (andere categorieën)                    ?
+?                                             ?
+???????????????????????????????????????????????
+? [+ Nieuw item toevoegen]                    ?
+???????????????????????????????????????????????
+4.2 Voertuigen - Lijst
+???????????????????????????????????????????????
+? ? Terug    Voertuigen                       ?
+???????????????????????????????????????????????
+? Sorteer: [Waarde ?]  Filter: [Alle ?]      ?
+???????????????????????????????????????????????
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? [Foto Mercedes]                        ?  ?
+? ? ?? Mercedes E-Klasse                   ?  ?
+? ? Kenteken: XX-123-XX                    ?  ?
+? ? Bouwjaar: 2020                         ?  ?
+? ? Geschatte waarde: € 35.000             ?  ?
+? ? Erfgenaam: Kind 1                      ?  ?
+? ? Locatie: Garage thuis                  ?  ?
+? ?                       [Bekijk ?]       ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+? ?????????????????????????????????????????  ?
+? ? [Foto Gazelle fiets]                   ?  ?
+? ? ?? Gazelle E-bike                      ?  ?
+? ? Model: Ultimate C380+                  ?  ?
+? ? Geschatte waarde: € 3.200              ?  ?
+? ? Erfgenaam: Partner                     ?  ?
+? ? Locatie: Schuur                        ?  ?
+? ?                       [Bekijk ?]       ?  ?
+? ?????????????????????????????????????????  ?
+?                                             ?
+? ... (meer voertuigen)                       ?
+?                                             ?
+???????????????????????????????????????????????
+? Totaal waarde deze categorie: € 45.000     ?
+?                                             ?
+? [+ Nieuw voertuig]                          ?
+???????????????????????????????????????????????
+4.3 Item Detail - Compact weergave
+???????????????????????????????????????????????
+? ? Terug    Rolex Submariner                 ?
+???????????????????????????????????????????????
+? [Foto horloge - groot]                      ?
+? [Foto 2] [Foto 3] [Foto 4]                 ?
+???????????????????????????????????????????????
+? ?? Sieraden & Horloges > Horloge           ?
+?                                             ?
+? Rolex Submariner Date                       ?
+? Jaar: 2018                                  ?
+? Serienummer: ••••1234                      ?
+?                                             ?
+? Waarde: € 12.500 (aankoopprijs: € 8.900)   ?
+? ?? +40,4% sinds aankoop                    ?
+?                                             ?
+? Verzekerd: ? Via inboedel (€15.000)       ?
+? Locatie: Kluis thuis, slaapkamer          ?
+? Erfgenaam: Zoon (Kind 1)                   ?
+?                                             ?
+???????????????????????????????????????????????
+? [Tabs: Basis | Waarde | Verzekering | ...]  ?
+???????????????????????????????????????????????
+? [Bewerken] [Dupliceren] [Verwijderen]      ?
+???????????????????????????????????????????????
+
+5. Speciale overzichten
+5.1 Waardeoverzicht
+Scherm: "Waardeoverzicht Eigendommen"
+Sectie 1: Totalen
+* Totale geschatte waarde: € 125.450
+* Totale aankoopwaarde: € 98.200
+* Waardegroei: +€ 27.250 (+27,8%)
+Sectie 2: Per categorie (staafdiagram)
+Voertuigen:          € 45.000  (36%)  ????????????
+Sieraden & Horloges: € 28.500  (23%)  ????????
+Kunst & Antiek:      € 22.300  (18%)  ??????
+Verzamelingen:       € 15.200  (12%)  ????
+Elektronica:         €  8.100  (6%)   ??
+Overig:              €  6.350  (5%)   ??
+Sectie 3: Top 10 waardevolste items
+ItemCategorieWaardeWaardegroeiMercedes E-KlasseVoertuigen€ 35.000-20%Rolex SubmarinerSieraden€ 12.500+40%Schilderij AppelKunst€ 11.000+120%............Sectie 4: Items zonder waarde ingevuld ??
+* Vintage Lego collectie (geschat: onbekend)
+* Antieke klok (geschat: onbekend)
+* 23 items zonder waarde
+[Export rapport] ??
+
+5.2 Erfenis-verdeling
+Scherm: "Erfenis-verdeling"
+Wie krijgt wat?
+Per erfgenaam:
+Partner (Maria):
+* Mercedes E-Klasse (€ 35.000)
+* Trouwring (€ 2.500)
+* Kunst: Schilderij woonkamer (€ 8.000)
+* Gazelle E-bike (€ 3.200)
+* Totaal: € 48.700
+Kind 1 (Pieter):
+* Rolex horloge (€ 12.500)
+* Postzegelverzameling (€ 9.200)
+* Golfclubs (€ 1.800)
+* Totaal: € 23.500
+Kind 2 (Lisa):
+* Sieraden oma (€ 8.500)
+* Piano (€ 6.500)
+* Vintage kleding collectie (€ 3.200)
+* Totaal: € 18.200
+Nog niet toegewezen:
+* 89 items ter waarde van € 35.050 ??
+Verdeling:
+* Partner: 38,8%
+* Kind 1: 18,7%
+* Kind 2: 14,5%
+* Onverdeeld: 28,0%
+Acties:
+* [Items toewijzen] - bulk-toewijzing
+* [Export erfenis-verdeling] ?? (PDF voor testament/notaris)
+* [Print lijst per erfgenaam] ??
+
+5.3 Verzekeringsdocument
+Premium functie ??
+Genereer verzekeringsinventaris voor:
+* Inboedelverzekering (standaard items)
+* Kostbaarheden verzekering (sieraden, kunst, antiek)
+* Voertuigenverzekering
+Document bevat per item:
+* Foto's
+* Omschrijving
+* Merk/model
+* Serienummer
+* Aankoopbewijs
+* Geschatte waarde
+* Locatie
+Gebruik:
+* Overleggen aan verzekeraar bij afsluiten kostbaarheden-verzekering
+* Actualiseren jaarlijks
+* Bij schade-claim direct alle info beschikbaar
+
+5.4 Locatie-overzicht
+Scherm: "Waar ligt wat?"
+Voor nabestaanden die niet weten waar dingen liggen
+Groepering per locatie:
+Thuis - Slaapkamer:
+* Kluis: 
+o Rolex horloge (€ 12.500)
+o Trouwringen (€ 5.000)
+o Oude munten (€ 3.200)
+o Familiefoto's (sentimenteel)
+o [Foto kluis-locatie]
+Thuis - Garage:
+* Mercedes E-Klasse (€ 35.000)
+* Gereedschap (€ 2.100)
+* Fietsen (€ 5.400)
+Bank - Kluisje (ABN AMRO, vestiging Centrum):
+* Testament (origineel)
+* Gouden sieraden oma (€ 18.000)
+* Aandelen certificaten
+Bij ouders (Adres straat 123, Plaats):
+* Antieke meubels tijdelijk opslag (€ 12.000)
+Opslag XL (Bedrijfsnaam, Adres):
+* Oldtimer auto (€ 15.000)
+* Unit nummer: 42
+* Toegangscode: zie apart document
+Export functie:
+* Print voor nabestaanden
+* "Zoekkaart eigendommen"
+
+6. Export & Nabestaandenpakket (Premium)
+6.1 Volledige inventaris export
+Exporteer naar Excel of PDF:
+* Alle eigendommen
+* Met foto's
+* Alle details
+* Sorteerbaar/filterbaar
+Excel bevat:
+* Rij per item
+* Kolommen: Naam | Categorie | Merk | Model | Waarde | Locatie | Erfgenaam | etc.
+6.2 Nabestaandenpakket - Eigendommen
+PDF-rapport met:
+Hoofdstuk 1: Meest waardevolle items (top 20)
+* Met foto's
+* Geschatte waarde
+* Waar te vinden
+* Wie krijgt het
+* Hoe te verkopen (indien relevant)
+Hoofdstuk 2: Erfenis-verdeling
+* Per erfgenaam lijst met items
+* Met foto's en waarden
+Hoofdstuk 3: Verzekerde items
+* Overzicht wat verzekerd is
+* Polisnummers
+* Contactgegevens verzekeraars
+Hoofdstuk 4: Locatiekaart
+* Waar ligt wat
+* Met foto's van locaties
+Hoofdstuk 5: Verkoopinstructies
+* Items die verkocht kunnen/moeten worden
+* Waar te verkopen (Catawiki, dealer, etc.)
+* Contactgegevens
+Hoofdstuk 6: Sentimentele items
+* Erfstukken
+* Verhalen erachter
+* Speciaal voor familie
+6.3 Verzekeringsdocument genereren
+Speciaal voor kostbaarheden-verzekering:
+* Alleen items boven bepaalde waarde (bijv. > € 1.000)
+* Met foto's
+* Aankoopbewijzen
+* Taxatierapporten
+* Professionele layout
+* Klaar om in te dienen bij verzekeraar
+
+7. Specifieke Features
+7.1 Waardetracking over tijd
+Grafiek per item:
+* Waardesontwikkeling sinds aankoop
+* Updates bijhouden (bijv. jaarlijks)
+* Trends zichtbaar maken
+Grafiek totaal:
+* Totale waarde eigendommen over tijd
+* Per categorie
+7.2 QR-codes op items (toekomstige fase)
+Functionaliteit:
+* Genereer QR-code per item
+* Print en plak op item (onderkant, achterkant)
+* Scan QR-code ? direct naar item-detail in app
+* Handig voor inventarisatie
+7.3 Bulk import (toekomstige fase)
+Voor grote verzamelingen:
+* Import Excel met lijst items
+* Bijv. wijnverzameling uit wijnkelder-software
+* Bijv. postzegelverzameling uit catalogus
+* Automatisch items aanmaken
+7.4 Prijstracker (toekomstige fase)
+Voor items met actieve markt:
+* Automatisch actuele marktwaarde ophalen
+* Bijv. auto's via Autotrack
+* Bijv. horloges via Chrono24
+* Bijv. kunst via online veilinghuizen
+* Bijv. crypto hardware wallets via actuele crypto-waarde
+7.5 Onderhoud-herinneringen
+Automatische reminders:
+* APK auto over 2 maanden
+* Horloge service over 1 jaar
+* Piano stemmen (jaarlijks)
+* Schilderijen laten inspecteren (om de 5 jaar)
+7.6 Foto's met AI-beschrijving (toekomstige fase)
+Bij uploaden foto:
+* AI herkent object
+* Suggereert categorie
+* Suggereert merk/model
+* Suggereert waarde (o.b.v. vergelijkbare items online)
+7.7 Barcode/QR scanner
+Voor items met barcode:
+* Scan barcode op garantiekaart
+* Automatisch productinfo ophalen
+* Invullen in formulier
+
+8. Validatie & Status
+8.1 Verplichte velden voor status COMPLETE
+Minimum:
+* Naam/omschrijving
+* Categorie
+* Minimaal 1 foto
+* Geschatte waarde (of aankoopprijs)
+* Locatie
+* Voor nabestaanden: erfgenaam OF verkoop-instructie
+Aanbevolen:
+* Aankoopbewijs
+* Serienummer
+* Verzekeringsstatus
+* Verhaal/herinnering
+
+9. Integratie met andere modules
+9.1 Met Geldzaken
+* Verzekeringen (inboedel, kostbaarheden, auto)
+* Links naar polissen
+9.2 Met Wilsbeschikkingen
+* Testament: vermelding specifieke items
+* Erfgenamen komen uit Personen-module
+9.3 Met Wonen & Energie
+* Voertuigen: link naar laadpaal (elektrisch)
+* Gereedschap: link naar onderhoud woning
+
+10. Premiumfuncties specifiek voor Eigendommen
+Gratis:
+* Alle items invoeren
+* Foto's uploaden
+* Basis overzichten
+Premium (??):
+* Export volledige inventaris (Excel/PDF)
+* Nabestaandenpakket Eigendommen
+* Verzekeringsdocument genereren
+* Erfenis-verdeling rapport
+* Locatiekaart printen
+* QR-codes genereren
+* Waardetracking grafieken
+* Bulk import
+* Onderhoud-herinneringen
+
+11. Samenvatting & Prioritering Fase 1
+Prio 1 - Must have:
+* Basis CRUD voor alle categorieën
+* Foto-upload (min. 1, max 10 per item)
+* Velden: naam, categorie, waarde, locatie, erfgenaam
+* Overzichtsschermen
+* Waardeoverzicht (totaal)
+* Erfenis-verdeling overzicht
+Prio 2 - Should have:
+* Alle tabs volledig uitwerken
+* Verzekeringsstatus
+* Documenten uploaden
+* Onderhoud tracking
+* Specifieke velden per categorie (voertuig, kunst, etc.)
+Prio 3 - Nice to have:
+* Collectie-functionaliteit
+* Waardetracking over tijd (grafieken)
+* Locatie-overzicht
+* Verhalen/herinneringen
+Premium (Fase 2):
+* Export functies
+* Nabestaandenpakket
+* Verzekeringsdocument
+* QR-codes
+* Bulk import
+* AI foto-herkenning
+* Prijstracker
+
+12. Wireframes
+12.1 Eigendommen Dashboard
+???????????????????????????????????????????????
+? ? Terug  Eigendommen - Jan Jansen           ?
+???????????????????????????????????????????????
+? ?? TOTAAL OVERZICHT                         ?
+?                                             ?
+? Items: 156                                  ?
+? Waarde: € 125.450  (+27,8% sinds aankoop)  ?
+?                                             ?
+? ?? Erfgenaam ontbreekt: 89 items           ?
+? ?? Niet verzekerd: 67 items                ?
+?                                             ?
+???????????????????????????????????????????????
+? [Waardeoverzicht] [Erfenis-verdeling]      ?
+? [Locatie-overzicht] [Verzekering] ??       ?
+???????????????????????????????????????????????
+?                                             ?
+? ?? [Zoek in eigendommen...          ]       ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Voertuigen           ?                ?
+? ? 3 items                 ?                ?
+? ? € 45.000               ? ?              ?
+? ? ???????????? 100%       ?                ?
+? ???????????????????????????                ?
+?                                             ?
+? ???????????????????????????                ?
+? ? ?? Sieraden & Horloges  ?                ?
+? ? 12 items                ?                ?
+? ? € 28.500               ? ?              ?
+? ? ???????? 75%            ?                ?
+? ???????????????????????????                ?
+?                                             ?
+? [+ Nieuw item]                              ?
+???????????????????????????????????????????????
+12.2 Item met foto's
+???????????????????????????????????????????????
+? ? Terug  Rolex Submariner Date              ?
+???????????????????????????????????????????????
+?                                             ?
+? ???????????????????????????????????????    ?
+? ?                                     ?    ?
+? ?     [FOTO HORLOGE - GROOT]          ?    ?
+? ?                                     ?    ?
+? ???????????????????????????????????????    ?
+?                                             ?
+? [Foto 2] [Foto 3] [Foto 4] [+ Foto]       ?
+?                                             ?
+???????????????????????????????????????????????
+? ?? Sieraden & Horloges > Horloge           ?
+?                                             ?
+? Rolex Submariner Date                       ?
+? Bouwjaar: 2018                              ?
+? Serienummer: ••••1234                      ?
+? Staat: Als nieuw                            ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+? ?? WAARDE                                   ?
+?                                             ?
+? Huidige waarde: € 12.500                    ?
+? Aankoopprijs:   €  8.900 (2019)            ?
+? Waardegroei:    ?? +40,4%                  ?
+?                                             ?
+? Getaxeerd: Ja, door Schaap & Citroen       ?
+? Taxatiedatum: 15-06-2024                    ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+? ??? VERZEKERING                              ?
+?                                             ?
+? Verzekerd via: Inboedelverzekering         ?
+? Verzekerd bedrag: € 15.000                  ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+? ?? LOCATIE                                  ?
+?                                             ?
+? Thuis > Slaapkamer > Kluis                 ?
+? [Foto kluis-locatie]                       ?
+?                                             ?
+? ?????????????????????????????????????????   ?
+? ?? ERFENIS                                  ?
+?                                             ?
+? Toegewezen aan: Pieter (Zoon)              ?
+? Sentimentele waarde: Zeer hoog             ?
+?                                             ?
+? "Gekregen van mijn vader toen ik 21 werd.  ?
+?  Voor Pieter bewaren als hij 21 is."       ?
+?                                             ?
+???????????????????????????????????????????????
+? [Bewerken] [Delen] [Verwijderen]           ?
+???????????????????????????????????????????????
+
+

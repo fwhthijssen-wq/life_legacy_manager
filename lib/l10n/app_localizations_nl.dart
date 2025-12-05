@@ -711,4 +711,358 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get notes => 'Notities';
+
+  @override
+  String get authenticity => 'Echtheid';
+
+  @override
+  String get specifications => 'Specificaties';
+
+  @override
+  String get contacts => 'Contacten';
+
+  @override
+  String get documents => 'Documenten';
+
+  @override
+  String get story => 'Verhaal';
+
+  @override
+  String get storyHint => 'Vertel het verhaal achter dit item...';
+
+  @override
+  String get itemName => 'Naam item';
+
+  @override
+  String get itemNameHint => 'bijv. Oma\'s ring, Vintage horloge';
+
+  @override
+  String get fieldRequired => 'Dit veld is verplicht';
+
+  @override
+  String get subcategory => 'Subcategorie';
+
+  @override
+  String get brand => 'Merk';
+
+  @override
+  String get model => 'Model';
+
+  @override
+  String get year => 'Jaar';
+
+  @override
+  String get serialNumber => 'Serienummer';
+
+  @override
+  String get condition => 'Conditie';
+
+  @override
+  String get color => 'Kleur';
+
+  @override
+  String get material => 'Materiaal';
+
+  @override
+  String get photos => 'Foto\'s';
+
+  @override
+  String get addPhoto => 'Foto toevoegen';
+
+  @override
+  String get purchaseDetails => 'Aankoopgegevens';
+
+  @override
+  String get purchaseDate => 'Aankoopdatum';
+
+  @override
+  String get purchasedFrom => 'Gekocht bij';
+
+  @override
+  String get purchasedFromHint => 'bijv. Winkel, Online, Veiling';
+
+  @override
+  String get purchasePrice => 'Aankoopprijs';
+
+  @override
+  String get origin => 'Herkomst';
+
+  @override
+  String get inheritedFrom => 'Geërfd van';
+
+  @override
+  String get giftFrom => 'Gekregen van';
+
+  @override
+  String get receivedDate => 'Ontvangstdatum';
+
+  @override
+  String get currentValue => 'Huidige waarde';
+
+  @override
+  String get estimatedValue => 'Geschatte waarde';
+
+  @override
+  String get valuationBasis => 'Basis van taxatie';
+
+  @override
+  String get lastValuationDate => 'Laatste taxatiedatum';
+
+  @override
+  String get appraisal => 'Taxatie';
+
+  @override
+  String get appraiserName => 'Naam taxateur';
+
+  @override
+  String get appraisalDate => 'Taxatiedatum';
+
+  @override
+  String get appraisedValue => 'Getaxeerde waarde';
+
+  @override
+  String get isInsured => 'Verzekerd';
+
+  @override
+  String get insuranceType => 'Type verzekering';
+
+  @override
+  String get insurerName => 'Verzekeraar';
+
+  @override
+  String get policyNumber => 'Polisnummer';
+
+  @override
+  String get insuredAmount => 'Verzekerd bedrag';
+
+  @override
+  String get locationType => 'Type locatie';
+
+  @override
+  String get locationDetails => 'Locatiedetails';
+
+  @override
+  String get locationDetailsHint => 'bijv. Thuis, Kluis, Opslagruimte';
+
+  @override
+  String get specificLocation => 'Specifieke locatie';
+
+  @override
+  String get specificLocationHint => 'bijv. Slaapkamer, Kast 2';
+
+  @override
+  String get accessibility => 'Toegankelijkheid';
+
+  @override
+  String get keyLocation => 'Sleutellocatie';
+
+  @override
+  String get codeLocation => 'Code locatie';
+
+  @override
+  String get accessViaPerson => 'Toegang via persoon';
+
+  @override
+  String get warranty => 'Garantie';
+
+  @override
+  String get hasWarranty => 'Heeft garantie';
+
+  @override
+  String get warrantyYears => 'Garantie jaren';
+
+  @override
+  String get warrantyExpiry => 'Garantie vervaldatum';
+
+  @override
+  String get warrantyProvider => 'Garantieverstrekker';
+
+  @override
+  String get maintenance => 'Onderhoud';
+
+  @override
+  String get maintenanceInterval => 'Onderhoudsinterval';
+
+  @override
+  String get maintenanceIntervalHint => 'bijv. Jaarlijks, Om de 6 maanden';
+
+  @override
+  String get lastMaintenance => 'Laatste onderhoud';
+
+  @override
+  String get nextMaintenance => 'Volgend onderhoud';
+
+  @override
+  String get maintenanceReminder => 'Onderhoudsherinnering';
+
+  @override
+  String get whoGetsThis => 'Wie krijgt dit?';
+
+  @override
+  String get heirAssigned => 'Erfgenaam toegewezen';
+
+  @override
+  String get inheritanceDestination => 'Erfenisbestemming';
+
+  @override
+  String get heirName => 'Naam erfgenaam';
+
+  @override
+  String get inheritanceReason => 'Reden toewijzing';
+
+  @override
+  String get inheritanceReasonHint => 'Waarom gaat dit naar deze persoon?';
+
+  @override
+  String get sentimentalValue => 'Emotionele waarde';
+
+  @override
+  String get mentionedInWill => 'Genoemd in testament';
+
+  @override
+  String get survivorInstructions => 'Instructies voor nabestaanden';
+
+  @override
+  String get survivorInstructionsHint => 'Wat moeten nabestaanden weten/doen?';
+
+  @override
+  String get sellingInfo => 'Verkoopinformatie';
+
+  @override
+  String get whereToSell => 'Waar te verkopen';
+
+  @override
+  String get whereToSellHint => 'bijv. Veiling, Dealer, Online';
+
+  @override
+  String get estimatedSellingPrice => 'Geschatte verkoopprijs';
+
+  @override
+  String get estimatedSellingTime => 'Geschatte verkooptijd';
+
+  @override
+  String get estimatedSellingTimeHint => 'bijv. 1-3 maanden';
+
+  @override
+  String get hasCertificate => 'Heeft certificaat';
+
+  @override
+  String get hasProvenance => 'Heeft herkomstbewijs';
+
+  @override
+  String get expertName => 'Naam expert';
+
+  @override
+  String get registrationNumber => 'Registratienummer';
+
+  @override
+  String get registrationNumberHint => 'bijv. Kenteken, Serienummer';
+
+  @override
+  String get specificationsFor => 'Specificaties voor';
+
+  @override
+  String get specificationsComingSoon => 'Specificaties binnenkort beschikbaar';
+
+  @override
+  String get maintenanceContact => 'Onderhoudscontact';
+
+  @override
+  String get company => 'Bedrijf';
+
+  @override
+  String get website => 'Website';
+
+  @override
+  String get dealerContact => 'Dealercontact';
+
+  @override
+  String get contactPerson => 'Contactpersoon';
+
+  @override
+  String get auctionAccounts => 'Veilingaccounts';
+
+  @override
+  String get auctionAccountsLabel => 'Veilingaccounts';
+
+  @override
+  String get auctionAccountsHint => 'bijv. Catawiki, eBay accounts';
+
+  @override
+  String get documentsComingSoon => 'Documenten binnenkort beschikbaar';
+
+  @override
+  String get storyBehindItem => 'Het verhaal achter dit item';
+
+  @override
+  String get specialMemories => 'Bijzondere herinneringen';
+
+  @override
+  String get specialMemoriesHint => 'Deel bijzondere herinneringen...';
+
+  @override
+  String get whyValuable => 'Waarom is dit waardevol?';
+
+  @override
+  String get whyValuableHint => 'Emotionele of historische waarde...';
+
+  @override
+  String get notesHint => 'Aanvullende opmerkingen...';
+
+  @override
+  String get pleaseFixErrors => 'Corrigeer de fouten';
+
+  @override
+  String get savedSuccessfully => 'Succesvol opgeslagen';
+
+  @override
+  String get confirmDelete => 'Verwijderen bevestigen';
+
+  @override
+  String get confirmDeleteMessage => 'Weet u zeker dat u dit wilt verwijderen?';
+
+  @override
+  String get sortByName => 'Op naam';
+
+  @override
+  String get sortByValue => 'Op waarde';
+
+  @override
+  String get sortByDate => 'Op datum';
+
+  @override
+  String get addItem => 'Item toevoegen';
+
+  @override
+  String get editItem => 'Item bewerken';
+
+  @override
+  String get noItemsInCategory => 'Geen items in deze categorie';
+
+  @override
+  String get addFirstItemHint => 'Voeg het eerste item toe';
+
+  @override
+  String get items => 'items';
+
+  @override
+  String get totalValue => 'Totale waarde';
+
+  @override
+  String get basicInfo => 'Basisinformatie';
+
+  @override
+  String get purchaseValue => 'Aankoop & Waarde';
+
+  @override
+  String get insurance => 'Verzekering';
+
+  @override
+  String get location => 'Locatie';
+
+  @override
+  String get maintenanceWarranty => 'Onderhoud & Garantie';
+
+  @override
+  String get inheritance => 'Erfenis';
 }
