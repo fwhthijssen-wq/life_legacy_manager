@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/widgets.dart';
+import '../../../widgets/dossier_app_bar.dart';
 import '../models/asset_enums.dart';
 import '../providers/asset_providers.dart';
 import 'asset_list_screen.dart';
@@ -79,8 +80,8 @@ class AssetDashboardScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bezittingen'),
+      appBar: const DossierAppBar(
+        title: 'Bezittingen',
       ),
       body: content,
     );

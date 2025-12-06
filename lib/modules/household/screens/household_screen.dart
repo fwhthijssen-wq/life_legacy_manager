@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:life_legacy_manager/l10n/app_localizations.dart';
 import '../../../core/app_database.dart';
+import '../../../widgets/dossier_app_bar.dart';
 import 'add_household_member_screen.dart';
 
 class HouseholdScreen extends ConsumerStatefulWidget {
@@ -104,8 +105,8 @@ class _HouseholdScreenState extends ConsumerState<HouseholdScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Gezin'),
+      appBar: const DossierAppBar(
+        title: 'Gezin',
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())

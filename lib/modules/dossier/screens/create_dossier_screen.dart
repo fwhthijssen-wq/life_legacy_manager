@@ -272,7 +272,7 @@ class _CreateDossierScreenState extends ConsumerState<CreateDossierScreen> {
                         ),
                         const SizedBox(width: 12),
                         Text(
-                          'Naam invullen',
+                          'Dossiernaam',
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),

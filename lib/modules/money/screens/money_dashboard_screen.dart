@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/widgets.dart';
+import '../../../widgets/dossier_app_bar.dart';
 import '../models/money_item_model.dart';
 import '../providers/money_providers.dart';
 import 'bank_accounts/bank_accounts_list_screen.dart';
@@ -64,8 +65,8 @@ class MoneyDashboardScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Geldzaken'),
+      appBar: const DossierAppBar(
+        title: 'Geldzaken',
       ),
       body: content,
     );

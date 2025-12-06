@@ -1,23 +1,25 @@
 // lib/modules/person/select_person_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/person_repository.dart';
 import '../../l10n/app_localizations.dart';
+import '../../widgets/dossier_app_bar.dart';
 import 'add_person_screen.dart';
 import 'edit_person_screen.dart';
 import 'person_detail_screen.dart';
 import 'person_model.dart';
 
-class SelectPersonScreen extends StatefulWidget {
+class SelectPersonScreen extends ConsumerStatefulWidget {
   final String dossierId;
 
   const SelectPersonScreen({super.key, required this.dossierId});
 
   @override
-  State<SelectPersonScreen> createState() => _SelectPersonScreenState();
+  ConsumerState<SelectPersonScreen> createState() => _SelectPersonScreenState();
 }
 
-class _SelectPersonScreenState extends State<SelectPersonScreen> {
+class _SelectPersonScreenState extends ConsumerState<SelectPersonScreen> {
   List<PersonModel> _persons = [];
   bool _loading = true;
 
@@ -41,8 +43,8 @@ class _SelectPersonScreenState extends State<SelectPersonScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.personManage),
+      appBar: DossierAppBar(
+        title: l10n.personManage,
       ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())

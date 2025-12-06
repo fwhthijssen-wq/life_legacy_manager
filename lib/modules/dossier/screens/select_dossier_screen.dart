@@ -7,19 +7,31 @@ import '../dossier_model.dart';
 import '../dossier_providers.dart';
 import '../dossier_repository.dart';
 import 'create_dossier_screen.dart';
+import 'edit_dossier_screen.dart';
 import '../../home/home_screen.dart';
 
 class SelectDossierScreen extends ConsumerWidget {
-  const SelectDossierScreen({super.key});
+  /// Als true, wordt "Beheren" mode getoond (edit icons zichtbaar)
+  final bool manageMode;
+  
+  const SelectDossierScreen({
+    super.key, 
+    this.manageMode = false,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final dossiersAsync = ref.watch(dossiersProvider);
+    final currentDossierId = ref.watch(selectedDossierIdProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.dossierSelect),
+        title: Text(manageMode ? 'Dossiers beheren' : l10n.dossierSelect),
+        leading: manageMode ? IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ) : null,
         automaticallyImplyLeading: false,
       ),
       body: dossiersAsync.when(
@@ -58,7 +70,9 @@ class SelectDossierScreen extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  l10n.dossierSelectSubtitle,
+                  manageMode 
+                    ? 'Tik op een dossier om te bewerken'
+                    : l10n.dossierSelectSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
@@ -68,9 +82,15 @@ class SelectDossierScreen extends ConsumerWidget {
                   padding: const EdgeInsets.all(16),
                   itemBuilder: (context, index) {
                     final dossier = dossiers[index];
+                    final isSelected = dossier.id == currentDossierId;
                     return _DossierCard(
                       dossier: dossier,
-                      onTap: () => _selectDossier(context, ref, dossier),
+                      isSelected: isSelected,
+                      showEditButton: manageMode,
+                      onTap: manageMode 
+                        ? () => _editDossier(context, ref, dossier)
+                        : () => _selectDossier(context, ref, dossier),
+                      onEdit: () => _editDossier(context, ref, dossier),
                     );
                   },
                 ),
@@ -98,6 +118,17 @@ class SelectDossierScreen extends ConsumerWidget {
     }
   }
 
+  Future<void> _editDossier(BuildContext context, WidgetRef ref, DossierModel dossier) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => EditDossierScreen(dossier: dossier)),
+    );
+
+    if (result == true) {
+      refreshDossiers(ref);
+    }
+  }
+
   void _selectDossier(BuildContext context, WidgetRef ref, DossierModel dossier) {
     ref.read(selectedDossierIdProvider.notifier).state = dossier.id;
     Navigator.pushReplacement(
@@ -109,16 +140,31 @@ class SelectDossierScreen extends ConsumerWidget {
 
 class _DossierCard extends ConsumerWidget {
   final DossierModel dossier;
+  final bool isSelected;
+  final bool showEditButton;
   final VoidCallback onTap;
+  final VoidCallback? onEdit;
 
-  const _DossierCard({required this.dossier, required this.onTap});
+  const _DossierCard({
+    required this.dossier, 
+    required this.onTap,
+    this.isSelected = false,
+    this.showEditButton = false,
+    this.onEdit,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
-
+    final color = _getColor();
+    
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: isSelected 
+          ? BorderSide(color: Colors.green, width: 2)
+          : BorderSide.none,
+      ),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -130,12 +176,12 @@ class _DossierCard extends ConsumerWidget {
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: _getColor().withOpacity(0.2),
+                  color: color.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   _getIcon(),
-                  color: _getColor(),
+                  color: color,
                   size: 28,
                 ),
               ),
@@ -144,13 +190,35 @@ class _DossierCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      dossier.name,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            dossier.name,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
+                        ),
+                        if (isSelected)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Text(
+                              'Actief',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                    if (dossier.description != null) ...[
+                    if (dossier.description != null && dossier.description!.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
                         dossier.description!,
@@ -160,23 +228,51 @@ class _DossierCard extends ConsumerWidget {
                       ),
                     ],
                     const SizedBox(height: 8),
-                    FutureBuilder<int>(
-                      future: DossierRepository.getPersonCountInDossier(dossier.id),
-                      builder: (context, snapshot) {
-                        final count = snapshot.data ?? 0;
-                        // ✅ AANGEPAST: Gebruik string interpolation in plaats van replaceAll
-                        return Text(
-                          '$count ${count == 1 ? "persoon" : "personen"}',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: Colors.grey[600],
-                              ),
-                        );
-                      },
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: color.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            dossier.type.displayName,
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        FutureBuilder<int>(
+                          future: DossierRepository.getPersonCountInDossier(dossier.id),
+                          builder: (context, snapshot) {
+                            final count = snapshot.data ?? 0;
+                            return Text(
+                              '$count ${count == 1 ? "persoon" : "personen"}',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.grey[600],
+                                  ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right),
+              
+              // Edit button of chevron
+              if (showEditButton)
+                IconButton(
+                  icon: Icon(Icons.edit_outlined, color: color),
+                  onPressed: onEdit,
+                  tooltip: 'Bewerken',
+                )
+              else
+                const Icon(Icons.chevron_right),
             ],
           ),
         ),

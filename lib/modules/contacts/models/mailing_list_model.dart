@@ -7,7 +7,8 @@ class MailingListModel {
   final String name;
   final String? description;
   final List<String> contactIds; // IDs van contacten in de lijst
-  final String? mailingType; // christmas, newsletter, party, funeral
+  final String? mailingType; // Optioneel, voor backwards compatibility
+  final String emoji; // Custom emoji voor de lijst
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -18,6 +19,7 @@ class MailingListModel {
     this.description,
     required this.contactIds,
     this.mailingType,
+    this.emoji = '📋',
     required this.createdAt,
     this.updatedAt,
   });
@@ -25,23 +27,7 @@ class MailingListModel {
   /// Aantal contacten in de lijst
   int get contactCount => contactIds.length;
 
-  /// Emoji voor lijst type
-  String get emoji {
-    switch (mailingType) {
-      case 'christmas':
-        return '🎄';
-      case 'newsletter':
-        return '📧';
-      case 'party':
-        return '🎉';
-      case 'funeral':
-        return '🕯️';
-      default:
-        return '📋';
-    }
-  }
-
-  /// Type label
+  /// Type label (voor backwards compatibility)
   String get typeLabel {
     switch (mailingType) {
       case 'christmas':
@@ -65,6 +51,28 @@ class MailingListModel {
         ? <String>[] 
         : contactIdsString.split(',');
     
+    // Emoji: gebruik opgeslagen waarde of fallback naar type-based emoji
+    String emoji = map['emoji'] as String? ?? '📋';
+    if (emoji.isEmpty) {
+      // Fallback voor oude records zonder emoji
+      switch (map['mailing_type'] as String?) {
+        case 'christmas':
+          emoji = '🎄';
+          break;
+        case 'newsletter':
+          emoji = '📧';
+          break;
+        case 'party':
+          emoji = '🎉';
+          break;
+        case 'funeral':
+          emoji = '🕯️';
+          break;
+        default:
+          emoji = '📋';
+      }
+    }
+    
     return MailingListModel(
       id: map['id'] as String,
       dossierId: map['dossier_id'] as String,
@@ -72,6 +80,7 @@ class MailingListModel {
       description: map['description'] as String?,
       contactIds: contactIds,
       mailingType: map['mailing_type'] as String?,
+      emoji: emoji,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at'] as int),
       updatedAt: map['updated_at'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['updated_at'] as int)
@@ -88,6 +97,7 @@ class MailingListModel {
       'description': description,
       'contact_ids': contactIds.join(','),
       'mailing_type': mailingType,
+      'emoji': emoji,
       'created_at': createdAt.millisecondsSinceEpoch,
       'updated_at': updatedAt?.millisecondsSinceEpoch,
     };
@@ -99,6 +109,7 @@ class MailingListModel {
     String? description,
     List<String>? contactIds,
     String? mailingType,
+    String? emoji,
     DateTime? updatedAt,
   }) {
     return MailingListModel(
@@ -108,11 +119,13 @@ class MailingListModel {
       description: description ?? this.description,
       contactIds: contactIds ?? this.contactIds,
       mailingType: mailingType ?? this.mailingType,
+      emoji: emoji ?? this.emoji,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 }
+
 
 
 

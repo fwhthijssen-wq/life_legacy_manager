@@ -5,5 +5,6 @@ export 'category_tile.dart';
 export 'empty_state.dart';
 export 'module_card.dart';
 export 'dossier_header.dart';
+export 'dossier_app_bar.dart';
 
 

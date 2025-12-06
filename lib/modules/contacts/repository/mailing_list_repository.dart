@@ -55,6 +55,7 @@ class MailingListRepository {
     String? description,
     required List<String> contactIds,
     String? mailingType,
+    String emoji = '📋',
   }) async {
     final now = DateTime.now();
     final list = MailingListModel(
@@ -64,6 +65,7 @@ class MailingListRepository {
       description: description,
       contactIds: contactIds,
       mailingType: mailingType,
+      emoji: emoji,
       createdAt: now,
     );
     
@@ -80,8 +82,14 @@ class MailingListRepository {
     return list;
   }
 
-  /// Update een bestaande lijst
-  Future<void> updateList(MailingListModel list) async {
+  /// Haal contacten van een lijst op
+  Future<List<String>> getListContacts(String listId) async {
+    final list = await getList(listId);
+    return list?.contactIds ?? [];
+  }
+
+  /// Update een bestaande lijst (met model)
+  Future<void> updateListModel(MailingListModel list) async {
     final updated = list.copyWith(updatedAt: DateTime.now());
     
     await _db.update(
@@ -89,6 +97,28 @@ class MailingListRepository {
       updated.toMap(),
       where: 'id = ?',
       whereArgs: [list.id],
+    );
+  }
+
+  /// Update een lijst met individuele parameters
+  Future<void> updateList({
+    required String listId,
+    required String name,
+    required String emoji,
+    required List<String> contactIds,
+    String? description,
+  }) async {
+    await _db.update(
+      'mailing_lists',
+      {
+        'name': name,
+        'emoji': emoji,
+        'contact_ids': contactIds.join(','),
+        'description': description,
+        'updated_at': DateTime.now().millisecondsSinceEpoch,
+      },
+      where: 'id = ?',
+      whereArgs: [listId],
     );
   }
 
