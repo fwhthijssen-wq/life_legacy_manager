@@ -1,9 +1,11 @@
 // lib/modules/contacts/screens/add_contact_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/app_database.dart';
+import '../../../core/utils/text_formatters.dart';
 import '../../person/person_model.dart';
 
 class AddContactScreen extends ConsumerStatefulWidget {
@@ -73,6 +75,7 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
                 prefixIcon: Icon(Icons.person),
               ),
               textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return 'Voornaam is verplicht';
@@ -102,6 +105,7 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
                       labelText: 'Achternaam *',
                     ),
                     textCapitalization: TextCapitalization.words,
+                    inputFormatters: [CapitalizeWordsFormatter()],
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Achternaam is verplicht';
@@ -208,6 +212,8 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
                           labelText: 'Straat en huisnummer',
                           prefixIcon: Icon(Icons.home),
                         ),
+                        textCapitalization: TextCapitalization.words,
+                        inputFormatters: [CapitalizeFirstFormatter()],
                       ),
                       const SizedBox(height: 12),
                       Row(
@@ -218,8 +224,14 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
                               controller: _postalCodeController,
                               decoration: const InputDecoration(
                                 labelText: 'Postcode',
+                                hintText: '1234 AB',
                               ),
                               textCapitalization: TextCapitalization.characters,
+                              inputFormatters: [
+                                DutchPostalCodeFormatter(),
+                                LengthLimitingTextInputFormatter(7),
+                              ],
+                              validator: validateDutchPostalCode,
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -230,6 +242,7 @@ class _AddContactScreenState extends ConsumerState<AddContactScreen> {
                                 labelText: 'Plaats',
                               ),
                               textCapitalization: TextCapitalization.words,
+                              inputFormatters: [CapitalizeWordsFormatter()],
                             ),
                           ),
                         ],

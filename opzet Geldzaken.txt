@@ -217,7 +217,7 @@ o Telefoonnummer
 o Email
 o Website
 o Schademelding URL
-Tab 5: Voor nabestaanten
+Tab 5: Voor nabestaanden
 * Wat gebeurt bij overlijden verzekerde? 
 o Uitkering (bij overlijdensrisicoverzekering)
 o Opheffen
@@ -266,10 +266,11 @@ o Percentage
 o Partner naam (link)
 * Wezenpensioen inbegrepen?
 * Arbeidsongeschiktheidspensioen?
+* Jaarruimte en reserveringsruimte pensioen
 Tab 3: Financieel
 * Maandelijkse inleg (indien nog opbouwend)
 * Betaald door werkgever / zelf
-* Fiscale behandeling
+* Fiscale behandeling (jaar- en reserveringsruimte)
 * Vrijwillige extra stortingen mogelijk?
 Tab 4: Voor nabestaanden
 * Nabestaandenpensioen (ja/nee) 

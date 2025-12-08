@@ -1,8 +1,10 @@
 // lib/modules/person/add_person_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/person_repository.dart';
+import '../../core/utils/text_formatters.dart';
 import '../../l10n/app_localizations.dart';
 import 'person_model.dart';
 
@@ -19,7 +21,8 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
   final _formKey = GlobalKey<FormState>();
   
   final _firstNameController = TextEditingController();
-  final _namePrefixController = TextEditingController();  // ← NIEUW
+  final _initialsController = TextEditingController();  // Voorletters
+  final _namePrefixController = TextEditingController();  // Tussenvoegsel
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
@@ -35,7 +38,8 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
   @override
   void dispose() {
     _firstNameController.dispose();
-    _namePrefixController.dispose();  // ← NIEUW
+    _initialsController.dispose();
+    _namePrefixController.dispose();
     _lastNameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
@@ -64,9 +68,12 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
 
     final newPerson = PersonModel(
       id: const Uuid().v4(),
-      dossierId: widget.dossierId,  // ← NIEUW
+      dossierId: widget.dossierId,
       firstName: _firstNameController.text.trim(),
-      namePrefix: _namePrefixController.text.trim().isEmpty  // ← NIEUW
+      initials: _initialsController.text.trim().isEmpty
+          ? null
+          : _initialsController.text.trim().toUpperCase(),
+      namePrefix: _namePrefixController.text.trim().isEmpty
           ? null
           : _namePrefixController.text.trim(),
       lastName: _lastNameController.text.trim(),
@@ -107,15 +114,30 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
                 labelText: l10n.firstName,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
               validator: (v) => v == null || v.trim().isEmpty ? l10n.validationRequired : null,
             ),
             const SizedBox(height: 12),
             
-            // ← NIEUW: Tussenvoegsel veld
+            // Voorletters veld
+            TextFormField(
+              controller: _initialsController,
+              decoration: const InputDecoration(
+                labelText: 'Voorletters (optioneel)',
+                hintText: 'bijv. J.P. of A.B.C.',
+                helperText: 'Voor officiële documenten',
+                border: OutlineInputBorder(),
+              ),
+              textCapitalization: TextCapitalization.characters,
+            ),
+            const SizedBox(height: 12),
+            
+            // Tussenvoegsel veld
             TextFormField(
               controller: _namePrefixController,
               decoration: InputDecoration(
-                labelText: '${l10n.namePrefix} (${l10n.validationRequired.toLowerCase()})',
+                labelText: '${l10n.namePrefix} (optioneel)',
                 hintText: 'bijv. van, van der, de',
                 border: const OutlineInputBorder(),
               ),
@@ -129,6 +151,8 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
                 labelText: l10n.lastName,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
               validator: (v) => v == null || v.trim().isEmpty ? l10n.validationRequired : null,
             ),
             const SizedBox(height: 12),
@@ -192,6 +216,8 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
                 labelText: l10n.address,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeFirstFormatter()],
             ),
             const SizedBox(height: 12),
 
@@ -199,8 +225,15 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
               controller: _postalCodeController,
               decoration: InputDecoration(
                 labelText: l10n.postalCode,
+                hintText: '1234 AB',
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.characters,
+              inputFormatters: [
+                DutchPostalCodeFormatter(),
+                LengthLimitingTextInputFormatter(7),
+              ],
+              validator: validateDutchPostalCode,
             ),
             const SizedBox(height: 12),
 
@@ -210,6 +243,8 @@ class _AddPersonScreenState extends State<AddPersonScreen> {
                 labelText: l10n.city,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
             ),
             const SizedBox(height: 12),
 

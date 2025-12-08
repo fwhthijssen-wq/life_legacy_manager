@@ -1,8 +1,10 @@
 // lib/modules/contacts/screens/edit_contact_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/app_database.dart';
+import '../../../core/utils/text_formatters.dart';
 import '../../person/person_model.dart';
 
 class EditContactScreen extends ConsumerStatefulWidget {
@@ -190,6 +192,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                 border: OutlineInputBorder(),
               ),
               textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return 'Voornaam is verplicht';
@@ -221,6 +224,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                       border: OutlineInputBorder(),
                     ),
                     textCapitalization: TextCapitalization.words,
+                    inputFormatters: [CapitalizeWordsFormatter()],
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Achternaam is verplicht';
@@ -326,6 +330,8 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                 prefixIcon: Icon(Icons.home),
                 border: OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeFirstFormatter()],
             ),
             const SizedBox(height: 12),
             
@@ -337,9 +343,15 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                     controller: _postalCodeController,
                     decoration: const InputDecoration(
                       labelText: 'Postcode',
+                      hintText: '1234 AB',
                       border: OutlineInputBorder(),
                     ),
                     textCapitalization: TextCapitalization.characters,
+                    inputFormatters: [
+                      DutchPostalCodeFormatter(),
+                      LengthLimitingTextInputFormatter(7), // "1234 AB"
+                    ],
+                    validator: validateDutchPostalCode,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -351,6 +363,7 @@ class _EditContactScreenState extends ConsumerState<EditContactScreen> {
                       border: OutlineInputBorder(),
                     ),
                     textCapitalization: TextCapitalization.words,
+                    inputFormatters: [CapitalizeWordsFormatter()],
                   ),
                 ),
               ],

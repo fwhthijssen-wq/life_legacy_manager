@@ -51,6 +51,7 @@ class PersonModel {
   final String id;
   final String dossierId;
   final String firstName;
+  final String? initials; // Voorletters (bijv. "J.P." of "A.B.C.")
   final String? namePrefix;
   final String lastName;
 
@@ -74,6 +75,7 @@ class PersonModel {
     required this.id,
     required this.dossierId,
     required this.firstName,
+    this.initials,
     this.namePrefix,
     required this.lastName,
     this.phone,
@@ -97,12 +99,23 @@ class PersonModel {
     return '$firstName $lastName';
   }
 
+  /// Formele naam met voorletters (bijv. "De Vries, J.P." of "Jansen, A.")
   String get formalName {
-    final firstInitial = firstName.isNotEmpty ? '${firstName[0]}.' : '';
+    // Gebruik voorletters als beschikbaar, anders eerste letter van voornaam
+    final displayInitials = initials ?? (firstName.isNotEmpty ? '${firstName[0]}.' : '');
     if (namePrefix != null && namePrefix!.isNotEmpty) {
-      return '$lastName, $firstInitial $namePrefix';
+      return '$lastName, $displayInitials $namePrefix';
     }
-    return '$lastName, $firstInitial';
+    return '$lastName, $displayInitials';
+  }
+  
+  /// Naam met voorletters voor officiële documenten (bijv. "J.P. de Vries")
+  String get officialName {
+    final displayInitials = initials ?? (firstName.isNotEmpty ? '${firstName[0]}.' : '');
+    if (namePrefix != null && namePrefix!.isNotEmpty) {
+      return '$displayInitials $namePrefix $lastName';
+    }
+    return '$displayInitials $lastName';
   }
   
   /// Geeft een leesbare string van categorieën
@@ -134,6 +147,7 @@ class PersonModel {
   PersonModel copyWith({
     String? dossierId,
     String? firstName,
+    Object? initials = _undefined,
     Object? namePrefix = _undefined,
     String? lastName,
     Object? phone = _undefined,
@@ -153,6 +167,7 @@ class PersonModel {
       id: id,
       dossierId: dossierId ?? this.dossierId,
       firstName: firstName ?? this.firstName,
+      initials: initials == _undefined ? this.initials : initials as String?,
       namePrefix: namePrefix == _undefined ? this.namePrefix : namePrefix as String?,
       lastName: lastName ?? this.lastName,
       phone: phone == _undefined ? this.phone : phone as String?,
@@ -175,6 +190,7 @@ class PersonModel {
       'id': id,
       'dossier_id': dossierId,
       'first_name': firstName,
+      'initials': initials,
       'name_prefix': namePrefix,
       'last_name': lastName,
       'phone': phone,
@@ -210,6 +226,7 @@ class PersonModel {
       id: map['id'],
       dossierId: map['dossier_id'],
       firstName: map['first_name'],
+      initials: map['initials'],
       namePrefix: map['name_prefix'],
       lastName: map['last_name'],
       phone: map['phone'],

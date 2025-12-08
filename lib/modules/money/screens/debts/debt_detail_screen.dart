@@ -1,8 +1,10 @@
 // lib/modules/money/screens/debts/debt_detail_screen.dart
 
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/app_database.dart';
+import '../../../../core/ocr/document_scanner_widget.dart';
 import '../../../../core/widgets/date_picker_field.dart';
 import '../../models/debt_model.dart';
 import '../../models/money_item_model.dart';
@@ -259,6 +261,14 @@ class _DebtDetailScreenState extends ConsumerState<DebtDetailScreen>
             ? _creditorController.text
             : 'Nieuwe schuld/lening'),
         actions: [
+          // Document scan/import knop
+          IconButton(
+            icon: const Icon(Icons.document_scanner),
+            tooltip: Platform.isAndroid || Platform.isIOS 
+                ? 'Scan leningscontract' 
+                : 'Import PDF',
+            onPressed: _scanDocument,
+          ),
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: _save,
@@ -639,6 +649,102 @@ class _DebtDetailScreenState extends ConsumerState<DebtDetailScreen>
         ),
       ]),
     );
+  }
+
+  /// Scan een leningscontract/hypotheekakte en vul velden automatisch in
+  Future<void> _scanDocument() async {
+    final data = await showDocumentScanner(
+      context,
+      documentType: DocumentType.loanContract,
+    );
+
+    if (data != null && data.hasData) {
+      setState(() {
+        // Schuldeiser / Geldverstrekker
+        if (data.mortgageProvider != null && _creditorController.text.isEmpty) {
+          _creditorController.text = data.mortgageProvider!;
+        } else if (data.bankName != null && _creditorController.text.isEmpty) {
+          _creditorController.text = data.bankName!;
+        }
+        
+        // Contractnummer
+        if (data.contractNumber != null && _contractNumberController.text.isEmpty) {
+          _contractNumberController.text = data.contractNumber!;
+        }
+        
+        // Hoofdsom / Oorspronkelijk bedrag
+        if (data.principalAmount != null && _originalAmountController.text.isEmpty) {
+          _originalAmountController.text = data.principalAmount!.toStringAsFixed(2);
+        }
+        
+        // Openstaand / Restschuld
+        if (data.outstandingAmount != null && _currentBalanceController.text.isEmpty) {
+          _currentBalanceController.text = data.outstandingAmount!.toStringAsFixed(2);
+        }
+        
+        // Maandtermijn
+        if (data.monthlyPayment != null && _monthlyPaymentController.text.isEmpty) {
+          _monthlyPaymentController.text = data.monthlyPayment!.toStringAsFixed(2);
+        }
+        
+        // Rente percentage
+        if (data.interestRate != null && _interestRateController.text.isEmpty) {
+          _interestRateController.text = data.interestRate!.toStringAsFixed(2);
+        }
+        
+        // Rentevast tot
+        if (data.fixedRatePeriod != null && _fixedRateUntilController.text.isEmpty) {
+          _fixedRateUntilController.text = data.fixedRatePeriod!;
+        }
+        
+        // Looptijd
+        if (data.duration != null && _durationController.text.isEmpty) {
+          _durationController.text = data.duration!;
+        }
+        
+        // Datums
+        if (data.dates.isNotEmpty) {
+          if (_startDateController.text.isEmpty) {
+            _startDateController.text = data.dates.first;
+          }
+          if (data.dates.length >= 2 && _endDateController.text.isEmpty) {
+            _endDateController.text = data.dates.last;
+          }
+        }
+        
+        // Telefoon
+        if (data.phone != null && _contactPhoneController.text.isEmpty) {
+          _contactPhoneController.text = data.phone!;
+        }
+        
+        // Email
+        if (data.email != null && _contactEmailController.text.isEmpty) {
+          _contactEmailController.text = data.email!;
+        }
+        
+        // Website
+        if (data.website != null && _websiteController.text.isEmpty) {
+          _websiteController.text = data.website!;
+        }
+      });
+      
+      _markChanged();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Gegevens overgenomen van scan'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+    }
   }
 }
 

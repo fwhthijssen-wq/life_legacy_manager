@@ -1,0 +1,1727 @@
+INTELLIGENTE DOCUMENTEN BULK IMPORT
+
+?? HET CONCEPT
+"Van stapel papier naar compleet dossier in 30 minuten"
+Gebruikers hebben stapels documenten liggen: bankafschriften, polissen, contracten, aktes, brieven, facturen. Alles wat zij de afgelopen jaren hebben verzameld maar nooit georganiseerd.
+De Killer Feature: Een intelligente wizard die gebruikers begeleidt bij het massaal importeren van al deze documenten, waarbij de app:
+1. Automatisch herkent wat voor document het is
+2. Automatisch belangrijke gegevens eruit haalt (IBAN, bedragen, datums, namen)
+3. Automatisch in de juiste module plaatst
+4. Automatisch aan de juiste persoon koppelt
+5. Automatisch reminders aanmaakt waar nodig
+Resultaat: Gebruiker scant/uploadt 100+ documenten ? app verwerkt ze ? compleet dossier klaar in 30-45 minuten in plaats van dagen handmatig werk.
+
+?? VOLLEDIGE DOCUMENTENLIJST (Per Module)
+MODULE 1: GELDZAKEN ??
+1.1 Bankzaken
+* ? Bankafschriften (maand/jaar overzicht)
+* ? IBAN-bevestiging brief
+* ? Rekening-opening documenten
+* ? Betaalpas/creditcard brieven
+* ? Machtiging documenten
+* ? Internetbankieren activeringscode
+* ? Pincode enveloppen (zonder PIN natuurlijk)
+* ? Volmachtformulieren
+* ? Bankgarantie documenten
+* ? Rente-overzichten
+* ? Spaarproduct documenten
+* ? Deposito-bewijzen
+Auto-extractie mogelijk:
+* IBAN nummer (100% betrouwbaar via pattern)
+* Banknaam (logo herkenning)
+* Rekeninghouder naam
+* Saldo (op bepaalde datum)
+* Rekeningnummer (oud formaat)
+1.2 Verzekeringen
+* ? Polis documenten (alle soorten)
+* ? Voorwaarden boekjes
+* ? Premie-overzichten
+* ? Jaarafrekening verzekering
+* ? Poliswijziging documenten
+* ? Schade-uitkering beschikkingen
+* ? No-claim documenten
+* ? Waardevaststelling documenten
+* ? Medische keuringen (levensverzekering)
+* ? Acceptatie-brieven nieuwe polis
+* ? Opzegging bevestigingen
+* ? Verzekeringsbewijzen (voor in auto)
+Types verzekeringen:
+* Zorgverzekering (basis + aanvullend)
+* Levensverzekering (overlijdensrisico, kapitaal)
+* WA Verzekering (auto, bromfiets)
+* Cascoververzekering (allrisk, beperkt casco)
+* Woonhuisverzekering (opstal)
+* Inboedelverzekering
+* Aansprakelijkheidsverzekering
+* Rechtsbijstandverzekering
+* Reisverzekering
+* Doorlopende reisverzekering
+* Aanvullende tandartsverzekering
+* Ziekenhuisverzekering
+* Arbeidsongeschiktheidsverzekering
+* Uitvaartverzekering
+* Natura polis
+* Fiets(diefstal)verzekering
+Auto-extractie mogelijk:
+* Polisnummer (pattern herkenning)
+* Verzekeraar naam/logo
+* Verzekerde naam
+* Premie bedrag (€ per maand/jaar)
+* Ingangsdatum, einddatum
+* Dekking type
+* Polisnummer voertuig (kenteken)
+1.3 Pensioenen
+* ? Pensioen Uniform Pensioen Overzicht (UPO)
+* ? Pensioenreglement werkgever
+* ? Jaaropgave pensioenuitvoerder
+* ? AOW-brief (prognose)
+* ? Partnerpensioen documenten
+* ? Wezenpensioen informatie
+* ? ANW-uitkering beschikking
+* ? Lijfrente-polis
+* ? Pensioen-waardeoverdracht documenten
+* ? Pensioenbreuk documenten (bij scheiding)
+* ? Indexatie-informatie
+* ? Pensioenkeuze formulieren
+Auto-extractie mogelijk:
+* Pensioenuitvoerder naam
+* Sofi-nummer
+* Opgebouwd pensioen (bedrag)
+* Ingangsdatum pensioen
+* Franchise bedrag
+* Opbouwpercentage
+1.4 Hypotheek
+* ? Hypotheekakte (notarieel)
+* ? Hypotheekofferte
+* ? Leningdeel-overzichten
+* ? Rentevaststelling brief
+* ? Aflossingschema
+* ? Taxatierapport woning
+* ? Waarborgfonds Eigen Woningen (WEW) documenten
+* ? Nationale Hypotheek Garantie (NHG) bewijs
+* ? Oversluiting documenten
+* ? Rentevaste periode documenten
+* ? Aflossingsvrije hypotheek voorwaarden
+* ? Spaarhypotheek overzichten
+* ? Beleggingshypotheek rapportages
+* ? Bankgarantie documenten
+* ? Hypotheekrenteaftrek documenten (belasting)
+* ? Boeterente-berekening (bij vervroegd aflossen)
+Auto-extractie mogelijk:
+* Hypotheekverstrekker
+* Totaal hypotheekbedrag
+* Maandlast
+* Rentepercentage
+* Looptijd
+* Rente-vaste periode
+* Aflossingsschema
+* NHG ja/nee
+* WOZ-waarde
+* Adres pand
+1.5 Leningen & Schulden
+* ? Leningovereenkomst (persoonlijk, consumptief)
+* ? Doorlopend krediet contracten
+* ? Studieschuld overzichten (DUO)
+* ? Aflossingsschema's
+* ? Schuldsaneringsregelingen
+* ? Betalingsregelingen
+* ? Incasso-brieven
+* ? Deurwaarders-aanschrijvingen
+* ? Schuldenoverzichten
+* ? Borgstellingsdocumenten
+* ? Kwijtscheldingsverzoeken
+* ? Minnelijke regelingen
+Auto-extractie mogelijk:
+* Schuldeiser naam
+* Leningbedrag
+* Rente percentage
+* Maandlast
+* Restschuld
+* Looptijd
+1.6 Belastingen
+* ? Aangifte inkomstenbelasting (compleet)
+* ? Uitnodiging tot aangifte (blauwe envelop)
+* ? Aanslag inkomstenbelasting
+* ? Voorlopige aanslag
+* ? Voorlopige teruggave beschikking
+* ? Naheffingsaanslag
+* ? Bezwaarschriften en reacties
+* ? Belastingrentebeschikking
+* ? Jaaropgaven (loon, uitkering, pensioen)
+* ? Hypotheekrenteaftrek documenten
+* ? Giftenaftrek bewijzen
+* ? Aftrek studiekosten bewijzen
+* ? Monumentenpand aftrek
+* ? Zorgkosten overzichten
+* ? Reiskosten declaraties (woon-werk)
+* ? Box 3 vermogensoverzichten
+* ? Toeslagen beschikkingen: 
+o Zorgtoeslag
+o Huurtoeslag
+o Kinderopvangtoeslag
+o Kindgebonden budget
+* ? DigiD activeringscodes
+* ? Uitstel aangifte documenten
+Auto-extractie mogelijk:
+* Jaar aangifte
+* BSN / Sofi-nummer
+* Inkomen
+* Aftrekposten
+* Te betalen/terug te ontvangen
+* Toeslagen bedragen
+1.7 Beleggingen & Vermogen
+* ? Effectenrekening overzichten
+* ? Beleggingsportefeuille rapporten
+* ? Aandelen-bewijzen
+* ? Obligatie-bewijzen
+* ? Deposito-bewijzen
+* ? Crypto wallet documenten (geen recovery phrases!)
+* ? Crypto exchange overzichten (Binance, Coinbase)
+* ? NFT overzichten
+* ? Crowdfunding investeringen
+* ? Goud/zilver aan koop bewijzen
+* ? Pensioen beleggingen (derde pijler)
+* ? Unit-linked verzekeringen
+* ? Vermogensbeheer contracten
+* ? Broker-overeenkomsten
+* ? Trading platform documenten
+* ? Dividend uitkeringen
+* ? Renteoverzichten obligaties
+* ? Koersoverzichten
+Auto-extractie mogelijk:
+* Platform/broker naam
+* Rekeningnummer
+* Totale waarde portefeuille
+* Datum overzicht
+* Individuele posities (aandelen, crypto)
+
+MODULE 2: WONEN & ENERGIE ??
+2.1 Woning
+* ? Koopakte woning (notarieel)
+* ? Leveringsakte (eigendomsoverdracht)
+* ? Koopovereenkomst (voorlopig contract)
+* ? WOZ-beschikking
+* ? Taxatierapport woning
+* ? Bouwkundige keuring
+* ? Energielabel certificaat
+* ? Asbestinventarisatie rapport
+* ? Kadastrale kaart
+* ? Uittreksel Kadaster (eigendomsbewijs)
+* ? Erfpacht documenten
+* ? Appartementsrechten splitsing
+* ? VvE documenten: 
+o Huishoudelijk reglement
+o Meerjaren onderhoudsplan (MJOP)
+o VvE vergadernotulen
+o Service kosten overzichten
+o Reservefonds overzichten
+o Bestuursbeslissingen
+* ? Huurcontract (bij huurwoning)
+* ? Huurprijsverhoging documenten
+* ? Huursubsidie/huurtoeslag
+* ? Opzegbrief huur
+* ? Borgstelling huur
+* ? Staat van oplevering (bij huur)
+* ? Gemeentelijke vergunningen
+* ? Monumentenstatus documenten
+Auto-extractie mogelijk:
+* Adres (postcode, huisnummer, straat, plaats)
+* WOZ-waarde
+* Energielabel
+* Eigenaar naam
+* Koopprijs/huurprijs
+* Bouwjaar
+* Oppervlakte (m²)
+* Kadastrale aanduiding
+2.2 Energie
+* ? Energiecontract
+* ? Jaarafrekening energie
+* ? Voorschotfacturen
+* ? Meterstanden overzichten
+* ? Teruggave teveel betaald
+* ? Teruglevering overzicht (zonnepanelen)
+* ? Salderingsregeling documenten
+* ? Prijswijziging brieven
+* ? Overstap documenten (nieuwe leverancier)
+* ? Eindafrekening (bij verhuizing)
+* ? Aansluiting bevestiging (nieuwe woning)
+* ? Leverancierswissel bevestiging
+Auto-extractie mogelijk:
+* Leverancier naam
+* Klantnummer
+* EAN-codes (elektra/gas)
+* Verbruik (kWh, m³)
+* Kosten (per kWh, per m³)
+* Jaarverbruik
+* Teruglevering
+2.3 Water
+* ? Waterleidingbedrijf contract
+* ? Jaarafrekening water
+* ? Meterstand formulieren
+* ? Aansluiting documenten
+Auto-extractie mogelijk:
+* Waterbedrijf naam
+* Klantnummer
+* Verbruik (m³)
+* Kosten
+2.4 CV & Verwarming
+* ? CV-ketel aankoopbewijs
+* ? CV-ketel garantiebewijs
+* ? CV-ketel handleiding (PDF of foto)
+* ? Installatiebon CV-ketel
+* ? Onderhoudcontract CV-ketel
+* ? Onderhoud/servicebeurt rapporten
+* ? Keuringsrapporten (CO-keuring)
+* ? Warmtepomp documenten: 
+o Aankoopbewijs
+o Installatiebon
+o Subsidieaanvraag (ISDE)
+o Subsidie toekenning
+o Garantie
+o F-gassen keuring
+o Onderhoud contracten
+* ? Boiler documenten (aanschaf, garantie, installatie)
+* ? Radiatoren specificaties
+* ? Vloerverwarming documenten
+* ? Thermostaat handleiding (slimme thermostaat)
+Auto-extractie mogelijk:
+* Merk CV-ketel/warmtepomp
+* Model
+* Serienummer
+* Bouwjaar
+* Vermogen
+* Installateur naam
+* Garantie periode
+* Laatste onderhoud datum
+* Subsidie bedrag
+2.5 Zonnepanelen
+* ? Zonnepanelen aankoopbewijs
+* ? Installatiebon zonnepanelen
+* ? Garantiebewijs panelen (vaak 25 jaar)
+* ? Garantiebewijs omvormer (vaak 10-15 jaar)
+* ? Subsidieaanvraag (SDE+)
+* ? Subsidie toekenning
+* ? Technische specificaties: 
+o Aantal panelen
+o Vermogen per paneel
+o Totaal vermogen (kWp)
+o Merk panelen
+o Merk omvormer
+* ? Opbrengst rapportages (jaarlijks)
+* ? Monitoring systeem documenten
+* ? Verzekering zonnepanelen
+* ? APV vergunning (indien nodig)
+* ? Dakconstructie keuring
+* ? Elektrotechnisch schema
+Auto-extractie mogelijk:
+* Aantal panelen
+* Vermogen (Wp, kWp)
+* Merk panelen
+* Merk omvormer
+* Installatiedatum
+* Verwachte opbrengst (kWh/jaar)
+* Subsidie bedrag
+* Installateur
+2.6 Thuisbatterij
+* ? Aankoopbewijs thuisbatterij
+* ? Installatiebon
+* ? Garantiebewijs (vaak 10 jaar)
+* ? Technische specificaties (capaciteit kWh)
+* ? Subsidieaanvraag
+* ? Monitoring documenten
+Auto-extractie mogelijk:
+* Merk
+* Capaciteit (kWh)
+* Garantie
+* Installateur
+2.7 Internet & TV
+* ? Internet/TV contract
+* ? Installatie bevestiging
+* ? Modem/router handleiding
+* ? WiFi-gegevens (SSID, wachtwoord)
+* ? Glasvezel aansluitdocumenten
+* ? TV-abonnement documenten
+* ? Prijswijziging brieven
+* ? Opzeggen bevestigingen
+Auto-extractie mogelijk:
+* Provider naam
+* Klantnummer
+* Internet snelheid
+* Kosten per maand
+* Contract einddatum
+* SSID
+2.8 Overig
+* ? Bouwvergunning (gemeente)
+* ? Sloopvergunning
+* ? Monumentenvergunning
+* ? Dakkapel vergunning
+* ? Aanbouw/verbouwing vergunning
+* ? Omgevingsvergunning
+* ? APV vergunning
+* ? Erfpacht documenten
+* ? Erfdienstbaarheid aktes
+* ? Gemeentelijke heffingen: 
+o Onroerendezaakbelasting (OZB)
+o Rioolheffing
+o Afvalstoffenheffing
+o Watersysteemheffing
+o Precariobelasting
+* ? Loodgieter facturen (grote klussen)
+* ? Elektricien facturen
+* ? Schilder facturen
+* ? Dakdekker facturen
+* ? Tuinarchitect documenten
+
+MODULE 3: LIDMAATSCHAPPEN & ABONNEMENTEN ??
+3.1 Streaming
+* ? Netflix abonnement bevestiging
+* ? Disney+ account documenten
+* ? HBO Max / Videoland / Prime Video
+* ? Spotify / Apple Music / YouTube Premium
+* ? Audible abonnement
+* ? E-book diensten (Kindle Unlimited, Kobo Plus)
+* ? Gaming abonnementen (PS+, Xbox Game Pass, Nintendo Online)
+Auto-extractie mogelijk:
+* Dienst naam
+* Account email
+* Kosten per maand
+* Abonnement type (Basic/Premium)
+3.2 Kranten & Tijdschriften
+* ? Krantabonnement contracten
+* ? Tijdschrift abonnementen
+* ? Digitale krantenabonnementen
+* ? Abonnement bevestigingen
+* ? Prijswijziging brieven
+* ? Automatische incasso bevestigingen
+Auto-extractie mogelijk:
+* Publicatie naam
+* Abonnementsnummer
+* Kosten
+* Type (papier/digitaal)
+3.3 Sportschool & Sport
+* ? Sportschool lidmaatschap contracten
+* ? Sportvereniging inschrijvingen
+* ? Yoga/fitness studio contracten
+* ? Personal trainer contracten
+* ? Sport app abonnementen (MyFitnessPal, Strava Premium)
+* ? Zwembad abonnementen
+Auto-extractie mogelijk:
+* Sportschool/vereniging naam
+* Lidmaatschapsnummer
+* Kosten per maand
+* Contract periode
+* Opzegtermijn
+3.4 Verenigingen
+* ? Sportvereniging contributie documenten
+* ? Muziekvereniging
+* ? Carnavalsvereniging
+* ? Buurtvereniging
+* ? Politieke partij lidmaatschap
+* ? Religieuze gemeenschap contributie
+* ? Hobbyclub lidmaatschap
+* ? Vrijwilligers organisatie
+Auto-extractie mogelijk:
+* Vereniging naam
+* Lidmaatschapsnummer
+* Contributie bedrag
+* Contributie frequentie
+3.5 Online Diensten
+* ? Cloud opslag abonnementen (Google One, iCloud+, Dropbox)
+* ? VPN diensten
+* ? Backup diensten
+* ? Password manager abonnementen
+* ? Antivirus software abonnementen
+* ? Website hosting
+* ? Domeinregistratie documenten
+* ? Email hosting
+* ? SSL certificaten
+Auto-extractie mogelijk:
+* Dienst naam
+* Account/email
+* Kosten
+* Opslag capaciteit
+* Verloopdatum
+3.6 Software
+* ? Microsoft 365 abonnement
+* ? Adobe Creative Cloud
+* ? Dropbox Business
+* ? Canva Pro
+* ? AutoCAD licentie
+* ? Professionele software licenties
+* ? Antivirus abonnementen
+* ? Boekhoud software
+Auto-extractie mogelijk:
+* Software naam
+* Licentie key (gemaskerd)
+* Kosten
+* Aantal gebruikers
+* Verloopdatum
+3.7 Donaties
+* ? Goede doelen contributie documenten
+* ? Sponsor contracten (kind/project)
+* ? Kerkelijke bijdragen
+* ? Crowdfunding bijdragen
+* ? Charity donatie bewijzen (voor belasting aftrek!)
+* ? ANBI giften bewijzen
+Auto-extractie mogelijk:
+* Organisatie naam
+* ANBI nummer (voor belasting)
+* Donatie bedrag
+* Frequentie (maand/jaar/eenmalig)
+* Belasting aftrekbaar: ja/nee
+3.8 Vakbonden & Beroepsverenigingen
+* ? Vakbond lidmaatschap (FNV, CNV, VCP)
+* ? Beroepsverenigingen (Orde van Advocaten, Artsenvereniging, etc.)
+* ? Brancheverenigingen
+* ? Alumni verenigingen
+* ? Netwerk organisaties
+* ? Contributie overzichten
+Auto-extractie mogelijk:
+* Organisatie naam
+* Lidmaatschapsnummer
+* Contributie
+* Voordelen/services
+3.9 Mobiele Telefonie
+* ? Telefoonabonnement contracten
+* ? Simonly contracten
+* ? Toestel + abonnement contracten
+* ? Prepaid documenten
+* ? Datafacturen
+* ? Roaming documenten
+* ? Buitenland bundels
+* ? Prijswijziging brieven
+Auto-extractie mogelijk:
+* Provider naam
+* Telefoonnummer
+* Abonnement type
+* Data bundel
+* Kosten per maand
+* Contract einddatum
+3.10 Auto-gerelateerd
+* ? ANWB lidmaatschap (Wegenwacht)
+* ? Pechhulp documenten
+* ? Tankpas documenten
+* ? Tolabonnementen (France/Italy/etc.)
+* ? Parkeerpas documenten
+* ? Carwash abonnementen
+* ? Lease auto documenten
+Auto-extractie mogelijk:
+* Dienst naam
+* Lidmaatschapsnummer
+* Dekking (basis/premium)
+* Kosten
+3.11 Overig
+* ? Bloemen abonnement
+* ? Wijn abonnement
+* ? Maaltijdbox abonnement (HelloFresh, Marley Spoon)
+* ? Koffie/thee abonnement
+* ? Subscription boxes
+* ? Dating apps (Tinder, Bumble Premium)
+* ? LinkedIn Premium
+* ? Patreon bijdragen
+* ? OnlyFans (ahem... ;))
+
+MODULE 4: EIGENDOMMEN ??
+4.1 Voertuigen
+* ? Kentekenbewijs Deel 1A (groot, bij eigenaar)
+* ? Kentekenbewijs Deel 1B (klein, in auto)
+* ? Kentekenbewijs Deel 2 (bij verkoop)
+* ? Aankoopbewijs auto (factuur dealer)
+* ? Koopcontract auto (particulier)
+* ? APK-keuringsrapport
+* ? Onderhoudsboekje (service history)
+* ? Garantiebewijs auto
+* ? Verlengde garantie documenten
+* ? Onderhoudscontract
+* ? Reparatie facturen (garage)
+* ? Schade expertises
+* ? Taxatierapport (bij lease-einde, verkoop)
+* ? Lease contract
+* ? Lease-einde documenten
+* ? Financiering documenten (lening auto)
+* ? Aflossingsschema
+* ? Afleveringsrapport (nieuwe auto)
+* ? Winterbanden factuur
+* ? Accessoires facturen
+* ? Verzekering documenten (zie Geldzaken)
+* ? Wegenbelasting documenten
+Voor Motor / Bromfiets / Scooter: Zelfde documenten
+Voor Caravan / Camper:
+* ? Kentekenbewijs
+* ? Aankoopbewijs
+* ? APK (indien van toepassing)
+* ? Gaskeuring certificaat (jaarlijks verplicht!)
+* ? Elektrakeuring
+* ? Vochtmeting rapport
+* ? Inventaris lijst
+* ? Stalling contract (winterstalling)
+Voor Aanhanger:
+* ? Kentekenbewijs
+* ? Aankoopbewijs
+* ? APK (indien >750kg)
+Voor Fiets / E-bike (duur >€500):
+* ? Aankoopbewijs (belangrijk bij diefstal!)
+* ? Framenummer notitie
+* ? Foto's fiets (meerdere kanten)
+* ? Garantiebewijs
+* ? Accu garantie (e-bike, vaak 2 jaar)
+* ? Verzekering polis
+* ? Slot ART-certificaat
+* ? Onderhoudsbeurt nota's
+Auto-extractie mogelijk:
+* Kenteken (via foto) ? RDW API geeft ALLES: 
+o Merk, Model, Type
+o Bouwjaar, Kleur
+o APK vervaldatum
+o Brandstof, Vermogen
+o Gewicht, Catalogusprijs
+* Aanschafprijs (van factuur)
+* Garantie einddatum
+* Laatste onderhoudsbeurt
+4.2 Elektronica
+* ? Aankoopbewijs (factuur winkel/webshop)
+* ? Garantiebewijs
+* ? Verlengde garantie documenten
+* ? Handleiding (PDF of papier)
+* ? Installatiebon (bij professionele installatie)
+* ? Serienummer notitie
+* ? Software licenties (bij computers)
+* ? iCloud/Google account koppeling (zie Digitale Erfenis)
+* ? Reparatie facturen
+Types:
+* Computer (desktop, all-in-one)
+* Laptop
+* Tablet (iPad, Android tablet)
+* Smartphone
+* Smartwatch
+* E-reader (Kindle, Kobo)
+* TV
+* Soundbar / Home cinema
+* Receiver / Versterker
+* Speakers
+* Koptelefoon (duur, >€100)
+* Camera (foto)
+* Videocamera
+* Drone
+* Action camera (GoPro)
+* Gaming console (PlayStation, Xbox, Nintendo Switch)
+* VR headset
+* Gaming PC / onderdelen
+* Monitor
+* Printer
+* Scanner
+* NAS (Network Attached Storage)
+* Smart Home hub (Google Home, Alexa, Apple HomePod)
+* Router / Mesh systeem
+Auto-extractie mogelijk:
+* Merk, Model (van factuur/barcode)
+* Serienummer
+* Aanschafprijs
+* Aankoopdatum
+* Garantie periode
+* Winkel naam
+4.3 Witgoed & Huishoudelijk
+* ? Aankoopbewijs
+* ? Garantiebewijs
+* ? Handleiding (PDF of foto)
+* ? Energielabel (foto)
+* ? Installatiebon (loodgieter/elektricien)
+* ? Onderhoudscontract (indien van toepassing)
+* ? Reparatie facturen
+* ? Vervangingsonderdelen facturen
+Types:
+* Koelkast / Koel-vriescombinatie
+* Vriezer (los)
+* Wasmachine
+* Droger (condensdroger, warmtepompdroger)
+* Was-droogcombinatie
+* Vaatwasser
+* Oven (inbouw, vrijstaand)
+* Magnetron
+* Combi-oven (oven + magnetron)
+* Stoomoven
+* Kookplaat (inductie, keramisch, gas)
+* Fornuis (vrijstaand)
+* Afzuigkap
+* Boiler (elektrisch)
+* CV-ketel (zie Wonen & Energie)
+* Airco / Klimaatbeheersing
+Auto-extractie mogelijk:
+* QR-code scan ? Merk, Model, Serienummer, Bouwjaar, Energielabel
+* Handleiding download (via QR-code URL)
+* Garantie periode
+* Onderhoud schema
+4.4 Meubels & Inrichting (Waardevol, >€500)
+* ? Aankoopbewijs (factuur meubelzaak)
+* ? Foto's meubel
+* ? Garantiebewijs
+* ? Onderhoudsinstructies
+* ? Stoffering informatie
+* ? Maat specificaties
+* ? Montage instructies
+* ? Designer naam (bij design meubels)
+* ? Certificaat van echtheid (antiek)
+Types:
+* Bankstel / Sofa
+* Fauteuils
+* Eetkamertafel
+* Stoelen (set)
+* Keuken (complete keuken)
+* Kasten (kledingkast, boekenkast)
+* Bed (inclusief matras)
+* Boxspring
+* Bureau
+* Antieke meubels
+* Design meubels (bekende designer)
+* Kunst aan de muur (zie hieronder)
+Auto-extractie mogelijk:
+* Winkel naam
+* Merk/Designer
+* Model naam
+* Aanschafprijs
+* Aankoopdatum
+4.5 Kunst & Verzamelingen
+* ? Aankoopbewijs (galerie, veiling)
+* ? Certificaat van echtheid
+* ? Taxatierapport (actuele waarde!)
+* ? Herkomst documentatie (provenance)
+* ? Kunstenaar informatie
+* ? Foto's kunstwerk (meerdere hoeken, close-ups)
+* ? Conditie rapport
+* ? Restauratie documenten
+* ? Lijst/framing factuur
+* ? Verzekering polis (kunst specifiek)
+* ? Tentoonstellings geschiedenis
+* ? Catalogus vermeldingen
+* ? Veilingcatalogus (indien aangekocht via veiling)
+Types:
+* Schilderijen (olie, acryl, aquarel)
+* Tekeningen
+* Prenten / Litho's
+* Foto's (kunstfotografie)
+* Sculpturen
+* Beelden
+* Keramiek / Aardewerk
+* Glas kunst
+* Textiel kunst
+* Installaties (documentatie)
+Verzamelingen:
+* Postzegel verzameling (+ catalogus)
+* Munten verzameling (+ certificaten)
+* Strips / Comics (eerste drukken)
+* Boeken (eerste drukken, gesigneerd)
+* Wijnen (bijzondere flessen, + certificaat)
+* Whisky verzameling
+* Vintage speelgoed
+* Modeltreinenset (compleet)
+* Poppen verzameling
+* Militaria
+* Vintage posters
+* Vinyl platen verzameling (bijzondere releases)
+* Memorabilia (sport, film, muziek)
+Auto-extractie mogelijk:
+* Kunstenaar naam (van certificaat)
+* Titel werk
+* Jaar
+* Techniek
+* Afmetingen
+* Taxatiewaarde
+* Galerie/veiling naam
+4.6 Sieraden & Horloges
+* ? Aankoopbewijs (juwelier)
+* ? Certificaat (diamant, edelstenen)
+* ? Taxatierapport (actuele waarde!)
+* ? Garantiebewijs
+* ? Onderhoudsbeurt documenten (horloges)
+* ? Foto's sieraad (meerdere kanten, close-up gravures)
+* ? Keurmerk certificaten (goud, zilver, platina)
+* ? Herkomst documentatie
+* ? Verzekering polis (sieraden specifiek)
+* ? Horlogedoos / Certificaat van echtheid (luxe horloges)
+Types Sieraden:
+* Verlovingsring
+* Trouwringen
+* Ringen (goud, zilver, platina, met edelstenen)
+* Kettingen / Colliers
+* Armbanden
+* Oorbellen
+* Broches
+* Manchetknopen
+* Erfstukken (familiesieraden)
+Types Horloges:
+* Luxe horloges (Rolex, Omega, Breitling, etc.)
+* Smartwatch (zie Elektronica, >€300)
+* Vintage horloges
+* Zakhorloges
+Edelstenen Certificaten:
+* GIA certificaat (Gemological Institute of America)
+* HRD certificaat (Hoge Raad voor Diamant)
+* IGI certificaat
+Auto-extractie mogelijk:
+* Juwelier naam
+* Merk (Rolex, Cartier, etc.)
+* Model
+* Serienummer (horloges)
+* Materiaal (18K goud, 925 zilver, platina)
+* Karaat diamant
+* Aanschafprijs
+* Taxatiewaarde
+* Certificaat nummer
+4.7 Gereedschap & Machines (>€100)
+* ? Aankoopbewijs
+* ? Garantiebewijs
+* ? Handleiding
+* ? Serienummer
+* ? Onderhoudsbeurt documenten
+* ? Reparatie facturen
+Types:
+* Grasmaaier (benzine, elektrisch, robotmaaier)
+* Heggenschaar
+* Hogedrukreiniger
+* Bladblazer
+* Kettingzaag
+* Boormachine set
+* Slijptol
+* Decoupeerzaag
+* Tafelzaag
+* Freesmachine
+* Schuurmachine
+* Compressor
+* Lasapparatuur
+* Generator
+* Kärcher (hogedrukreiniger)
+* Tuinfrees
+* Verticuteermachine
+Auto-extractie mogelijk:
+* Merk, Model (barcode)
+* Serienummer
+* Aanschafprijs
+* Garantie
+4.8 Sport & Hobby (>€100)
+* ? Aankoopbewijs
+* ? Garantiebewijs
+* ? Certificaten (bijv. duikuitrusting keuringen)
+* ? Serienummer (bij dure items)
+* ? Verzekering (bij waardevolle spullen)
+Types Sport:
+* Racefiets (duur)
+* Mountainbike (duur)
+* E-bike (zie Voertuigen)
+* Golfclubs (complete set)
+* Skies / Snowboard
+* Surfboard / Kitesurf set
+* Duikuitrusting (complete set)
+* Zeilboot (klein)
+* SUP board
+* Kajak / Kano
+* Roeiboot
+* Fitness apparatuur (hometrainer, loopband, crosstrainer)
+* Gewichten set (duur)
+* Klimuitrusting
+Types Hobby:
+* Muziekinstrumenten: 
+o Piano / Vleugel
+o Keyboard
+o Gitaar (akoestisch, elektrisch)
+o Drumstel
+o Viool, Cello
+o Saxofoon, Trompet
+o DJ-set
+* Camera's (professioneel, zie ook Elektronica)
+* Lenzen (fotografie)
+* Statief
+* Flitsers
+* Opname apparatuur (microfoons, mixer)
+* Studio apparatuur
+* 3D Printer
+* Laser cutter
+* CNC machine
+* Naaimachine (professioneel)
+* Borduurmachine
+* Telescoop
+* Microscoop
+Auto-extractie mogelijk:
+* Merk, Model
+* Serienummer
+* Aanschafprijs
+4.9 Overig Waardevol
+* ? Boot (zeilboot, motorboot, sloep) 
+o Kentekenbewijs boot
+o Aankoopbewijs
+o Vaarbewijs (persoon)
+o Ligplaatscontract
+o Verzekering
+o Keuring documenten
+o Onderhoudscontract
+o Winterstalling contract
+* ? Caravan (zie Voertuigen)
+* ? Camper (zie Voertuigen)
+* ? Paard (eigendom) 
+o Aankoopcontract
+o Paardenpaspoort
+o Dierenarts documenten
+o Verzekering
+o Stalling contract
+o Fokpapieren
+* ? Tuinhuis / Schuur 
+o Aankoopbewijs
+o Bouwtekening
+o Vergunning (indien >15m²)
+* ? Zwembad 
+o Installatiedocumenten
+o Garantie
+o Onderhoudsinstructies
+o Vergunning
+* ? Sauna / Jacuzzi 
+o Aankoopbewijs
+o Installatiebon
+o Garantie
+o Handleiding
+
+MODULE 5: WILSBESCHIKKINGEN & UITVAART ??
+5.1 Testament & Erfrecht
+* ? Testament (notarieel)
+* ? Codicil bij testament
+* ? Handgeschreven testament (holografisch, zeldzaam)
+* ? Certificaat Centraal Testamentenregister (CTR)
+* ? Notariële akte testament
+* ? Wijziging testament documenten
+* ? Herroeping testament documenten
+* ? Executeur benoeming
+* ? Bewind instelling documenten
+* ? Legaat documenten (specifieke giften)
+* ? Ontervingsdocumenten
+* ? Afstammingsbewijzen (voor erfgenamen)
+* ? Huwelijkse voorwaarden (relevant voor erfenis)
+* ? Partnerschapsregistratie documenten
+* ? Samenlevingscontract (relevant voor erfenis)
+* ? Echtscheidingsconvenant (relevant voor erfenis)
+Auto-extractie mogelijk:
+* Notaris naam
+* Dossiernummer
+* Datum testament
+* Executeur naam
+* CTR registratie ja/nee
+5.2 Levenstestament
+* ? Levenstestament (medische behandelwensen)
+* ? Wilsverklaring (reanimatie, orgaandonatie)
+* ? Codicil bij levenstestament
+* ? Niet-reanimeren penning documenten
+* ? Euthanasie verklaring
+* ? Verklaring palliatieve sedatie
+* ? Behandelverbod documenten
+* ? Medische volmacht
+* ? Arts-patiënt gesprek verslagen
+* ? Huisarts kopie levenstestament
+Auto-extractie mogelijk:
+* Datum opgesteld
+* Reanimatie: ja/nee/situationeel
+* Orgaandonatie: ja/nee/specifieke organen
+* Medische volmacht: naam persoon
+5.3 Volmachten
+* ? Levenstestament (medische volmacht) (zie hierboven)
+* ? Algemene volmacht
+* ? Financiële volmacht
+* ? Beperkte volmacht (specifieke zaken)
+* ? Bankvolmacht
+* ? Incassomacht
+* ? Mentorschap documenten (bij wilsonbekwaamheid)
+* ? Bewind documenten (financieel bewind)
+* ? Curatele documenten (bij rechterlijke bescherming)
+Auto-extractie mogelijk:
+* Volmacht type
+* Gemachtigde naam
+* Geldigheidsduur
+* Beperkingen
+5.4 Samenlevingscontract
+* ? Notarieel samenlevingscontract
+* ? Onderhandse samenlevingscontract (niet notarieel)
+* ? Partnerregistratie documenten
+* ? Partnerschapsvoorwaarden
+* ? Financiële afspraken
+* ? Woning afspraken (bij uit elkaar gaan)
+* ? Pensioen afspraken
+Auto-extractie mogelijk:
+* Datum contract
+* Notaris (indien notarieel)
+* Partners namen
+* Woning afspraken (wie krijgt bij uit elkaar)
+5.5 Orgaandonatie
+* ? Donorregistratie bevestiging (online registratie)
+* ? Donorcodicil
+* ? Donorformulier (oudere vorm)
+* ? Wijziging donor registratie
+* ? Toestemming specifieke organen
+* ? Bezwaar donor registratie
+* ? Familie informed documenten
+Auto-extractie mogelijk:
+* Registratie: ja/nee/nabestaanden beslissen
+* Welke organen: alle/specifieke/geen
+* BSN (voor opzoeken registratie)
+5.6 Uitvaart - Algemeen
+* ? Uitvaartverzekering polis
+* ? Uitvaartvereniging lidmaatschap
+* ? Uitvaartondernemer offerte
+* ? Uitvaartondernemer contract (vooraf gesloten)
+* ? Uitvaart voorkeuren document
+* ? Begrafenis/crematie keuze document
+* ? Locatie uitvaart (kerk, aula, thuis)
+* ? Graflocatie keuze / reservering
+* ? Grafrechten documenten (indien graf al gekocht)
+* ? Columbarium rechten (voor urne)
+* ? Budgetplan uitvaart
+* ? Opbaring wensen (thuis, uitvaartcentrum)
+* ? Kist/urne keuze (foto/beschrijving)
+* ? Kleding overledene wensen
+Auto-extractie mogelijk:
+* Uitvaartondernemer naam
+* Polisnummer verzekering
+* Budget
+* Begrafenis of crematie
+* Locatie uitvaart
+5.7 Uitvaart - Ceremonie
+* ? Muziek keuzes: 
+o Inkomst muziek
+o Tussendoor muziek
+o Uitvaart muziek
+o Spotify playlist (links!)
+o YouTube links specifieke uitvoeringen
+* ? Sprekers lijst (wie mag spreken?)
+* ? Gedichten / teksten die voorgelezen moeten
+* ? Rituelen (kaarsen, rozenblaadjes, etc.)
+* ? Gelofte / religieuze teksten
+* ? Foto's/video's die getoond moeten
+* ? Foto's overledene (voor rouwkaart, aula)
+* ? Diashow wensen
+* ? Kleding gasten wensen (zwart/kleur)
+* ? Bloemen wensen (wel/niet, welke soorten)
+* ? Rouwkaart ontwerp voorkeuren
+* ? Rouwadvertentie tekst concept
+* ? Condoleance wensen (kaarten/boek)
+* ? Gastspreker voorkeur (dominee, humanist, zelf gekozen)
+Auto-extractie mogelijk:
+* Muziek titels + artiesten
+* Sprekers namen
+* Spotify/YouTube links
+5.8 Na de Uitvaart
+* ? As-bestemming wensen: 
+o Verstrooien (waar? over zee, eigen tuin, officiële verstrooiweide)
+o Bijzetten in columbarium (welke locatie)
+o Urne mee naar huis (bij nabestaanden)
+o Urne begraven
+o As omvormen tot diamant/kunstwerk
+* ? Graf monument wensen: 
+o Type grafsteen
+o Tekst grafsteen
+o Foto op steen ja/nee
+o Grafbeplanting wensen
+* ? Nagedachtenis wensen: 
+o Herinneringswebsite (bijv. MuchLoved, InMemoriam)
+o Memorial pagina Facebook
+o Jaarlijkse herdenking wensen
+o Gedenkplek (bank in park, boom, etc.)
+o Donaties in plaats van bloemen (welk goede doel)
+* ? Condoleance wensen: 
+o Condoleren bij uitvaart ja/nee
+o Thuis condoleren ja/nee
+o Condoleance boek/kaarten
+* ? Rouwmaaltijd wensen: 
+o Wel/niet rouwmaaltijd
+o Locatie (uitvaartcentrum, restaurant, thuis)
+o Type (koffietafel, lunch, diner)
+o Wie uitnodigen
+Auto-extractie mogelijk:
+* As-bestemming keuze
+* Graf locatie
+* Donatie organisatie (goede doel)
+
+MODULE 6: DIGITALE ERFENIS ??
+BELANGRIJK: Geen wachtwoorden opslaan, alleen WAAR ze zijn!
+6.1 Wachtwoordmanagers
+* ? 1Password Emergency Kit (met Secret Key)
+* ? LastPass Master Password Recovery document
+* ? Bitwarden Recovery Code
+* ? Dashlane Emergency Contact setup
+* ? NordPass Recovery Key
+* ? KeePass database locatie + master password locatie
+* ? Wachtwoord-lijst (papier) locatie (indien aanwezig, onveilig!)
+Info te registreren:
+* Welke wachtwoordmanager
+* Master password locatie (kluis, notaris, vertrouwenspersoon)
+* Emergency Kit locatie (fysiek document)
+* Recovery email
+* 2FA backup codes locatie
+* Vertrouwenspersoon aangewezen ja/nee
+6.2 Email Accounts
+* ? Gmail Inactief Accountbeheer setup bevestiging
+* ? Gmail Legacy Contact documenten
+* ? Outlook account recovery documenten
+* ? iCloud account documenten
+* ? Email forwarding setup documenten
+* ? Important labels/folders lijst
+* ? Email filters backup (export)
+Info te registreren:
+* Email adres
+* Provider (Gmail, Outlook, iCloud, eigen domein)
+* Wachtwoord locatie (in wachtwoordmanager!)
+* Recovery email
+* 2FA methode (app/SMS/security key)
+* Backup codes locatie
+* Inactief accountbeheer: actief ja/nee
+* Legacy contact aangewezen
+6.3 Sociale Media
+* ? Facebook Memorial settings
+* ? Facebook Legacy Contact documenten
+* ? Instagram Memorial account procedure
+* ? LinkedIn profile memorial procedure
+* ? Twitter/X archive export
+* ? TikTok account documenten
+* ? Snapchat account documenten
+* ? WhatsApp backup documenten
+* ? Telegram backup documenten
+* ? Signal backup documenten
+Per account info:
+* Platform naam
+* Username/handle
+* Email gebruikt voor account
+* Wachtwoord locatie
+* 2FA backup codes locatie
+* Legacy contact / Memorial settings: actief ja/nee
+* Beslissing na overlijden: Verwijderen/Memorialiseren/Behouden
+6.4 Cloud Opslag
+* ? Google Drive account documenten
+* ? Google Drive belangrijke mappen lijst
+* ? iCloud account documenten
+* ? iCloud familie-delen documenten
+* ? Dropbox account documenten
+* ? Dropbox gedeelde mappen overzicht
+* ? OneDrive account documenten
+* ? NAS (thuisserver) documentatie: 
+o IP-adres
+o Admin credentials locatie
+o Shares/mappen structuur
+o Backup strategie
+o Belangrijke data locatie
+* ? Externe harde schijven: 
+o Fysieke locatie
+o Encryptie ja/nee
+o Encryptie key locatie
+o Inhoud beschrijving
+o Backup van wat?
+Info te registreren:
+* Platform
+* Account email
+* Wachtwoord locatie
+* Opslag gebruikt (GB)
+* Belangrijke data: wat staat er?
+* Familie-account / Deling setup
+* Backup: waar is backup?
+6.5 Financiële Online Accounts
+* ? PayPal account documenten
+* ? Stripe account documenten
+* ? Mollie account documenten
+* ? iDEAL betalingen overzicht
+* ? Online banking (zie Geldzaken)
+* ? Crypto exchanges: 
+o Binance account documenten
+o Coinbase account documenten
+o Kraken account documenten
+o Bitvavo account documenten
+o FTX (RIP)
+* ? Crypto Wallets (KRITIEK!): 
+o Hardware wallet (Ledger/Trezor): 
+* Fysieke locatie wallet
+* PIN code locatie (NOOIT in app!)
+* Recovery phrase (24 woorden) locatie (bij notaris!)
+* Backup recovery phrase locatie (2e kopie elders)
+o Software wallets: 
+* App naam (MetaMask, Trust Wallet, Exodus)
+* Recovery phrase locatie (NOOIT in app!)
+* Backup recovery phrase locatie
+o Web wallets: 
+* Platform naam
+* Wachtwoord locatie
+* 2FA backup codes locatie
+* ? NFT wallets
+* ? DeFi platforms (Uniswap, Aave, etc.)
+Info te registreren:
+* Platform naam
+* Account email/username
+* Wachtwoord locatie
+* 2FA backup codes locatie
+* Recovery phrase locatie (crypto)
+* Geschatte waarde
+* Belangrijke assets (welke crypto, hoeveel)
+6.6 Websites & Domeinen
+* ? Domein registratie documenten
+* ? Hosting account documenten
+* ? WordPress admin documenten
+* ? Website FTP/SFTP credentials locatie
+* ? Database credentials locatie
+* ? SSL certificaten
+* ? Website backup locatie
+* ? DNS instellingen export
+* ? Email hosting documenten (indien eigen domein)
+Info te registreren:
+* Domeinnaam
+* Registrar (waar geregistreerd: TransIP, Antagonist, Versio)
+* Vervaldatum domein
+* Hosting provider
+* WordPress/CMS credentials locatie
+* Belangrijkheid website (persoonlijk/zakelijk/belangrijk)
+6.7 Zakelijke Accounts
+* ? LinkedIn account documenten
+* ? Slack workspace documenten
+* ? Microsoft Teams account
+* ? Zoom account documenten
+* ? Google Workspace admin documenten
+* ? Microsoft 365 admin documenten
+* ? Dropbox Business admin documenten
+* ? Zakelijke software accounts (CRM, boekhouding, etc.)
+* ? GitHub account documenten (code repositories!)
+* ? GitLab account documenten
+* ? Bitbucket account documenten
+* ? AWS (Amazon Web Services) account
+* ? Google Cloud Platform account
+* ? Microsoft Azure account
+* ? Heroku account
+* ? Trello/Asana/Notion workspaces
+Info te registreren:
+* Platform naam
+* Account email
+* Wachtwoord locatie
+* 2FA backup codes locatie
+* Team members (wie heeft ook toegang)
+* Belangrijke projecten/data
+6.8 Entertainment & Media
+* ? Netflix account documenten
+* ? Disney+ account documenten
+* ? HBO Max / Videoland / Prime Video
+* ? Spotify account documenten
+* ? Apple Music account documenten
+* ? YouTube Premium account
+* ? Audible account documenten
+* ? Kindle account documenten (e-books!)
+* ? Kobo account documenten
+* ? Steam account documenten (gaming)
+* ? PlayStation Network account
+* ? Xbox Live account
+* ? Nintendo Switch Online account
+* ? Epic Games account
+* ? Twitch account documenten
+* ? Patreon subscription documenten
+Info te registreren:
+* Platform naam
+* Account email
+* Wachtwoord locatie
+* Abonnement type
+* Gekochte content (e-books, games, films)
+* Geschatte waarde digitale bibliotheek
+6.9 Slimme Apparaten & IoT
+* ? Smart Home hub (Google Home, Alexa) account documenten
+* ? Philips Hue account documenten
+* ? IKEA Trådfri documenten
+* ? Nest (thermostaat, camera's, deurbel) account
+* ? Ring (deurbel, camera's) account
+* ? Arlo camera's account
+* ? Somfy (zonwering) account
+* ? Tado (thermostaat) account
+* ? Sonos (speakers) account documenten
+* ? Samsung SmartThings account
+* ? Apple HomeKit setup documenten
+* ? iRobot (Roomba) account
+* ? Ecovacs (robotstofzuiger) account
+* ? Tesla account (auto) - zie ook Voertuigen
+* ? Laadpaal (EV charger) account documenten
+Info te registreren:
+* Apparaat type
+* App naam
+* Account email
+* Wachtwoord locatie
+* Gekoppelde apparaten lijst
+* Automations/scenes backup (screenshot)
+6.10 Overig
+* ? NFT platforms (OpenSea, Rarible)
+* ? Creative work (eigen foto's, video's): 
+o Locatie (welke cloud, harde schijf)
+o Backup locatie
+o Professionele foto's locatie
+* ? Software licenties: 
+o Microsoft Office licentie
+o Adobe Creative Cloud
+o Overige software serienummers
+* ? Forum accounts (waardevolle posts/reputatie)
+* ? Dating apps (Tinder, Bumble - om te sluiten!)
+* ? Goede doelen donor accounts
+* ? Fitness apps (Strava, MyFitnessPal)
+* ? Genealogie (MyHeritage, Ancestry)
+
+MODULE 7: JURIDISCHE DOCUMENTEN ??
+7.1 Persoonsgebonden
+* ? Geboorteakte
+* ? Huwelijksakte
+* ? Huwelijksbijlage (bewijs van huwelijk)
+* ? Partnerschapsregistratie akte
+* ? Echtscheidingsbeschikking
+* ? Scheiding van tafel en bed
+* ? Overlijdensakte (familie)
+* ? Adoptie documenten
+* ? Naamswijziging documenten
+* ? Naturalisatie documenten (Nederlanderschap)
+* ? Erkenning kind documenten
+* ? Vaderschap documenten
+* ? Curatele documenten
+* ? Bewind documenten
+Auto-extractie mogelijk:
+* Type akte (geboorte/huwelijk/overlijden)
+* BSN (indien vermeld)
+* Datum akte
+* Gemeente afgifte
+7.2 Identiteitsdocumenten
+* ? Paspoort (kopie voor administratie)
+* ? Identiteitskaart (kopie)
+* ? Rijbewijs (kopie)
+* ? Verblijfsvergunning
+* ? Visum documenten
+* ? Naturalisatie certificaat
+* ? Burgerschapsbewijs
+* ? Vluchtelingenstatus documenten
+* ? Asielvergunning
+Info te registreren:
+* Document type
+* Documentnummer
+* Afgiftedatum
+* Vervaldatum (REMINDER!)
+* Afgiftelocatie
+7.3 Testament & Erfrecht
+Zie Module 5 (Wilsbeschikkingen)
+7.4 Notariële Akten
+* ? Hypotheekakte (zie ook Geldzaken)
+* ? Koopakte woning (zie ook Wonen)
+* ? Leveringsakte woning
+* ? Huwelijkse voorwaarden akte
+* ? Partnerschapsvoorwaarden akte
+* ? Testament (zie Module 5)
+* ? Codicil
+* ? Samenlevingscontract (notarieel)
+* ? Schenkingsakte
+* ? Boedelscheiding akte (na scheiding)
+* ? Erfenis aanvaarding / verwerping
+* ? Executele benoeming
+* ? Bewind instelling
+* ? Mentorschap akte
+* ? Volmacht (notarieel)
+* ? Procuratie (zakelijk)
+* ? Erfdienstbaarheid akte
+* ? Kwalitatieve verplichting akte
+* ? Statuten (BV/NV/Stichting/Vereniging)
+* ? Akte van oprichting bedrijf
+* ? Aandeelhouders akte
+Auto-extractie mogelijk:
+* Notaris naam + plaats
+* Dossiernummer
+* Repertorium nummer
+* Datum akte
+* Partijen (namen)
+* Type akte
+7.5 Contracten
+* ? Huurcontract woning
+* ? Huurcontract commerciële ruimte
+* ? Huurovereenkomst parkeerplaats/garage
+* ? Arbeidsovereenkomst (vast/tijdelijk/payroll)
+* ? Arbeidscontract wijziging (promotie, functiewijziging)
+* ? Ontslag documenten (ontslagbrief, beëindigingsovereenkomst)
+* ? Outplacement overeenkomst
+* ? Concurrentiebeding
+* ? Geheimhoudingsverklaring (NDA)
+* ? Relatiebeding
+* ? Freelance / ZZP opdracht contracten
+* ? Dienstverleningscontract
+* ? Consultancy overeenkomst
+* ? Management overeenkomst
+* ? Koopovereenkomst (grote aankopen: auto, boot)
+* ? Lease contract (auto, apparatuur)
+* ? Huurkoop overeenkomst
+* ? Licentieovereenkomst (software, intellectueel eigendom)
+* ? Distributieovereenkomst
+* ? Franchiseovereenkomst
+* ? Samenwerkingsovereenkomst (joint venture)
+* ? Aannemingscontract (bouw/verbouwing)
+* ? Makelaarscontract
+* ? Service Level Agreement (SLA)
+* ? Abonnementscontracten (zie Module 3)
+Auto-extractie mogelijk:
+* Contract type
+* Partijen (partij 1, partij 2)
+* Ingangsdatum
+* Einddatum (indien van toepassing)
+* Bedrag/Prijs
+* Opzegtermijn
+* Automatische verlenging ja/nee
+7.6 Vergunningen & Ontheffingen
+* ? Bouwvergunning (zie ook Wonen)
+* ? Sloopvergunning
+* ? Gebruiksvergunning
+* ? Omgevingsvergunning
+* ? APV vergunning (Algemene Plaatselijke Verordening)
+* ? Exploitatievergunning (horeca, winkel)
+* ? Drank- en horecavergunning
+* ? Evenementenvergunning
+* ? Kapvergunning (bomen)
+* ? Parkeervergunning (lang)
+* ? Ontheffing gehandicaptenparkeerplaats
+* ? Kenteken ontheffing (bijv. oldtimer)
+* ? Vuurwerkvergunning
+* ? Jachtakte
+* ? Visakte
+* ? Vaarvergunning
+* ? Vliegbrevet
+* ? Taxivergunning
+* ? Bedrijfsvergunning
+* ? Milieuvergunning
+* ? Bouwtoezicht documenten
+Auto-extractie mogelijk:
+* Vergunning type
+* Vergunningnummer
+* Afgegeven door (gemeente/provincie/rijk)
+* Afgiftedatum
+* Vervaldatum
+* Adres/locatie waar van toepassing
+7.7 Intellectueel Eigendom
+* ? Auteursrecht registratie
+* ? Handelsmerk registratie (Benelux/EU/International)
+* ? Patent (nationaal/Europees/internationaal)
+* ? Modellen rechten
+* ? Software licentie overeenkomsten
+* ? Creative Commons licenties
+* ? Open source licenties (GPL, MIT, etc.)
+* ? Royalty overeenkomsten
+* ? Licentie-inkomsten documenten
+* ? Merknaam bescherming
+* ? Domein naam eigendom (zie Digitale Erfenis)
+* ? Muziek auteursrecht (Buma/Stemra)
+* ? ISBN nummers (boeken)
+Auto-extractie mogelijk:
+* Type IE (auteursrecht/handelsmerk/patent)
+* Registratienummer
+* Registratie datum
+* Houder naam
+* Beschrijving werk/merk/patent
+* Geldigheid
+7.8 Juridische Procedures
+* ? Dagvaarding (civiel/straf)
+* ? Vonnis (eindvonnis, tussenvonnis)
+* ? Arrest (hoger beroep)
+* ? Schikking documenten
+* ? Minnelijke regeling
+* ? Arbitrage uitspraak
+* ? Mediationovereenkomst
+* ? Proces-verbaal (politie)
+* ? Aangifte documenten
+* ? Strafbeschikking
+* ? Transactie (schikking met OM)
+* ? Bezwaarschrift documenten
+* ? Beroepschrift
+* ? Hoger beroep documenten
+* ? Cassatie documenten
+* ? Gerechtelijke correspondentie
+* ? Advocaat brieven
+* ? Procesdossiers
+* ? Bewijsstukken
+* ? Getuigenverklaringen
+* ? Deskundigenrapporten
+Info te registreren:
+* Type procedure (civiel/straf/bestuursrecht)
+* Rechtbank
+* Zaaknummer
+* Datum uitspraak
+* Partijen (eiser/gedaagde, aanklager/verdachte)
+* Advocaat naam
+* Status: Lopend/Afgerond/Hoger beroep/Cassatie
+* Uitkomst
+7.9 Claims & Aansprakelijkheid
+* ? Schadeclaim documenten
+* ? Aansprakelijkheidsstelling
+* ? Letselschade claim
+* ? Smartengeld claim
+* ? Productaansprakelijkheid claim
+* ? Medische aansprakelijkheid (medische fout)
+* ? Beroepsaansprakelijkheid claim
+* ? Expert rapport (schade taxatie)
+* ? Contra-expertise
+* ? Schadestaatprocedure
+* ? Voorschot uitkering documenten
+* ? Einduitkering schade
+* ? Kwijtscheldingsverklaring
+* ? Vaststellingsovereenkomst
+Info te registreren:
+* Type claim
+* Datum incident
+* Partijen (claimer, aansprakelijke partij)
+* Geclaimd bedrag
+* Toegekend bedrag
+* Status procedure
+7.10 Diploma's & Certificaten
+* ? Diploma's (alle niveaus): 
+o Basisonderwijs diploma
+o VMBO/HAVO/VWO diploma
+o MBO diploma
+o HBO bachelor/master
+o WO bachelor/master
+o PhD/doctoraat
+* ? Certificaten (professioneel): 
+o Beroepscertificaten
+o Branche certificaten
+o Veiligheidscertificaten
+o VCA certificaat
+o HACCP certificaat
+o ISO certificaten
+o Project management certificaten (Prince2, PMP)
+o IT certificaten (Microsoft, Cisco, AWS)
+o Taal certificaten (Cambridge, TOEFL, IELTS)
+* ? Verklaring Omtrent Gedrag (VOG)
+* ? Uittreksel Justitieel Documentatie (Politieblanco)
+* ? Bewijs van Goed Gedrag (internationaal, Certificate of Good Conduct)
+* ? Cursus certificaten
+* ? Trainingscertificaten
+* ? BHV diploma
+* ? EHBO diploma
+* ? Diploma's kinderen (bewaren namens hen)
+Auto-extractie mogelijk:
+* Type diploma/certificaat
+* Onderwijsinstelling / Certificerend orgaan
+* Studierichting / Specialisatie
+* Datum behaald
+* Registratienummer (indien van toepassing)
+* Geldigheid (sommige certificaten verlopen)
+7.11 Bedrijfsdocumenten (indien ZZP/eigenaar)
+* ? KvK uittreksel (Kamer van Koophandel)
+* ? KvK inschrijving bevestiging
+* ? KvK wijziging documenten (adres, activiteiten)
+* ? Statuten (BV/NV/Stichting/Vereniging)
+* ? Oprichtingsakte (notarieel)
+* ? Aandeelhoudersregister
+* ? Aandeelhouders overeenkomst
+* ? Bestuursbesluit documenten
+* ? ALV (Algemene Ledenvergadering) notulen
+* ? AVA (Algemene Vergadering Aandeelhouders) notulen
+* ? BTW nummer bevestiging
+* ? Loonheffingen nummer
+* ? Vergunningen bedrijf (zie 7.6)
+* ? Verzekeringen bedrijf (aansprakelijkheid, beroepsaansprakelijkheid)
+* ? AVG/GDPR documenten: 
+o Verwerkersregister
+o Bewerkersovereenkomsten
+o Privacy policy
+o Cookie policy
+o Datalek procedures
+o DPIA (Data Protection Impact Assessment)
+* ? Arbeidsovereenkomsten personeel
+* ? Pensioenregeling werkgever
+* ? CAO (Collectieve Arbeidsovereenkomst)
+* ? Ondernemingsplan
+* ? Jaarrekening + accountantsverklaring
+* ? Belastingaangifte bedrijf (VPB, BTW)
+* ? Kredietovereenkomst zakelijk
+* ? Bankgarantie zakelijk
+* ? Leverancierscontracten
+* ? Klantcontracten
+* ? Algemene voorwaarden (eigen bedrijf)
+* ? Inkoopvoorwaarden
+Auto-extractie mogelijk:
+* KvK nummer
+* BTW nummer
+* Bedrijfsnaam (officieel)
+* Rechtsvorm (Eenmanszaak, VOF, BV, NV)
+* Vestigingsadres
+* SBI-codes (activiteiten)
+* Oprichtingsdatum
+7.12 Overig
+* ? Machtigingen (diverse)
+* ? Verklaringen (inkomensverklaring, werkgeversverklaring, etc.)
+* ? Bewijs van inschrijving (GBA)
+* ? Uittreksel BRP (Basisregistratie Personen)
+* ? Bewijs van Nederlanderschap
+* ? Apostille documenten (legalisatie internationale documenten)
+* ? Vertaling beëdigde vertalers (officiële documenten)
+* ? Waarmerking documenten (notaris/gemeente)
+* ? Erfdienstbaarheid aktes
+* ? Kwalitatieve verplichting
+* ? Recht van overpad
+* ? Vruchtgebruik akte
+* ? Gebruik documenten (gebruiksrecht)
+* ? Kettingbeding
+* ? Bestuurdersaansprakelijkheid documenten
+* ? Faillissement documenten
+* ? Surseance van betaling
+* ? WSNP (Wet Schuldsanering Natuurlijke Personen) documenten
+* ? Dwangsom documenten
+* ? Beslag documenten
+* ? Executie documenten
+* ? Conservatoir beslag
+
+?? HOE DE BULK IMPORT WERKT
+Fase 1: Voorbereiding
+Gebruiker verzamelt alle documenten:
+* Fysieke papieren documenten
+* PDF's op computer
+* Email bijlagen
+* Foto's van documenten op telefoon
+Fase 2: Upload/Scan
+Gebruiker kiest:
+* Optie A: Scan stapel papieren met telefoon (via app camera)
+* Optie B: Upload map met PDF's vanaf computer
+* Optie C: Gmail/Drive import (toekomst)
+* Optie D: Foto's selecteren van telefoon
+Fase 3: Automatische Verwerking
+Per document doet de app:
+Stap 1: Tekstherkenning (OCR)
+* Google ML Kit (on-device, gratis) of
+* Google Document AI (cloud, premium, nauwkeuriger)
+* Alle tekst wordt uitgelezen
+Stap 2: Document Classificatie
+Bestandsnaam: "ING_Rekening_2024.pdf"
+? Analyse: bevat "ING" + "Rekening" 
+? Voorlopige classificatie: Geldzaken ? Bankrekening
+? Confidence: 85%
+
+OCR Tekst bevat:
+- "IBAN: NL99 INGB 0001 2345 67"
+- "ING Bank N.V."
+- "Rekeningoverzicht"
+- "Saldo: € 12.450,00"
+? Bevestigt classificatie: Geldzaken ? Bankrekening ? Jaaroverzicht
+? Confidence: 95%
+Stap 3: Data Extractie
+Uit hetzelfde document:
+- IBAN: NL99 INGB 0001 2345 67 (patroon match: 100%)
+- Bank: ING (logo herkenning + tekst: 100%)
+- Rekeninghouder: "J.P. Jansen" (naam extractie: 90%)
+- Saldo: € 12.450,00 (bedrag extractie: 95%)
+- Datum: 31-12-2024 (datum extractie: 100%)
+Stap 4: Persoon Detectie
+Rekeninghouder naam: "J.P. Jansen"
+Match met personen in database:
+- Jan Pieter Jansen (85% match)
+- Automatisch toewijzen aan deze persoon
+Fase 4: Review & Correct
+App toont overzicht gegroepeerd:
+?? GROEN (Hoge zekerheid >80%):
+? ING_Rekening_2024.pdf
+  Module: Geldzaken ? Bankrekening
+  Persoon: Jan Pieter Jansen
+  Gevonden: IBAN NL99..., Saldo € 12.450
+  Confidence: 95%
+  [Quick View] [Edit] [Remove]
+?? ORANJE (Middel 50-80%):
+? Aegon_Document_2023.pdf
+  Module: Geldzaken ? Verzekering (of Pensioen?)
+  Persoon: ? (Niet toegewezen)
+  Gevonden: Polisnummer 123456, Premie € 85/mnd
+  Confidence: 65%
+  [Edit Required] [Quick View]
+?? ROOD (Laag <50%):
+? IMG_1234.jpg
+  Module: ? (Onbekend)
+  Type: ? (Onbekend)
+  Persoon: ? (Niet toegewezen)
+  Oorzaak: Onleesbare foto / Onbekend document type
+  Confidence: 20%
+  [Handmatig Invullen] [Re-scan] [Remove]
+Gebruiker acties:
+* Groene docs: Quick scan, meestal OK
+* Oranje docs: Controleren, eventueel corrigeren
+* Rode docs: Handmatig categorie/type kiezen
+* Batch acties: Selecteer meerdere ? wijs module/persoon toe
+Fase 5: Import
+Gebruiker klikt "IMPORTEER (67 documenten)"
+App doet:
+Document 1: ING_Rekening_2024.pdf
+? Opslaan in: /documents/geldzaken/bankrekeningen/
+? Database entry aanmaken:
+  - Module: Geldzaken
+  - Type: Bankrekening - Jaaroverzicht
+  - Persoon: Jan Pieter Jansen
+  - IBAN: NL99 INGB 0001 2345 67
+  - Bank: ING
+  - Saldo: € 12.450,00
+  - Datum: 31-12-2024
+  - Document pad: /documents/geldzaken/...
+  - Status: Complete (auto)
+
+Document 2: Hypotheekakte_Woning.pdf
+? Opslaan in: /documents/wonen/hypotheek/
+? Database entry:
+  - Module: Wonen & Energie
+  - Type: Hypotheek
+  - Link naar: Geldzaken ? Hypotheek (zelfde)
+  - Adres: Dorpsstraat 12, 1234 AB Plaats
+  - Notaris: Mr. J. de Vries
+  - Bedrag: € 250.000
+  - Document pad: ...
+  
+Document 3: Rijbewijs_scan.jpg
+? Opslaan in: /documents/juridisch/identiteit/
+? Database entry:
+  - Module: Juridische Documenten
+  - Type: Rijbewijs
+  - Persoon: Jan Pieter Jansen
+  - Documentnummer: 1234567890
+  - Vervaldatum: 15-08-2028
+  - REMINDER: 15-07-2028 (1 maand voor expiry)
+
+etc. voor alle 67 documenten...
+Fase 6: Resultaat
+App toont samenvatting:
+? BULK IMPORT VOLTOOID!
+
+67 documenten geïmporteerd in 8 minuten
+
+Verdeling:
+?? Geldzaken: 23 documenten
+?? Wonen & Energie: 12 documenten
+?? Eigendommen: 15 documenten
+?? Juridisch: 9 documenten
+?? Wilsbeschikkingen: 3 documenten
+?? Digitale Erfenis: 2 documenten
+?? Lidmaatschappen: 3 documenten
+
+Reminders aangemaakt: 18
+- APK auto: over 45 dagen
+- Rijbewijs verlengen: over 8 maanden
+- CV onderhoud: over 2 maanden
+- Etc.
+
+Jouw dossier is nu 87% compleet! ??
+
+[Ga naar Dashboard] [Nog meer importeren]
+
+?? WAAROM DIT EEN KILLER FEATURE IS
+1. Tijdsbesparing:
+o Handmatig: 100 documenten = 8+ uur werk
+o Bulk import: 100 documenten = 30-45 minuten
+o 10-15x sneller!
+2. Completeness:
+o Gebruikers hebben vaak honderden documenten
+o Te overweldigend om handmatig te doen
+o Bulk import = complete dossier in 1 sessie
+3. Automatische reminders:
+o App detecteert expiry dates
+o Zet automatisch herinneringen
+o Gebruiker hoeft dit niet zelf te doen
+4. Smart data extractie:
+o IBAN, kentekens, datums, bedragen
+o Voorkomt typfouten
+o Direct bruikbaar in andere modules
+5. Voor nabestaanden:
+o Complete documentatie in 1 keer
+o Alles op de juiste plek
+o Met alle metadata
+6. Unique Selling Point:
+o Geen andere app doet dit zo goed
+o Combinatie van OCR + AI + smart classificatie
+o Nederlandse context (RDW API, IBAN herkenning, etc.)
+
+Deze feature maakt het verschil tussen: ? "Nog een admin app die ik niet ga gebruiken want te veel werk" ? "WOW! In een uurtje heb ik alles compleet. Dit is echt de moeite waard!"
+Dit is de feature die zorgt voor viral growth door word-of-mouth: "Je MOET deze app proberen, ik had al mijn documenten in een half uur compleet!"
+

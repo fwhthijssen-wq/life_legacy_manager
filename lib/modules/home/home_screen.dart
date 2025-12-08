@@ -11,6 +11,12 @@ import '../dossier/dossier_providers.dart';
 import '../dossier/dossier_model.dart';
 import '../personal_data/screens/personal_data_dashboard_screen.dart';
 import '../money/screens/money_dashboard_screen.dart';
+import '../money/screens/bank_accounts/bank_accounts_list_screen.dart';
+import '../money/screens/insurances/insurances_list_screen.dart';
+import '../money/screens/pensions/pensions_list_screen.dart';
+import '../money/screens/incomes/incomes_list_screen.dart';
+import '../money/screens/expenses/expenses_list_screen.dart';
+import '../money/screens/debts/debts_list_screen.dart';
 import '../housing/screens/housing_dashboard_screen.dart';
 import '../assets/screens/asset_dashboard_screen.dart';
 import '../subscriptions/screens/subscription_dashboard_screen.dart';
@@ -77,9 +83,13 @@ final List<ModuleTab> _moduleTabs = [
     emoji: '€',
     color: AppColors.moduleMoney,
     categories: [
-      CategoryDef(id: 'bankrekeningen', label: 'Bankrekeningen', emoji: '🏦', color: AppColors.moduleMoney),
-      CategoryDef(id: 'verzekeringen', label: 'Verzekeringen', emoji: '🛡️', color: Colors.blue),
+      CategoryDef(id: 'bankrekeningen', label: 'Bankrekeningen', emoji: '🏦', color: Colors.blue),
+      CategoryDef(id: 'verzekeringen', label: 'Verzekeringen', emoji: '🛡️', color: Colors.orange),
       CategoryDef(id: 'pensioenen', label: 'Pensioenen', emoji: '👴', color: Colors.purple),
+      CategoryDef(id: 'inkomsten', label: 'Inkomsten', emoji: '💵', color: Colors.green),
+      CategoryDef(id: 'vaste_lasten', label: 'Vaste lasten', emoji: '📋', color: Colors.red),
+      CategoryDef(id: 'schulden', label: 'Schulden & Leningen', emoji: '💳', color: Colors.brown),
+      CategoryDef(id: 'beleggingen', label: 'Beleggingen', emoji: '📈', color: Colors.teal),
     ],
   ),
   ModuleTab(
@@ -307,6 +317,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
     Widget? screen;
     
     switch (categoryId) {
+      // Personal data categorieën
       case 'gezin':
         screen = HouseholdScreen(dossierId: dossierId);
         break;
@@ -316,6 +327,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SingleTickerProvid
       case 'personen':
         screen = SelectPersonScreen(dossierId: dossierId);
         break;
+      
+      // Money categorieën - navigeer direct naar de juiste lijst
+      case 'bankrekeningen':
+        screen = BankAccountsListScreen(dossierId: dossierId);
+        break;
+      case 'verzekeringen':
+        screen = InsurancesListScreen(dossierId: dossierId);
+        break;
+      case 'pensioenen':
+        screen = PensionsListScreen(dossierId: dossierId);
+        break;
+      case 'inkomsten':
+        screen = IncomesListScreen(dossierId: dossierId);
+        break;
+      case 'vaste_lasten':
+        screen = ExpensesListScreen(dossierId: dossierId);
+        break;
+      case 'schulden':
+        screen = DebtsListScreen(dossierId: dossierId);
+        break;
+      case 'beleggingen':
+        // Beleggingen is nog niet geïmplementeerd
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Beleggingen is binnenkort beschikbaar!')),
+        );
+        return;
     }
     
     if (screen != null) {

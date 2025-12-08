@@ -1,8 +1,10 @@
 // lib/modules/money/screens/incomes/income_detail_screen.dart
 
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/app_database.dart';
+import '../../../../core/ocr/document_scanner_widget.dart';
 import '../../../../core/widgets/date_picker_field.dart';
 import '../../models/income_model.dart';
 import '../../models/money_item_model.dart';
@@ -144,6 +146,11 @@ class _IncomeDetailScreenState extends ConsumerState<IncomeDetailScreen> with Si
       appBar: AppBar(
         title: Text(_sourceController.text.isNotEmpty ? _sourceController.text : 'Nieuw inkomen'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.document_scanner),
+            tooltip: Platform.isAndroid || Platform.isIOS ? 'Scan loonstrook' : 'Import PDF',
+            onPressed: _scanDocument,
+          ),
           IconButton(icon: const Icon(Icons.check), onPressed: _save, tooltip: 'Opslaan'),
           PopupMenuButton<String>(onSelected: (a) { if (a == 'delete') _delete(); }, itemBuilder: (c) => [const PopupMenuItem(value: 'delete', child: Row(children: [Icon(Icons.delete, color: Colors.red), SizedBox(width: 12), Text('Verwijderen', style: TextStyle(color: Colors.red))]))]),
         ],
@@ -207,6 +214,60 @@ class _IncomeDetailScreenState extends ConsumerState<IncomeDetailScreen> with Si
         FilledButton.icon(onPressed: _save, icon: const Icon(Icons.check), label: const Text('Opslaan')),
       ]),
     );
+  }
+
+  /// Scan een loonstrook/jaaropgaaf en vul velden automatisch in
+  Future<void> _scanDocument() async {
+    final data = await showDocumentScanner(
+      context,
+      documentType: DocumentType.payslip,
+    );
+
+    if (data != null && data.hasData) {
+      setState(() {
+        // Werkgever/Bron
+        if (data.employer != null && _sourceController.text.isEmpty) {
+          _sourceController.text = data.employer!;
+        }
+        
+        // Bruto inkomen
+        if (data.grossIncome != null && _amountGrossController.text.isEmpty) {
+          _amountGrossController.text = data.grossIncome!.toStringAsFixed(2);
+        }
+        
+        // Netto inkomen
+        if (data.netIncome != null && _amountNetController.text.isEmpty) {
+          _amountNetController.text = data.netIncome!.toStringAsFixed(2);
+        }
+        
+        // Periode
+        if (data.incomePeriod != null && _startDateController.text.isEmpty) {
+          _startDateController.text = data.incomePeriod!;
+        }
+        
+        // Datums
+        if (data.dates.isNotEmpty && _startDateController.text.isEmpty) {
+          _startDateController.text = data.dates.first;
+        }
+      });
+      
+      _markChanged();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Gegevens overgenomen van scan'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+    }
   }
 }
 

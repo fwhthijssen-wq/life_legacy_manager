@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/app_database.dart';
+import '../../../../core/bulk_import/screens/bulk_import_accounts_screen.dart';
 import '../../../person/person_model.dart';
 import '../../models/bank_account_model.dart';
 import '../../providers/money_providers.dart';
@@ -22,6 +23,12 @@ class BankAccountsListScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Bankrekeningen'),
         actions: [
+          // Bulk import knop
+          IconButton(
+            icon: const Icon(Icons.upload_file),
+            tooltip: 'Rekeningen importeren uit PDF',
+            onPressed: () => _openBulkImport(context, ref),
+          ),
           // Toggle voor maskeren bedragen
           IconButton(
             icon: const Icon(Icons.visibility_outlined),
@@ -94,14 +101,59 @@ class BankAccountsListScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-          ElevatedButton.icon(
+          
+          // Bulk import button (prominent)
+          FilledButton.icon(
+            onPressed: () => _openBulkImport(context, ref),
+            icon: const Icon(Icons.upload_file),
+            label: const Text('Importeer uit jaaroverzicht'),
+            style: FilledButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Alle rekeningen in één keer',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: Colors.grey,
+            ),
+          ),
+          
+          const SizedBox(height: 24),
+          const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(child: Divider()),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Text('of', style: TextStyle(color: Colors.grey)),
+              ),
+              Expanded(child: Divider()),
+            ],
+          ),
+          const SizedBox(height: 24),
+          
+          OutlinedButton.icon(
             onPressed: () => _addAccount(context, ref),
             icon: const Icon(Icons.add),
-            label: const Text('Bankrekening toevoegen'),
+            label: const Text('Handmatig toevoegen'),
           ),
         ],
       ),
     );
+  }
+
+  void _openBulkImport(BuildContext context, WidgetRef ref) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BulkImportAccountsScreen(dossierId: dossierId),
+      ),
+    ).then((result) {
+      if (result == true) {
+        ref.invalidate(bankAccountsProvider(dossierId));
+      }
+    });
   }
 
   void _openAccount(BuildContext context, BankAccountModel account) {
@@ -117,13 +169,14 @@ class BankAccountsListScreen extends ConsumerWidget {
   }
 
   Future<void> _addAccount(BuildContext context, WidgetRef ref) async {
-    // Haal personen op voor dit dossier
+    // Haal alleen dossierleden (household members) op voor dit dossier
     final db = ref.read(appDatabaseProvider);
-    final persons = await db.query(
-      'persons',
-      where: 'dossier_id = ? AND (is_contact = 0 OR is_contact IS NULL)',
-      whereArgs: [dossierId],
-    );
+    final persons = await db.rawQuery('''
+      SELECT p.* FROM persons p
+      INNER JOIN household_members hm ON p.id = hm.person_id
+      WHERE hm.dossier_id = ?
+      ORDER BY hm.is_primary DESC, p.first_name
+    ''', [dossierId]);
 
     if (persons.isEmpty) {
       if (!context.mounted) return;

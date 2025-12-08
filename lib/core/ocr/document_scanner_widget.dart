@@ -10,7 +10,12 @@ enum DocumentType {
   bankStatement('Bankafschrift', Icons.account_balance, Colors.blue),
   insurancePolicy('Verzekeringspolis', Icons.shield, Colors.orange),
   pensionStatement('Pensioen UPO', Icons.elderly, Colors.purple),
+  payslip('Loonstrook', Icons.receipt_long, Colors.green),
+  annualStatement('Jaaropgaaf', Icons.summarize, Colors.teal),
+  invoice('Factuur', Icons.receipt, Colors.red),
+  contract('Contract', Icons.article, Colors.indigo),
   loanContract('Leningscontract', Icons.description, Colors.brown),
+  mortgageStatement('Hypotheek overzicht', Icons.home, Colors.amber),
   other('Overig document', Icons.document_scanner, Colors.grey);
 
   final String label;
@@ -261,7 +266,7 @@ class _DocumentScannerWidgetState extends State<DocumentScannerWidget> {
     final data = _scannedData!;
     final foundItems = <_FoundItem>[];
 
-    // Verzamel gevonden items
+    // Verzamel gevonden items - Bank
     if (data.iban != null) {
       foundItems.add(_FoundItem('IBAN', data.iban!, Icons.account_balance));
     }
@@ -271,17 +276,13 @@ class _DocumentScannerWidgetState extends State<DocumentScannerWidget> {
     if (data.bankName != null) {
       foundItems.add(_FoundItem('Bank', data.bankName!, Icons.business));
     }
+    
+    // Verzekering
     if (data.insurerName != null) {
       foundItems.add(_FoundItem('Verzekeraar', data.insurerName!, Icons.shield));
     }
     if (data.policyNumber != null) {
       foundItems.add(_FoundItem('Polisnummer', data.policyNumber!, Icons.tag));
-    }
-    if (data.pensionFund != null) {
-      foundItems.add(_FoundItem('Pensioenfonds', data.pensionFund!, Icons.elderly));
-    }
-    if (data.participantNumber != null) {
-      foundItems.add(_FoundItem('Deelnemersnr', data.participantNumber!, Icons.badge));
     }
     if (data.premium != null) {
       foundItems.add(_FoundItem('Premie', '€${data.premium!.toStringAsFixed(2)}', Icons.euro));
@@ -289,7 +290,83 @@ class _DocumentScannerWidgetState extends State<DocumentScannerWidget> {
     if (data.deductible != null) {
       foundItems.add(_FoundItem('Eigen risico', '€${data.deductible!.toStringAsFixed(2)}', Icons.money_off));
     }
-    if (data.balance != null) {
+    
+    // Pensioen
+    if (data.pensionFund != null) {
+      foundItems.add(_FoundItem('Pensioenfonds', data.pensionFund!, Icons.elderly));
+    }
+    if (data.participantNumber != null) {
+      foundItems.add(_FoundItem('Deelnemersnr', data.participantNumber!, Icons.badge));
+    }
+    if (data.expectedPension != null) {
+      foundItems.add(_FoundItem('Verwacht pensioen', '€${data.expectedPension!.toStringAsFixed(2)}', Icons.savings));
+    }
+    if (data.pensionDate != null) {
+      foundItems.add(_FoundItem('Pensioendatum', data.pensionDate!, Icons.cake));
+    }
+    if (data.employer != null) {
+      foundItems.add(_FoundItem('Werkgever', data.employer!, Icons.work));
+    }
+    
+    // Inkomen
+    if (data.grossIncome != null) {
+      foundItems.add(_FoundItem('Bruto', '€${data.grossIncome!.toStringAsFixed(2)}', Icons.trending_up));
+    }
+    if (data.netIncome != null) {
+      foundItems.add(_FoundItem('Netto', '€${data.netIncome!.toStringAsFixed(2)}', Icons.account_balance_wallet));
+    }
+    if (data.incomePeriod != null) {
+      foundItems.add(_FoundItem('Periode', data.incomePeriod!, Icons.date_range));
+    }
+    if (data.bsn != null) {
+      foundItems.add(_FoundItem('BSN', '***${data.bsn!.substring(data.bsn!.length - 4)}', Icons.badge));
+    }
+    
+    // Vaste lasten
+    if (data.utilityProvider != null) {
+      foundItems.add(_FoundItem('Leverancier', data.utilityProvider!, Icons.business));
+    }
+    if (data.customerNumber != null) {
+      foundItems.add(_FoundItem('Klantnummer', data.customerNumber!, Icons.tag));
+    }
+    if (data.invoiceNumber != null) {
+      foundItems.add(_FoundItem('Factuurnr', data.invoiceNumber!, Icons.receipt));
+    }
+    if (data.amountDue != null) {
+      foundItems.add(_FoundItem('Te betalen', '€${data.amountDue!.toStringAsFixed(2)}', Icons.payment));
+    }
+    if (data.directDebitDate != null) {
+      foundItems.add(_FoundItem('Incassodatum', data.directDebitDate!, Icons.event));
+    }
+    
+    // Schulden
+    if (data.mortgageProvider != null) {
+      foundItems.add(_FoundItem('Geldverstrekker', data.mortgageProvider!, Icons.business));
+    }
+    if (data.contractNumber != null && data.customerNumber == null) {
+      foundItems.add(_FoundItem('Contractnr', data.contractNumber!, Icons.tag));
+    }
+    if (data.principalAmount != null) {
+      foundItems.add(_FoundItem('Hoofdsom', '€${data.principalAmount!.toStringAsFixed(2)}', Icons.account_balance));
+    }
+    if (data.outstandingAmount != null) {
+      foundItems.add(_FoundItem('Openstaand', '€${data.outstandingAmount!.toStringAsFixed(2)}', Icons.trending_down));
+    }
+    if (data.interestRate != null) {
+      foundItems.add(_FoundItem('Rente', '${data.interestRate!.toStringAsFixed(2)}%', Icons.percent));
+    }
+    if (data.monthlyPayment != null) {
+      foundItems.add(_FoundItem('Maandtermijn', '€${data.monthlyPayment!.toStringAsFixed(2)}', Icons.repeat));
+    }
+    if (data.fixedRatePeriod != null) {
+      foundItems.add(_FoundItem('Rentevast tot', data.fixedRatePeriod!, Icons.lock_clock));
+    }
+    if (data.duration != null) {
+      foundItems.add(_FoundItem('Looptijd', data.duration!, Icons.timelapse));
+    }
+    
+    // Algemeen
+    if (data.balance != null && data.grossIncome == null && data.principalAmount == null) {
       foundItems.add(_FoundItem('Saldo/Bedrag', '€${data.balance!.toStringAsFixed(2)}', Icons.account_balance_wallet));
     }
     if (data.phone != null) {
@@ -301,10 +378,10 @@ class _DocumentScannerWidgetState extends State<DocumentScannerWidget> {
     if (data.website != null) {
       foundItems.add(_FoundItem('Website', data.website!, Icons.language));
     }
-    if (data.dates.isNotEmpty) {
+    if (data.dates.isNotEmpty && data.pensionDate == null && data.directDebitDate == null) {
       foundItems.add(_FoundItem('Datum', data.dates.first, Icons.calendar_today));
     }
-    if (data.percentages.isNotEmpty) {
+    if (data.percentages.isNotEmpty && data.interestRate == null) {
       foundItems.add(_FoundItem('Percentage', '${data.percentages.first}%', Icons.percent));
     }
 

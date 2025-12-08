@@ -207,6 +207,7 @@ class MoneyRepository {
     required BankAccountType accountType,
     String? iban,
     String? accountHolder,
+    double? balance,
   }) async {
     final db = AppDatabase.instance;
     
@@ -228,6 +229,7 @@ class MoneyRepository {
       accountType: accountType,
       iban: iban,
       accountHolder: accountHolder,
+      balance: balance,
     );
 
     await db.insert('bank_accounts', account.toMap());

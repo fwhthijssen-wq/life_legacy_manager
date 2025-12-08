@@ -1,7 +1,9 @@
 // lib/modules/person/edit_person_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../core/person_repository.dart';
+import '../../core/utils/text_formatters.dart';
 import '../../l10n/app_localizations.dart';
 import 'person_model.dart';
 
@@ -18,7 +20,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
   final _formKey = GlobalKey<FormState>();
   
   final _firstNameController = TextEditingController();
-  final _namePrefixController = TextEditingController();  // ⭐ NIEUW
+  final _initialsController = TextEditingController();  // Voorletters
+  final _namePrefixController = TextEditingController();  // Tussenvoegsel
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
@@ -34,6 +37,19 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
   bool _loading = true;
   PersonModel? _person;
 
+  /// Normaliseert gender waarden naar standaard codes
+  String? _normalizeGender(String? gender) {
+    if (gender == null) return null;
+    final lower = gender.toLowerCase();
+    if (lower == 'male' || lower == 'man' || lower == 'm') return 'male';
+    if (lower == 'female' || lower == 'vrouw' || lower == 'v') return 'female';
+    if (lower == 'non-binary' || lower == 'non binary' || lower == 'nb') return 'non-binary';
+    if (lower == 'other' || lower == 'anders' || lower == 'overig') return 'other';
+    // Als het al een geldige waarde is, geef die terug
+    if (['male', 'female', 'non-binary', 'other'].contains(lower)) return lower;
+    return null; // Onbekende waarde -> null
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +62,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
       setState(() {
         _person = person;
         _firstNameController.text = person.firstName;
-        _namePrefixController.text = person.namePrefix ?? '';  // ⭐ NIEUW
+        _initialsController.text = person.initials ?? '';
+        _namePrefixController.text = person.namePrefix ?? '';
         _lastNameController.text = person.lastName;
         _phoneController.text = person.phone ?? '';
         _emailController.text = person.email ?? '';
@@ -54,7 +71,7 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
         _postalCodeController.text = person.postalCode ?? '';
         _cityController.text = person.city ?? '';
         _notesController.text = person.notes ?? '';
-        _selectedGender = person.gender;
+        _selectedGender = _normalizeGender(person.gender);
         _selectedRelation = person.relation;
         
         if (person.birthDate != null) {
@@ -77,7 +94,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
   @override
   void dispose() {
     _firstNameController.dispose();
-    _namePrefixController.dispose();  // ⭐ NIEUW
+    _initialsController.dispose();
+    _namePrefixController.dispose();
     _lastNameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
@@ -116,7 +134,10 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
 
     final updatedPerson = _person!.copyWith(
       firstName: _firstNameController.text.trim(),
-      namePrefix: _namePrefixController.text.trim().isEmpty  // ⭐ NIEUW
+      initials: _initialsController.text.trim().isEmpty
+          ? null
+          : _initialsController.text.trim().toUpperCase(),
+      namePrefix: _namePrefixController.text.trim().isEmpty
           ? null
           : _namePrefixController.text.trim(),
       lastName: _lastNameController.text.trim(),
@@ -185,6 +206,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
                 labelText: l10n.firstName,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return l10n.validationRequired;
@@ -194,7 +217,20 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Tussenvoegsel - ⭐ NIEUW
+            // Voorletters
+            TextFormField(
+              controller: _initialsController,
+              decoration: const InputDecoration(
+                labelText: 'Voorletters (optioneel)',
+                hintText: 'bijv. J.P. of A.B.C.',
+                helperText: 'Voor officiële documenten',
+                border: OutlineInputBorder(),
+              ),
+              textCapitalization: TextCapitalization.characters,
+            ),
+            const SizedBox(height: 16),
+
+            // Tussenvoegsel
             TextFormField(
               controller: _namePrefixController,
               decoration: InputDecoration(
@@ -212,6 +248,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
                 labelText: l10n.lastName,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
                   return l10n.validationRequired;
@@ -325,6 +363,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
                 labelText: l10n.address,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeFirstFormatter()],
             ),
             const SizedBox(height: 16),
 
@@ -333,8 +373,15 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
               controller: _postalCodeController,
               decoration: InputDecoration(
                 labelText: l10n.postalCode,
+                hintText: '1234 AB',
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.characters,
+              inputFormatters: [
+                DutchPostalCodeFormatter(),
+                LengthLimitingTextInputFormatter(7),
+              ],
+              validator: validateDutchPostalCode,
             ),
             const SizedBox(height: 16),
 
@@ -345,6 +392,8 @@ class _EditPersonScreenState extends State<EditPersonScreen> {
                 labelText: l10n.city,
                 border: const OutlineInputBorder(),
               ),
+              textCapitalization: TextCapitalization.words,
+              inputFormatters: [CapitalizeWordsFormatter()],
             ),
             const SizedBox(height: 16),
 

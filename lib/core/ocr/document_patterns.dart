@@ -56,9 +56,111 @@ class DocumentPatterns {
     caseSensitive: false,
   );
   
-  /// Pensioenuitkering
+  /// Pensioenuitkering / verwacht pensioen
   static final RegExp pensionAmountPattern = RegExp(
-    r'(?:pensioen|uitkering|bruto)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    r'(?:pensioen|uitkering|bruto|te\s+bereiken|verwacht(?:e)?)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    caseSensitive: false,
+  );
+  
+  /// Pensioen ingangsdatum
+  static final RegExp pensionDatePattern = RegExp(
+    r'(?:pensioen(?:datum|leeftijd)?|ingangsdatum|aow[- ]?leeftijd)\s*:?\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d{2}\s+jaar)',
+    caseSensitive: false,
+  );
+  
+  /// Werkgever (voor pensioen/inkomen)
+  static final RegExp employerPattern = RegExp(
+    r"(?:werkgever|employer)\s*:?\s*([A-Za-z0-9\s&.,'-]+?)(?:\n|$)",
+    caseSensitive: false,
+  );
+  
+  // ============== INKOMSTEN / LOONSTROOK ==============
+  
+  /// Bruto loon/salaris
+  static final RegExp grossIncomePattern = RegExp(
+    r'(?:bruto(?:\s*(?:loon|salaris|inkomen))?)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    caseSensitive: false,
+  );
+  
+  /// Netto loon/salaris
+  static final RegExp netIncomePattern = RegExp(
+    r'(?:netto(?:\s*(?:loon|salaris|inkomen|te\s+betalen))?)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    caseSensitive: false,
+  );
+  
+  /// Periode (maand/jaar)
+  static final RegExp periodPattern = RegExp(
+    r'(?:periode|maand|tijdvak)\s*:?\s*((?:januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december)\s*\d{4}|\d{1,2}[-/]\d{4})',
+    caseSensitive: false,
+  );
+  
+  /// BSN nummer (11-proef)
+  static final RegExp bsnPattern = RegExp(
+    r'(?:bsn|burgerservicenummer|sofi)\s*:?\s*(\d{9})',
+    caseSensitive: false,
+  );
+  
+  // ============== VASTE LASTEN / FACTUREN ==============
+  
+  /// Klantnummer / Contractnummer
+  static final RegExp customerNumberPattern = RegExp(
+    r'(?:klant(?:nummer)?|contract(?:nummer)?|abonnement(?:snummer)?|relatie(?:nummer)?)\s*:?\s*([A-Z0-9-]+)',
+    caseSensitive: false,
+  );
+  
+  /// Factuurnummer
+  static final RegExp invoiceNumberPattern = RegExp(
+    r'(?:factuur(?:nummer)?|invoice)\s*:?\s*([A-Z0-9-]+)',
+    caseSensitive: false,
+  );
+  
+  /// Te betalen bedrag
+  static final RegExp amountDuePattern = RegExp(
+    r'(?:te\s+betalen|totaal(?:bedrag)?|verschuldigd)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    caseSensitive: false,
+  );
+  
+  /// Incassodatum
+  static final RegExp directDebitDatePattern = RegExp(
+    r'(?:incasso(?:datum)?|afschrijving)\s*:?\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})',
+    caseSensitive: false,
+  );
+  
+  // ============== SCHULDEN / LENINGEN ==============
+  
+  /// Hoofdsom / leenbedrag
+  static final RegExp principalPattern = RegExp(
+    r'(?:hoofdsom|leenbedrag|hypotheek(?:bedrag)?|oorspronkelijk)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    caseSensitive: false,
+  );
+  
+  /// Restschuld / openstaand
+  static final RegExp outstandingPattern = RegExp(
+    r'(?:rest(?:schuld|ant)?|openstaand|nog\s+te\s+betalen|saldo)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    caseSensitive: false,
+  );
+  
+  /// Rente percentage
+  static final RegExp interestRatePattern = RegExp(
+    r'(?:rente(?:percentage)?|interest)\s*:?\s*([\d.,]+)\s*%',
+    caseSensitive: false,
+  );
+  
+  /// Maandtermijn / aflossing
+  static final RegExp monthlyPaymentPattern = RegExp(
+    r'(?:maand(?:termijn|bedrag|lasten)?|aflossing|annuïteit)\s*:?\s*[€EUR]?\s*([\d.,]+)',
+    caseSensitive: false,
+  );
+  
+  /// Rentevast periode
+  static final RegExp fixedRatePeriodPattern = RegExp(
+    r'(?:rentevast|vaste\s+rente)\s*(?:tot|periode)?\s*:?\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d+\s+jaar)',
+    caseSensitive: false,
+  );
+  
+  /// Looptijd
+  static final RegExp durationPattern = RegExp(
+    r'(?:looptijd|duur)\s*:?\s*(\d+)\s*(?:jaar|maanden?)',
     caseSensitive: false,
   );
   
@@ -144,6 +246,44 @@ class DocumentPatterns {
     'Pensioenfonds Metaal en Techniek',
     'Pensioenfonds Zorg en Welzijn',
     'SVB',
+    'Pensioenfonds Detailhandel',
+    'Pensioenfonds Horeca & Catering',
+    'BPL Pensioen',
+  ];
+  
+  // ============== BEKENDE NUTSBEDRIJVEN ==============
+  
+  static const List<String> dutchUtilities = [
+    'Vattenfall',
+    'Eneco',
+    'Essent',
+    'Greenchoice',
+    'Vandebron',
+    'Budget Energie',
+    'Oxxio',
+    'Engie',
+    'Innova Energie',
+    'KPN',
+    'Vodafone',
+    'T-Mobile',
+    'Ziggo',
+    'Odido',
+  ];
+  
+  // ============== BEKENDE HYPOTHEEKVERSTREKKERS ==============
+  
+  static const List<String> dutchMortgageProviders = [
+    'ABN AMRO',
+    'ING',
+    'Rabobank',
+    'Obvion',
+    'ASR',
+    'Nationale-Nederlanden',
+    'Aegon',
+    'Florius',
+    'Hypotrust',
+    'NIBC',
+    'de Volksbank',
   ];
   
   /// Zoek een bekende organisatie in de tekst
@@ -222,6 +362,31 @@ class ScannedDocumentData {
   final String? pensionFund;
   final String? participantNumber;
   final double? expectedPension;
+  final String? pensionDate;
+  final String? employer;
+  
+  // Inkomen gegevens
+  final double? grossIncome;
+  final double? netIncome;
+  final String? incomePeriod;
+  final String? bsn;
+  
+  // Vaste lasten gegevens
+  final String? utilityProvider;
+  final String? customerNumber;
+  final String? invoiceNumber;
+  final double? amountDue;
+  final String? directDebitDate;
+  
+  // Schulden gegevens
+  final String? mortgageProvider;
+  final String? contractNumber;
+  final double? principalAmount;
+  final double? outstandingAmount;
+  final double? interestRate;
+  final double? monthlyPayment;
+  final String? fixedRatePeriod;
+  final String? duration;
   
   // Algemeen
   final String? phone;
@@ -248,6 +413,25 @@ class ScannedDocumentData {
     this.pensionFund,
     this.participantNumber,
     this.expectedPension,
+    this.pensionDate,
+    this.employer,
+    this.grossIncome,
+    this.netIncome,
+    this.incomePeriod,
+    this.bsn,
+    this.utilityProvider,
+    this.customerNumber,
+    this.invoiceNumber,
+    this.amountDue,
+    this.directDebitDate,
+    this.mortgageProvider,
+    this.contractNumber,
+    this.principalAmount,
+    this.outstandingAmount,
+    this.interestRate,
+    this.monthlyPayment,
+    this.fixedRatePeriod,
+    this.duration,
     this.phone,
     this.email,
     this.website,
@@ -263,6 +447,12 @@ class ScannedDocumentData {
     insurerName != null || 
     policyNumber != null ||
     pensionFund != null ||
+    grossIncome != null ||
+    netIncome != null ||
+    utilityProvider != null ||
+    customerNumber != null ||
+    mortgageProvider != null ||
+    principalAmount != null ||
     amounts.isNotEmpty;
 }
 

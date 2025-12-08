@@ -1,8 +1,10 @@
 // lib/modules/money/screens/expenses/expense_detail_screen.dart
 
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/app_database.dart';
+import '../../../../core/ocr/document_scanner_widget.dart';
 import '../../../../core/widgets/date_picker_field.dart';
 import '../../models/expense_model.dart';
 import '../../models/money_item_model.dart';
@@ -158,6 +160,11 @@ class _ExpenseDetailScreenState extends ConsumerState<ExpenseDetailScreen> with 
       appBar: AppBar(
         title: Text(_creditorController.text.isNotEmpty ? _creditorController.text : 'Nieuwe vaste last'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.document_scanner),
+            tooltip: Platform.isAndroid || Platform.isIOS ? 'Scan factuur' : 'Import PDF',
+            onPressed: _scanDocument,
+          ),
           IconButton(icon: const Icon(Icons.check), onPressed: _save, tooltip: 'Opslaan'),
           PopupMenuButton<String>(onSelected: (a) { if (a == 'delete') _delete(); }, itemBuilder: (c) => [const PopupMenuItem(value: 'delete', child: Row(children: [Icon(Icons.delete, color: Colors.red), SizedBox(width: 12), Text('Verwijderen', style: TextStyle(color: Colors.red))]))]),
         ],
@@ -229,6 +236,75 @@ class _ExpenseDetailScreenState extends ConsumerState<ExpenseDetailScreen> with 
         FilledButton.icon(onPressed: _save, icon: const Icon(Icons.check), label: const Text('Opslaan')),
       ]),
     );
+  }
+
+  /// Scan een factuur/contract en vul velden automatisch in
+  Future<void> _scanDocument() async {
+    final data = await showDocumentScanner(
+      context,
+      documentType: DocumentType.invoice,
+    );
+
+    if (data != null && data.hasData) {
+      setState(() {
+        // Leverancier/Crediteur
+        if (data.utilityProvider != null && _creditorController.text.isEmpty) {
+          _creditorController.text = data.utilityProvider!;
+        }
+        
+        // Bedrag
+        if (data.amountDue != null && _amountController.text.isEmpty) {
+          _amountController.text = data.amountDue!.toStringAsFixed(2);
+        } else if (data.balance != null && _amountController.text.isEmpty) {
+          _amountController.text = data.balance!.toStringAsFixed(2);
+        }
+        
+        // Klantnummer/Contractnummer
+        if (data.customerNumber != null && _contractNumberController.text.isEmpty) {
+          _contractNumberController.text = data.customerNumber!;
+        }
+        
+        // Incassodatum
+        if (data.directDebitDate != null && _endDateController.text.isEmpty) {
+          _endDateController.text = data.directDebitDate!;
+        }
+        
+        // Telefoon
+        if (data.phone != null && _contactPhoneController.text.isEmpty) {
+          _contactPhoneController.text = data.phone!;
+        }
+        
+        // Email
+        if (data.email != null && _contactEmailController.text.isEmpty) {
+          _contactEmailController.text = data.email!;
+        }
+        
+        // Website
+        if (data.website != null && _websiteController.text.isEmpty) {
+          _websiteController.text = data.website!;
+        }
+        
+        // IBAN voor incasso
+        // (kan later worden gebruikt voor automatische incasso koppeling)
+      });
+      
+      _markChanged();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Gegevens overgenomen van scan'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+    }
   }
 }
 

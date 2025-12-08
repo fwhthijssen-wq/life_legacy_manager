@@ -1,8 +1,10 @@
 // lib/modules/money/screens/pensions/pension_detail_screen.dart
 
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/app_database.dart';
+import '../../../../core/ocr/document_scanner_widget.dart';
 import '../../../../core/widgets/date_picker_field.dart';
 import '../../models/pension_model.dart';
 import '../../models/money_item_model.dart';
@@ -325,6 +327,14 @@ class _PensionDetailScreenState extends ConsumerState<PensionDetailScreen>
               : 'Nieuw pensioen',
         ),
         actions: [
+          // Document scan/import knop
+          IconButton(
+            icon: const Icon(Icons.document_scanner),
+            tooltip: Platform.isAndroid || Platform.isIOS 
+                ? 'Scan pensioen UPO' 
+                : 'Import PDF',
+            onPressed: _scanDocument,
+          ),
           IconButton(
             icon: const Icon(Icons.check),
             onPressed: _save,
@@ -853,6 +863,92 @@ class _PensionDetailScreenState extends ConsumerState<PensionDetailScreen>
         ],
       ),
     );
+  }
+
+  /// Scan een pensioen UPO en vul velden automatisch in
+  Future<void> _scanDocument() async {
+    final data = await showDocumentScanner(
+      context,
+      documentType: DocumentType.pensionStatement,
+    );
+
+    if (data != null && data.hasData) {
+      setState(() {
+        // Pensioenfonds
+        if (data.pensionFund != null && _providerController.text.isEmpty) {
+          _providerController.text = data.pensionFund!;
+        }
+        
+        // Deelnemersnummer
+        if (data.participantNumber != null && _participantNumberController.text.isEmpty) {
+          _participantNumberController.text = data.participantNumber!;
+        }
+        
+        // Werkgever
+        if (data.employer != null && _employerController.text.isEmpty) {
+          _employerController.text = data.employer!;
+        }
+        
+        // Verwachte uitkering
+        if (data.expectedPension != null && _expectedPayoutController.text.isEmpty) {
+          _expectedPayoutController.text = data.expectedPension!.toStringAsFixed(2);
+        }
+        
+        // Huidig kapitaal (als er een groot bedrag is gevonden)
+        if (data.balance != null && data.balance! > 10000 && _currentCapitalController.text.isEmpty) {
+          _currentCapitalController.text = data.balance!.toStringAsFixed(2);
+        }
+        
+        // Pensioendatum
+        if (data.pensionDate != null && _pensionStartDateController.text.isEmpty) {
+          _pensionStartDateController.text = data.pensionDate!;
+        }
+        
+        // Maandelijkse inleg
+        if (data.monthlyPayment != null && _monthlyContributionController.text.isEmpty) {
+          _monthlyContributionController.text = data.monthlyPayment!.toStringAsFixed(2);
+        }
+        
+        // Telefoon
+        if (data.phone != null && _servicePhoneController.text.isEmpty) {
+          _servicePhoneController.text = data.phone!;
+        }
+        
+        // Email
+        if (data.email != null && _serviceEmailController.text.isEmpty) {
+          _serviceEmailController.text = data.email!;
+        }
+        
+        // Website
+        if (data.website != null && _websiteController.text.isEmpty) {
+          _websiteController.text = data.website!;
+        }
+        
+        // Datums voor opbouwperiode
+        if (data.dates.isNotEmpty) {
+          if (_accrualStartController.text.isEmpty && data.dates.length >= 1) {
+            _accrualStartController.text = data.dates.first;
+          }
+        }
+      });
+      
+      _markChanged();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Gegevens overgenomen van scan'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+    }
   }
 }
 

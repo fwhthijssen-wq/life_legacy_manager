@@ -95,6 +95,8 @@ class OcrService {
   
   /// Analyseer tekst en extraheer gegevens
   ScannedDocumentData analyzeText(String text) {
+    // ============== BANKGEGEVENS ==============
+    
     // IBAN zoeken
     String? iban;
     final ibanMatches = DocumentPatterns.ibanPattern.allMatches(text);
@@ -119,16 +121,12 @@ class OcrService {
       DocumentPatterns.dutchBanks,
     );
     
+    // ============== VERZEKERINGEN ==============
+    
     // Verzekeraar zoeken
     final insurerName = DocumentPatterns.findKnownOrganization(
       text, 
       DocumentPatterns.dutchInsurers,
-    );
-    
-    // Pensioenfonds zoeken
-    final pensionFund = DocumentPatterns.findKnownOrganization(
-      text, 
-      DocumentPatterns.dutchPensionFunds,
     );
     
     // Polisnummer zoeken
@@ -136,13 +134,6 @@ class OcrService {
     final policyMatch = DocumentPatterns.policyNumberPattern.firstMatch(text);
     if (policyMatch != null && policyMatch.groupCount >= 1) {
       policyNumber = policyMatch.group(1);
-    }
-    
-    // Deelnemersnummer zoeken
-    String? participantNumber;
-    final participantMatch = DocumentPatterns.participantNumberPattern.firstMatch(text);
-    if (participantMatch != null && participantMatch.groupCount >= 1) {
-      participantNumber = participantMatch.group(1);
     }
     
     // Premie zoeken
@@ -158,6 +149,163 @@ class OcrService {
     if (deductibleMatch != null && deductibleMatch.groupCount >= 1) {
       deductible = DocumentPatterns.parseAmount(deductibleMatch.group(1));
     }
+    
+    // ============== PENSIOEN ==============
+    
+    // Pensioenfonds zoeken
+    final pensionFund = DocumentPatterns.findKnownOrganization(
+      text, 
+      DocumentPatterns.dutchPensionFunds,
+    );
+    
+    // Deelnemersnummer zoeken
+    String? participantNumber;
+    final participantMatch = DocumentPatterns.participantNumberPattern.firstMatch(text);
+    if (participantMatch != null && participantMatch.groupCount >= 1) {
+      participantNumber = participantMatch.group(1);
+    }
+    
+    // Verwacht pensioen zoeken
+    double? expectedPension;
+    final pensionAmountMatch = DocumentPatterns.pensionAmountPattern.firstMatch(text);
+    if (pensionAmountMatch != null && pensionAmountMatch.groupCount >= 1) {
+      expectedPension = DocumentPatterns.parseAmount(pensionAmountMatch.group(1));
+    }
+    
+    // Pensioen datum zoeken
+    String? pensionDate;
+    final pensionDateMatch = DocumentPatterns.pensionDatePattern.firstMatch(text);
+    if (pensionDateMatch != null && pensionDateMatch.groupCount >= 1) {
+      pensionDate = pensionDateMatch.group(1);
+    }
+    
+    // Werkgever zoeken
+    String? employer;
+    final employerMatch = DocumentPatterns.employerPattern.firstMatch(text);
+    if (employerMatch != null && employerMatch.groupCount >= 1) {
+      employer = employerMatch.group(1)?.trim();
+    }
+    
+    // ============== INKOMSTEN ==============
+    
+    // Bruto inkomen zoeken
+    double? grossIncome;
+    final grossMatch = DocumentPatterns.grossIncomePattern.firstMatch(text);
+    if (grossMatch != null && grossMatch.groupCount >= 1) {
+      grossIncome = DocumentPatterns.parseAmount(grossMatch.group(1));
+    }
+    
+    // Netto inkomen zoeken
+    double? netIncome;
+    final netMatch = DocumentPatterns.netIncomePattern.firstMatch(text);
+    if (netMatch != null && netMatch.groupCount >= 1) {
+      netIncome = DocumentPatterns.parseAmount(netMatch.group(1));
+    }
+    
+    // Periode zoeken
+    String? incomePeriod;
+    final periodMatch = DocumentPatterns.periodPattern.firstMatch(text);
+    if (periodMatch != null && periodMatch.groupCount >= 1) {
+      incomePeriod = periodMatch.group(1);
+    }
+    
+    // BSN zoeken
+    String? bsn;
+    final bsnMatch = DocumentPatterns.bsnPattern.firstMatch(text);
+    if (bsnMatch != null && bsnMatch.groupCount >= 1) {
+      bsn = bsnMatch.group(1);
+    }
+    
+    // ============== VASTE LASTEN ==============
+    
+    // Nutsbedrijf zoeken
+    final utilityProvider = DocumentPatterns.findKnownOrganization(
+      text, 
+      DocumentPatterns.dutchUtilities,
+    );
+    
+    // Klantnummer zoeken
+    String? customerNumber;
+    final customerMatch = DocumentPatterns.customerNumberPattern.firstMatch(text);
+    if (customerMatch != null && customerMatch.groupCount >= 1) {
+      customerNumber = customerMatch.group(1);
+    }
+    
+    // Factuurnummer zoeken
+    String? invoiceNumber;
+    final invoiceMatch = DocumentPatterns.invoiceNumberPattern.firstMatch(text);
+    if (invoiceMatch != null && invoiceMatch.groupCount >= 1) {
+      invoiceNumber = invoiceMatch.group(1);
+    }
+    
+    // Te betalen bedrag zoeken
+    double? amountDue;
+    final amountDueMatch = DocumentPatterns.amountDuePattern.firstMatch(text);
+    if (amountDueMatch != null && amountDueMatch.groupCount >= 1) {
+      amountDue = DocumentPatterns.parseAmount(amountDueMatch.group(1));
+    }
+    
+    // Incassodatum zoeken
+    String? directDebitDate;
+    final directDebitMatch = DocumentPatterns.directDebitDatePattern.firstMatch(text);
+    if (directDebitMatch != null && directDebitMatch.groupCount >= 1) {
+      directDebitDate = directDebitMatch.group(1);
+    }
+    
+    // ============== SCHULDEN ==============
+    
+    // Hypotheekverstrekker zoeken
+    final mortgageProvider = DocumentPatterns.findKnownOrganization(
+      text, 
+      DocumentPatterns.dutchMortgageProviders,
+    );
+    
+    // Contractnummer zoeken (hergebruik customerNumber als niet gevonden)
+    String? contractNumber = customerNumber;
+    
+    // Hoofdsom zoeken
+    double? principalAmount;
+    final principalMatch = DocumentPatterns.principalPattern.firstMatch(text);
+    if (principalMatch != null && principalMatch.groupCount >= 1) {
+      principalAmount = DocumentPatterns.parseAmount(principalMatch.group(1));
+    }
+    
+    // Restschuld zoeken
+    double? outstandingAmount;
+    final outstandingMatch = DocumentPatterns.outstandingPattern.firstMatch(text);
+    if (outstandingMatch != null && outstandingMatch.groupCount >= 1) {
+      outstandingAmount = DocumentPatterns.parseAmount(outstandingMatch.group(1));
+    }
+    
+    // Rente percentage zoeken
+    double? interestRate;
+    final interestMatch = DocumentPatterns.interestRatePattern.firstMatch(text);
+    if (interestMatch != null && interestMatch.groupCount >= 1) {
+      interestRate = double.tryParse(interestMatch.group(1)!.replaceAll(',', '.'));
+    }
+    
+    // Maandtermijn zoeken
+    double? monthlyPayment;
+    final monthlyMatch = DocumentPatterns.monthlyPaymentPattern.firstMatch(text);
+    if (monthlyMatch != null && monthlyMatch.groupCount >= 1) {
+      monthlyPayment = DocumentPatterns.parseAmount(monthlyMatch.group(1));
+    }
+    
+    // Rentevast periode zoeken
+    String? fixedRatePeriod;
+    final fixedRateMatch = DocumentPatterns.fixedRatePeriodPattern.firstMatch(text);
+    if (fixedRateMatch != null && fixedRateMatch.groupCount >= 1) {
+      fixedRatePeriod = fixedRateMatch.group(1);
+    }
+    
+    // Looptijd zoeken
+    String? duration;
+    final durationMatch = DocumentPatterns.durationPattern.firstMatch(text);
+    if (durationMatch != null) {
+      duration = durationMatch.group(0);
+    }
+    
+    // ============== ALGEMEEN ==============
     
     // Telefoon zoeken
     String? phone;
@@ -215,16 +363,43 @@ class OcrService {
     }
     
     return ScannedDocumentData(
+      // Bank
       iban: iban,
       bic: bic,
       bankName: bankName,
       balance: balance,
+      // Verzekering
       insurerName: insurerName,
       policyNumber: policyNumber,
       premium: premium,
       deductible: deductible,
+      // Pensioen
       pensionFund: pensionFund,
       participantNumber: participantNumber,
+      expectedPension: expectedPension,
+      pensionDate: pensionDate,
+      employer: employer,
+      // Inkomen
+      grossIncome: grossIncome,
+      netIncome: netIncome,
+      incomePeriod: incomePeriod,
+      bsn: bsn,
+      // Vaste lasten
+      utilityProvider: utilityProvider,
+      customerNumber: customerNumber,
+      invoiceNumber: invoiceNumber,
+      amountDue: amountDue,
+      directDebitDate: directDebitDate,
+      // Schulden
+      mortgageProvider: mortgageProvider,
+      contractNumber: contractNumber,
+      principalAmount: principalAmount,
+      outstandingAmount: outstandingAmount,
+      interestRate: interestRate,
+      monthlyPayment: monthlyPayment,
+      fixedRatePeriod: fixedRatePeriod,
+      duration: duration,
+      // Algemeen
       phone: phone,
       email: email,
       website: website,

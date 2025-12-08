@@ -185,13 +185,14 @@ class _InsurancesListScreenState extends ConsumerState<InsurancesListScreen> {
   }
 
   Future<void> _addInsurance(BuildContext context, WidgetRef ref) async {
-    // Haal personen op voor dit dossier
+    // Haal alleen dossierleden (household members) op voor dit dossier
     final db = ref.read(appDatabaseProvider);
-    final persons = await db.query(
-      'persons',
-      where: 'dossier_id = ? AND (is_contact = 0 OR is_contact IS NULL)',
-      whereArgs: [widget.dossierId],
-    );
+    final persons = await db.rawQuery('''
+      SELECT p.* FROM persons p
+      INNER JOIN household_members hm ON p.id = hm.person_id
+      WHERE hm.dossier_id = ?
+      ORDER BY hm.is_primary DESC, p.first_name
+    ''', [widget.dossierId]);
 
     if (persons.isEmpty) {
       if (!context.mounted) return;

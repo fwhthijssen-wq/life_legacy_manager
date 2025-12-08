@@ -41,7 +41,7 @@ class AppDatabase {
 
     return await openDatabase(
       path,
-      version: 11, // ← VERSIE 11: emoji kolom voor mailing_lists
+      version: 12, // ← VERSIE 12: uitgebreide bank_accounts kolommen + persons.initials
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
@@ -91,6 +91,7 @@ class AppDatabase {
         id TEXT PRIMARY KEY,
         dossier_id TEXT NOT NULL,
         first_name TEXT NOT NULL,
+        initials TEXT,
         name_prefix TEXT,
         last_name TEXT NOT NULL,
         phone TEXT,
@@ -212,7 +213,7 @@ class AppDatabase {
       );
     ''');
     
-    // BANK_ACCOUNTS tabel
+    // BANK_ACCOUNTS tabel (uitgebreid met alle velden)
     await db.execute('''
       CREATE TABLE bank_accounts (
         id TEXT PRIMARY KEY,
@@ -220,8 +221,24 @@ class AppDatabase {
         bank_name TEXT NOT NULL,
         account_type TEXT,
         iban TEXT,
+        bic_swift TEXT,
         account_holder TEXT,
+        is_joint_account INTEGER DEFAULT 0,
+        joint_holder_name TEXT,
+        joint_holder_id TEXT,
         balance REAL,
+        currency TEXT DEFAULT 'EUR',
+        service_phone TEXT,
+        service_email TEXT,
+        website TEXT,
+        login_url TEXT,
+        credentials_location TEXT,
+        credentials_location_detail TEXT,
+        has_card INTEGER DEFAULT 0,
+        card_location TEXT,
+        death_action TEXT,
+        death_instructions TEXT,
+        beneficiaries TEXT,
         notes TEXT,
         FOREIGN KEY (money_item_id) REFERENCES money_items(id) ON DELETE CASCADE
       );
@@ -1249,6 +1266,35 @@ class AppDatabase {
       await db.execute("ALTER TABLE mailing_lists ADD COLUMN emoji TEXT DEFAULT '📋';");
       
       print('🎉 Database upgrade naar v11 voltooid!');
+    }
+
+    if (oldVersion < 12) {
+      print('🏦 Upgrading to version 12: uitgebreide bank_accounts + persons.initials...');
+      
+      // Voeg ontbrekende kolommen toe aan bank_accounts
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN bic_swift TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN is_joint_account INTEGER DEFAULT 0;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN joint_holder_name TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN joint_holder_id TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN currency TEXT DEFAULT "EUR";');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN service_phone TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN service_email TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN website TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN login_url TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN credentials_location TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN credentials_location_detail TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN has_card INTEGER DEFAULT 0;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN card_location TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN death_action TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN death_instructions TEXT;');
+      await db.execute('ALTER TABLE bank_accounts ADD COLUMN beneficiaries TEXT;');
+      print('   ✅ bank_accounts kolommen toegevoegd');
+      
+      // Voeg initials kolom toe aan persons
+      await db.execute('ALTER TABLE persons ADD COLUMN initials TEXT;');
+      print('   ✅ persons.initials kolom toegevoegd');
+      
+      print('🎉 Database upgrade naar v12 voltooid!');
     }
   }
 

@@ -1,9 +1,11 @@
 // lib/modules/household/screens/add_household_member_screen.dart
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/app_database.dart';
+import '../../../core/utils/text_formatters.dart';
 import '../models/household_member.dart';
 import '../repository/household_repository.dart';
 
@@ -348,6 +350,8 @@ class _AddHouseholdMemberScreenState
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
                 ),
+                textCapitalization: TextCapitalization.words,
+                inputFormatters: [CapitalizeWordsFormatter()],
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Voornaam is verplicht';
@@ -379,6 +383,8 @@ class _AddHouseholdMemberScreenState
                   prefixIcon: Icon(Icons.person_outline),
                   border: OutlineInputBorder(),
                 ),
+                textCapitalization: TextCapitalization.words,
+                inputFormatters: [CapitalizeWordsFormatter()],
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
                     return 'Achternaam is verplicht';
