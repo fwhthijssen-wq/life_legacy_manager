@@ -1,0 +1,154 @@
+================================================================================
+SAMENVATTING ONTWIKKELSESSIE - 8 december 2024
+Life Legacy Manager - Bulk Import Functionaliteit
+================================================================================
+
+DOEL VAN VANDAAG:
+-----------------
+De "Geldzaken" module volledig functioneel maken, met focus op het automatisch
+inlezen van bankgegevens uit PDF jaaroverzichten (bulk import).
+
+================================================================================
+WAT IS ER GEBOUWD:
+================================================================================
+
+1. BULK IMPORT BANKREKENINGEN (Fase 1)
+   ------------------------------------
+   - Locatie: lib/core/bulk_import/
+   - Bestanden:
+     * models/scanned_account.dart      - Data model voor gescande rekeningen
+     * services/multi_account_scanner.dart - PDF scanner die meerdere IBANs vindt
+     * screens/bulk_import_accounts_screen.dart - Preview scherm met persoon matching
+
+   Hoe het werkt:
+   - Gebruiker selecteert PDF jaaroverzicht van bank
+   - Scanner vindt alle IBANs in het document
+   - Herkent banknaam, saldo, rekeninghouder
+   - Probeert automatisch personen te matchen (op naam/voorletters)
+   - Gebruiker kan handmatig personen toewijzen
+   - Bulk import naar database
+
+2. VOORLETTERS VELD BIJ PERSONEN
+   ------------------------------
+   - Toegevoegd aan: lib/modules/person/person_model.dart
+   - UI toegevoegd aan:
+     * edit_person_screen.dart
+     * add_person_screen.dart
+   - Doel: Betere matching bij document import (veel documenten gebruiken voorletters)
+
+3. DATABASE UITBREIDINGEN (versie 12)
+   ------------------------------------
+   Locatie: lib/core/app_database.dart
+   
+   Nieuwe kolommen persons tabel:
+   - initials (voorletters)
+   
+   Nieuwe kolommen bank_accounts tabel:
+   - bic_swift, is_joint_account, joint_holder_name, joint_holder_id
+   - currency, service_phone, service_email, website, login_url
+   - credentials_location, credentials_location_detail
+   - has_card, card_location, death_action, death_instructions, beneficiaries
+
+4. TEXT FORMATTERS
+   ----------------
+   Locatie: lib/core/utils/text_formatters.dart
+   - CapitalizeFirstFormatter - Eerste letter hoofdletter
+   - CapitalizeWordsFormatter - Elk woord hoofdletter
+   - PostalCodeFormatter - Nederlandse postcode (1234 AB)
+   - IbanFormatter - IBAN validatie
+
+5. OCR UITBREIDINGEN
+   ------------------
+   Locatie: lib/core/ocr/document_patterns.dart
+   - Patterns voor pensioenen, inkomen, uitgaven, schulden
+   - Bekende organisaties (verzekeraars, pensioenfondsen)
+
+================================================================================
+BELANGRIJKE FIXES:
+================================================================================
+
+1. Database kolommen ontbraken bij verse installatie
+   → CREATE TABLE statements in _onCreate bijgewerkt
+
+2. Persoon wijzigen sloeg niet op
+   → Database schema mismatch opgelost
+
+3. Geldzaken categorieën niet navigeerbaar
+   → home_screen.dart navigatie gefixt
+
+4. Verkeerde personen bij bankrekening toevoegen
+   → Query aangepast om alleen household_members te tonen
+
+================================================================================
+HOE TE TESTEN:
+================================================================================
+
+1. Start de app: flutter run -d windows
+
+2. Registreer een account (of log in)
+
+3. Ga naar: Persoonlijke Gegevens → Dossierleden
+   - Voeg voorletters toe aan personen (bijv. "F.W.H.")
+
+4. Ga naar: Geldzaken → Bankrekeningen
+   - Klik "Importeer jaaroverzicht" (rechtsboven of in lege staat)
+   - Selecteer een PDF jaaroverzicht van je bank
+   - Bekijk de gevonden rekeningen
+   - Wijs personen toe indien nodig
+   - Klik "Importeren"
+
+================================================================================
+DESIGN DOCUMENTEN:
+================================================================================
+
+- opzet Geldzaken.txt - Functioneel ontwerp Geldzaken module
+- opzet Intelligente documenten bulk import.txt - Killer feature ontwerp
+
+================================================================================
+GITHUB:
+================================================================================
+
+Repository: https://github.com/fwhthijssen-wq/life_legacy_manager.git
+
+Laatste commit: "feat: Geldzaken module + Bulk Import Fase 1"
+- 67 bestanden gewijzigd
+- 4280 regels toegevoegd
+
+================================================================================
+VOLGENDE STAPPEN (TODO):
+================================================================================
+
+1. Bulk Import optimaliseren:
+   - Betere naam matching (fuzzy matching)
+   - Voorletters gebruiken bij matching
+   - Meerdere documenten tegelijk importeren
+
+2. Uitbreiden naar andere document types:
+   - Verzekeringspolis
+   - Pensioen UPO
+   - Salarisstrook
+
+3. Geldzaken verder uitwerken:
+   - Alle detail schermen compleet maken
+   - Document scan integratie verbeteren
+
+================================================================================
+COMMANDO'S OM TE STARTEN OP NIEUWE PC:
+================================================================================
+
+# Project ophalen:
+cd C:\Projects
+git clone https://github.com/fwhthijssen-wq/life_legacy_manager.git
+cd life_legacy_manager
+flutter pub get
+
+# App starten:
+flutter run -d windows
+
+# Na wijzigingen committen:
+git add -A
+git commit -m "beschrijving van wijzigingen"
+git push origin main
+
+================================================================================
+
